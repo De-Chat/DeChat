@@ -28,7 +28,7 @@ export const WalletProvider = ({
       if (cachedResolveName.has(name)) {
         return cachedResolveName.get(name)
       }
-      if (chainId !== ETH_CHAIN_ID) {
+      if (chainId?.id as Number !== ETH_CHAIN_ID) {
         return undefined
       }
       const address = (await provider?.resolveName(name)) || undefined
@@ -43,7 +43,7 @@ export const WalletProvider = ({
       if (cachedLookupAddress.has(address)) {
         return cachedLookupAddress.get(address)
       }
-      if (chainId !== ETH_CHAIN_ID) {
+      if (chainId?.id !== ETH_CHAIN_ID) {
         return undefined
       }
 
@@ -66,13 +66,21 @@ export const WalletProvider = ({
     [provider]
   )
 
-  const disconnect = useCallback(async () => {
-    disconnectAccount();
-    // router.push('/')
-  }, [router])
-
-  const { connect } = useConnect();
+  
+  useEffect(() => 
+  console.log("test signer changed to: ", signer)
+  , [signer]);
+  
+  const { connect: connectAccount } = useConnect();
+  const connect = useCallback(async () => {
+    connectAccount();
+  }, [connectAccount])
+  
   const { disconnect: disconnectAccount } = useDisconnect();
+  const disconnect = useCallback(async () => {
+    router.push('/');
+    disconnectAccount();
+  }, [router, disconnectAccount])
 
   return (
     <WalletContext.Provider
@@ -80,7 +88,7 @@ export const WalletProvider = ({
         provider,
         signer,
         address,
-        chainId,
+        chainId: chainId?.id,
         resolveName,
         lookupAddress,
         getAvatarUrl,

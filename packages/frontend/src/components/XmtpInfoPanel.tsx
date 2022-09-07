@@ -1,6 +1,6 @@
-import packageJson from '../package.json'
+import packageJson from '../../package.json'
 import Image from 'next/image'
-import Robot from '../public/robot.gif'
+import Robot from 'public/robot.gif'
 import useXmtp from '../hooks/useXmtp'
 import { classNames } from '../helpers'
 import {

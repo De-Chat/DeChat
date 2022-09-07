@@ -24,11 +24,6 @@ const Conversation = ({
     scrollToMessagesEndRef
   )
   console.log("test print!")
-  // test 
-  const {address} = useAccount();
-  console.log("test address: ", address);
-  const wagmiProvider = useProvider();
-  console.log("test wagmiProvider: ", wagmiProvider);
 
   const hasMessages = messages.length > 0
   useEffect(() => {
