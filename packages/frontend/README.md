@@ -6,13 +6,15 @@
 
 ![x-red-sm](https://user-images.githubusercontent.com/510695/163488403-1fb37e86-c673-4b48-954e-8460ae4d4b05.png)
 
-**Example chat application demonstrating the core concepts and capabilities of the XMTP client SDK**
+**This example chat application demonstrates the core concepts and capabilities of the XMTP Client SDK.** It is built with React, [Next.js](https://nextjs.org/), and the [`xmtp-js`](https://github.com/xmtp/xmtp-js) client library. The application is capable of sending and receiving messages via the [XMTP Labs](https://xmtp.com) development network, with no performance guarantees and [notable limitations](#limitations) to its functionality.
 
-This application is built with React, [Next.js](https://nextjs.org/), and the [`xmtp-js` client SDK](https://github.com/xmtp/xmtp-js).
+It is maintained by [XMTP Labs](https://xmtp.com) and distributed under [MIT License](./LICENSE) for learning about and developing applications that utilize the XMTP decentralized communication protocol.
 
-Use the application to send and receive messages using the XMTP `dev` network environment, with some [important considerations](#considerations). You are also free to customize and deploy the application.
+**All wallets and messages are forcibly deleted from the development network on Mondays.**
 
-This application is maintained by [XMTP Labs](https://xmtp.com) and distributed under [MIT License](./LICENSE) for learning about and developing applications built with XMTP, a messaging protocol and decentralized communication network for blockchain wallets. The application has not undergone a formal security audit.
+## Disclaimer
+
+The XMTP protocol is in the early stages of development. This software is being provided for evaluation, feedback, and community contribution. It has not undergone a formal security audit and is not intended for production applications. Significant breaking revisions should be expected.
 
 ## Getting Started
 
@@ -46,22 +48,23 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Wallet Connections
 
-[`Web3Modal`](https://github.com/Web3Modal/web3modal) is used to inject a Metamask, Coinbase Wallet, or WalletConnect provider through [`ethers`](https://docs.ethers.io/v5/). Methods for connecting and disconnecting are included in `WalletProvider` alongside the provider, signer, wallet address, and ENS utilities.
+[`Web3Modal`](https://github.com/Web3Modal/web3modal) is used to inject a Metamask, Coinbase Wallet, or WalletConnect provider through [`ethers`](https://docs.ethers.io/v5/). Methods for connecting and disconnecting are included in **WalletContext** alongside the provider, signer, wallet address, and ENS utilities.
 
-To use the application's chat functionality, the connected wallet must provide two signatures:
+In order to use the application's chat functionality, the connected wallet must provide two signatures:
 
 1. A one-time signature that is used to generate the wallet's private XMTP identity
 2. A signature that is used on application start-up to initialize the XMTP client with that identity
 
 ### Chat Conversations
 
-The application uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the application gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
+The application utilizes the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each convesation, it gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through **XmtpContext** alongside the client and its methods.
 
-### Considerations
+### Limitations
 
-Here are some important considerations when working with the example chat application:
+The application's functionality is limited by current work-in-progress on the `xmtp-js` client.
 
-- The application sends and receives messages using the XMTP `dev` network environment. To connect to the `production` network instead, set the following environment variable `NEXT_PUBLIC_XMTP_ENVIRONMENT=production`.
-     - XMTP may occasionally delete messages and keys from the `dev` network, and will provide advance notice in the XMTP Discord community ([request access](https://xmtp.typeform.com/to/yojTJarb?utm_source=docs_home)). The `production` network is configured to store messages indefinitely. 
-- You can't yet send a message to a wallet address that hasn't used XMTP. The client displays an error when it looks up an address that doesn't have an identity broadcast on the XMTP network.
-   - This limitation will soon be resolved by improvements to the `xmtp-js` library that will allow messages to be created and stored for future delivery, even if the recipient hasn't used XMTP yet.
+#### Messages cannot yet be directed to wallets that have not used XMTP
+
+The client will throw an error when attempting to lookup an address that does not have an identity broadcast on the XMTP network.
+
+This limitation will be mitigated very soon by the example application's UI, and resolved soon via improvements to the `xmtp-js` library that will allow messages to be created even if the intended recipient has not yet generated its keys.

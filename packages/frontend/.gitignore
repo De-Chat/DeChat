@@ -36,13 +36,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# next
-.next/
-out/
-build
-
 scratch
 
 .npmrc
-
-src/deployments/1337.json
