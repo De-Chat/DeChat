@@ -21,6 +21,7 @@
     "url": "https://github.com/xmtp/example-chat-react/issues"
   },
   "dependencies": {
+    "@dechat/contracts": "workspace:*",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@rainbow-me/rainbowkit": "^0.3.6",
@@ -33,7 +34,8 @@
     "react-blockies": "^1.4.1",
     "react-dom": "17.0.2",
     "react-emoji-render": "^1.2.4",
-    "wagmi": "^0.4.12"
+    "wagmi": "^0.4.12",
+    "use-async-effect": "^2.2.6"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.4.0",

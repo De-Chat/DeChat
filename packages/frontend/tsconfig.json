@@ -21,6 +21,7 @@
       "@models/*": ["./src/models/*"],
       "@styles/*": ["./src/styles/*"],
       "@deployments/*": ["./src/deployments/*"],
+      "@types/*": ["./src/types/*"],
       "@public/*": ["./public/*"]
     }
   },
