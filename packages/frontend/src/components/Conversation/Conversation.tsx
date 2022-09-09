@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import useXmtp from '../../hooks/useXmtp'
 import useConversation from '../../hooks/useConversation'
-import { MessagesList, MessageComposer } from './'
-import Loader from '../../components/Loader'
+import { MessagesList, MessageComposer } from '.'
+import Loader from '../Loader'
 import useEns from '../../hooks/useEns'
 
 type ConversationProps = {

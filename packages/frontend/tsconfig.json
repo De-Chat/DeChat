@@ -20,7 +20,8 @@
       "@shared/*": ["./src/shared/*"],
       "@models/*": ["./src/models/*"],
       "@styles/*": ["./src/styles/*"],
-      "@deployments/*": ["./src/deployments/*"]
+      "@deployments/*": ["./src/deployments/*"],
+      "@public/*": ["./public/*"]
     }
   },
   "references": [{ "path": "../contracts" }],

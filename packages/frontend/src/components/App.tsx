@@ -1,5 +1,5 @@
 import XmtpProvider from './XmtpProvider'
-import Layout from '../components/Layout'
+import Layout from './Layout'
 
 import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
 
