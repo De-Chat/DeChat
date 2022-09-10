@@ -19,6 +19,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     value: parseEther('0.01'),
     log: true,
   })
+
+  await deploy('Send', {
+    from: deployer,
+    log: true,
+  })
 }
 func.tags = ['Lock']
 export default func
