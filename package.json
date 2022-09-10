@@ -13,6 +13,7 @@
     "lint:fix": "turbo run lint:fix",
     "frontend:dev": "pnpm --filter frontend dev",
     "frontend:start": "pnpm --filter frontend start",
+    "contracts:dev": "pnpm run --filter @dechat/contracts deploy",
     "prepare": "husky install"
   },
   "pnpm": {
