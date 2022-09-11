@@ -9,21 +9,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
   console.log(`Deploying as ${deployer}…`)
 
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000)
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS
+  // const currentTimestampInSeconds = Math.round(Date.now() / 1000)
+  // const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60
+  // const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS
 
-  await deploy('Lock', {
-    from: deployer,
-    args: [unlockTime],
-    value: parseEther('0.01'),
-    log: true,
-  })
+  // await deploy('Lock', {
+  //   from: deployer,
+  //   args: [unlockTime],
+  //   value: parseEther('0.01'),
+  //   log: true,
+  // })
 
   await deploy('Send', {
     from: deployer,
     log: true,
   })
 }
-func.tags = ['Lock']
+func.tags = ['Send']
 export default func

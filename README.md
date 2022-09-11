@@ -23,6 +23,7 @@ npm i -g pnpm
 pnpm install
 
 # Copy & fill environments
+# This step is important when connecting frontend to deployment
 cp packages/frontend/.env.local.example packages/frontend/.env.local
 cp packages/contracts/.env.example packages/contracts/.env
 ```
@@ -31,9 +32,7 @@ cp packages/contracts/.env.example packages/contracts/.env
 
 ```bash
 # Generate contract-types, start local hardhat node, and start frontend with turborepo
-pnpm dev
-cd packages/contracts
-yarn deploy
+pnpm contracts:dev
 
 
 # Only start frontend

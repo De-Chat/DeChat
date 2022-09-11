@@ -1,30 +1,11 @@
 import XmtpProvider from './XmtpProvider'
 import Layout from './Layout'
 
-import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
-
-import { alchemyProvider } from 'wagmi/providers/alchemy'
-
 import '@rainbow-me/rainbowkit/styles.css'
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-
-const alchemyId =
-  process.env.NEXT_PUBLIC_ALCHEMY_ID || 'kdfkwIFWhX41Ny0gtZ_xpx58Y_wAw3RM'
-
-const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.ropsten],
-  [alchemyProvider({ alchemyId })]
-)
-const { connectors } = getDefaultWallets({
-  appName: 'Chat via XMTP',
-  chains,
-})
-
-const client = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-})
+import { WagmiConfig } from 'wagmi'
+import { wagmiClient, chains } from '@shared/wagmiClient'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import {env} from '@shared/environment'
 
 type AppProps = {
   children?: React.ReactNode
@@ -32,8 +13,8 @@ type AppProps = {
 
 function App({ children }: AppProps) {
   return (
-    <WagmiConfig client={client}>
-      <RainbowKitProvider chains={chains}>
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains} initialChain={env.defaultChain}>
         <XmtpProvider>
           <Layout>{children}</Layout>
         </XmtpProvider>

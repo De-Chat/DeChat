@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const optimizedImages = require('next-optimized-images')
+// eslint-disable-next-line
+const withTM = require('next-transpile-modules')(['@dechat/contracts'])
 
 /** @type {import('next').NextConfig} */
 const nextConfig = optimizedImages({
@@ -15,4 +17,4 @@ const nextConfig = optimizedImages({
   },
 })
 
-module.exports = nextConfig
+module.exports = withTM(nextConfig)

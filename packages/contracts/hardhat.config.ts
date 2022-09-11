@@ -26,11 +26,11 @@ const config: HardhatUserConfig = {
       //     url: "https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_MAINNET}",
       //   },
     },
-    // mumbai: {
-    //   chainId: 80001,
-    //   url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
-    //   accounts,
-    // },
+    mumbai: {
+      chainId: 80001,
+      url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
+      accounts,
+    },
     // goerli: {
     //   chainId: 5,
     //   url: process.env.RPC_5 || 'https://rpc.ankr.com/eth_goerli',
