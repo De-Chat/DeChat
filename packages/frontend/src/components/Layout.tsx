@@ -10,6 +10,7 @@ import NavigationPanel from './NavigationPanel'
 import XmtpInfoPanel from './XmtpInfoPanel'
 import UserMenu from './UserMenu'
 import BackArrow from './BackArrow'
+import Send from './Send'
 import { useDisconnect, useSigner } from 'wagmi'
 
 const NavigationColumnLayout: React.FC = ({ children }) => (
@@ -122,6 +123,7 @@ const Layout: React.FC = ({ children }) => {
             <NavigationHeaderLayout>
               {walletAddress && client && <NewMessageButton />}
             </NavigationHeaderLayout>
+            {walletAddress && client && <Send />}
             <NavigationPanel />
             <UserMenu onDisconnect={disconnect} />
           </NavigationColumnLayout>
