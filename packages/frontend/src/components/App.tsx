@@ -5,7 +5,9 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { WagmiConfig } from 'wagmi'
 import { wagmiClient, chains } from '@shared/wagmiClient'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import {env} from '@shared/environment'
+import { ChakraProvider } from '@chakra-ui/react'
+import theme from '@styles/theme'
+import { env } from '@shared/environment'
 
 type AppProps = {
   children?: React.ReactNode
@@ -16,7 +18,9 @@ function App({ children }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} initialChain={env.defaultChain}>
         <XmtpProvider>
-          <Layout>{children}</Layout>
+          <ChakraProvider theme={theme}>
+            <Layout>{children}</Layout>
+          </ChakraProvider>
         </XmtpProvider>
       </RainbowKitProvider>
     </WagmiConfig>
