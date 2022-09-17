@@ -4,15 +4,30 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
+      "outputs": [
+        ".next/**",
+        "deployments/**",
+        "artifacts/**",
+        "typechain-types/**"
+      ]
     },
     "@dechat/frontend#build": {
       "dependsOn": ["@dechat/contracts#build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
+      "outputs": [
+        ".next/**",
+        "deployments/**",
+        "artifacts/**",
+        "typechain-types/**"
+      ]
     },
     "@dechat/frontend#dev": {
       "dependsOn": ["@dechat/contracts#build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
+      "outputs": [
+        ".next/**",
+        "deployments/**",
+        "artifacts/**",
+        "typechain-types/**"
+      ]
     },
     "lint": {
       "outputs": []

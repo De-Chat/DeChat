@@ -1,43 +1,48 @@
-import { extendTheme, type ThemeConfig, ComponentStyleConfig, StyleFunctionProps } from '@chakra-ui/react'
-import { mode } from '@chakra-ui/theme-tools'
+import {
+  extendTheme,
+  type ThemeConfig,
+  ComponentStyleConfig,
+  StyleFunctionProps,
+} from '@chakra-ui/react';
+import { mode } from '@chakra-ui/theme-tools';
 
-const colorScheme = 'green'
-const defaultColor = `${colorScheme}.400`
+const colorScheme = 'green';
+const defaultColor = `${colorScheme}.400`;
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
   useSystemColorMode: false,
-}
+};
 
 // THERE ARE 2 STEPS TO BE DONE IN ORDER TO APPLY STYLING TO COMPONENT
 
 // 1. add styling for components
 // note that Box and Flex can't be styled
 // work around: create a wrapper component, i.e. src/Card.tsx for Box
-// Refs: 
+// Refs:
 // how to write theme: https://chakra-ui.com/docs/styled-system/customize-theme#customizing-single-components
 // color palette: https://chakra-ui.com/docs/styled-system/theme
 
 const Input: ComponentStyleConfig = {
   defaultProps: {
     colorScheme,
-    focusBorderColor: defaultColor
-  }
-}
+    focusBorderColor: defaultColor,
+  },
+};
 
 const Checkbox: ComponentStyleConfig = {
   defaultProps: {
-    colorScheme
-  }
-}
+    colorScheme,
+  },
+};
 
 const Button: ComponentStyleConfig = {
   defaultProps: {
     size: 'lg', // default is md
     fontWeight: 'bold',
-    colorScheme // default is gray
+    colorScheme, // default is gray
   },
-}
+};
 
 // 2. add your styled setting to the following object
 const theme = extendTheme({
@@ -51,8 +56,10 @@ const theme = extendTheme({
     }),
   },
   components: {
-    Input, Button, Checkbox
-  }
-})
+    Input,
+    Button,
+    Checkbox,
+  },
+});
 
-export default theme
+export default theme;

@@ -1,24 +1,24 @@
-import { Menu, Transition } from '@headlessui/react'
-import { CogIcon } from '@heroicons/react/solid'
-import { Fragment, useCallback } from 'react'
-import { classNames } from '../helpers'
-import Blockies from 'react-blockies'
-import Address from './Address'
-import useXmtp from '../hooks/useXmtp'
-import { useEnsAvatar } from 'wagmi'
-import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit'
+import { Menu, Transition } from '@headlessui/react';
+import { CogIcon } from '@heroicons/react/solid';
+import { Fragment, useCallback } from 'react';
+import { classNames } from '../helpers';
+import Blockies from 'react-blockies';
+import Address from './Address';
+import useXmtp from '../hooks/useXmtp';
+import { useEnsAvatar } from 'wagmi';
+import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 
 type UserMenuProps = {
-  onConnect?: () => Promise<void>
-  onDisconnect?: () => void
-}
+  onConnect?: () => Promise<void>;
+  onDisconnect?: () => void;
+};
 
 type AvatarBlockProps = {
-  addressOrName: string
-}
+  addressOrName: string;
+};
 
 const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
-  const { data: ensAvatar } = useEnsAvatar({ addressOrName })
+  const { data: ensAvatar } = useEnsAvatar({ addressOrName });
   return ensAvatar ? (
     <img
       className={'rounded-full h-8 w-8 mr-2'}
@@ -27,8 +27,8 @@ const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
     />
   ) : (
     <Blockies seed={addressOrName} size={8} className="rounded-full mr-2" />
-  )
-}
+  );
+};
 
 const NotConnected = (): JSX.Element => {
   return (
@@ -63,17 +63,17 @@ const NotConnected = (): JSX.Element => {
         )}
       </RKConnectButton.Custom>
     </>
-  )
-}
+  );
+};
 
 const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
-  const { walletAddress, client } = useXmtp()
+  const { walletAddress, client } = useXmtp();
 
   const onClickCopy = useCallback(() => {
     if (walletAddress) {
-      navigator.clipboard.writeText(walletAddress)
+      navigator.clipboard.writeText(walletAddress);
     }
-  }, [walletAddress])
+  }, [walletAddress]);
 
   return (
     <div className="flex bg-n-500 items-center justify-between rounded-lg h-14 m-4 mb-5 md:mb-4 px-4 drop-shadow-xl">
@@ -178,7 +178,7 @@ const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
         <NotConnected />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;

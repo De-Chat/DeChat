@@ -1,14 +1,14 @@
-import '@nomicfoundation/hardhat-toolbox'
-import '@nomiclabs/hardhat-vyper'
-import * as dotenv from 'dotenv'
-import 'hardhat-deploy'
-import { HardhatUserConfig } from 'hardhat/config'
-dotenv.config()
+import '@nomicfoundation/hardhat-toolbox';
+import '@nomiclabs/hardhat-vyper';
+import * as dotenv from 'dotenv';
+import 'hardhat-deploy';
+import { HardhatUserConfig } from 'hardhat/config';
+dotenv.config();
 
 const accounts = [
   ...(process.env.PRIVATE_KEY_01 ? [`${process.env.PRIVATE_KEY_01}`] : []),
   ...(process.env.PRIVATE_KEY_02 ? [`${process.env.PRIVATE_KEY_02}`] : []),
-]
+];
 
 const config: HardhatUserConfig = {
   solidity: '0.8.9',
@@ -47,6 +47,6 @@ const config: HardhatUserConfig = {
       apiKey: `${process.env.ETHERSCAN_API_KEY}`,
     },
   },
-}
+};
 
-export default config
+export default config;

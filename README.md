@@ -7,7 +7,7 @@
   - Typescript-Types: `typechain`
 - Frontend: `next`
   - Contract Interactions: `wagmi`, `rainbowkit`
-  - Styling: `tailwindcss`
+  - Styling: `chakra-ui`
   - Styled Components: `twin.macro`, `emotion`
 - Misc:
   - Linting & Formatting: `eslint`, `prettier`

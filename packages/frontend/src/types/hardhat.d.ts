@@ -4,21 +4,21 @@
  */
 
 export interface HardhatContractExport {
-  address: string
-  abi: any[]
-  linkedData?: any
+  address: string;
+  abi: any[];
+  linkedData?: any;
 }
 
 export type HardhatExportContracts = {
-  [name: string]: HardhatContractExport
-}
+  [name: string]: HardhatContractExport;
+};
 
 export interface HardhatExport {
-  chainId: string
-  name: string
-  contracts: HardhatExportContracts
+  chainId: string;
+  name: string;
+  contracts: HardhatExportContracts;
 }
 
 export type HardhatMultiExport = {
-  [chainId: string]: HardhatExport[]
-}
+  [chainId: string]: HardhatExport[];
+};

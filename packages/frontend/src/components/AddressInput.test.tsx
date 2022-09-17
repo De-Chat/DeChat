@@ -1,8 +1,8 @@
-import React from 'react'
-import { render, fireEvent, act } from '@testing-library/react'
-import { waitFor } from '@testing-library/dom'
-import AddressInput from './AddressInput'
-import assert from 'assert'
+import React from 'react';
+import { render, fireEvent, act } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
+import AddressInput from './AddressInput';
+import assert from 'assert';
 
 // const lookupAddress = async (address: string) =>
 //   address === '0xfoo' ? 'foo.eth' : undefined
@@ -10,48 +10,55 @@ import assert from 'assert'
 describe('AddressInput', () => {
   it('renders no initial value', () => {
     act(() => {
-      const { container } = render(<AddressInput />)
-      expect(container.querySelector('input')).toHaveAttribute('value', '')
-    })
-  })
+      const { container } = render(<AddressInput />);
+      expect(container.querySelector('input')).toHaveAttribute('value', '');
+    });
+  });
 
   it('renders initial value', () => {
     act(() => {
-      const { container } = render(<AddressInput peerAddressOrName={'0xfoo'} />)
-      expect(container.querySelector('input')).toHaveAttribute('value', '0xfoo')
-    })
-  })
+      const { container } = render(
+        <AddressInput peerAddressOrName={'0xfoo'} />
+      );
+      expect(container.querySelector('input')).toHaveAttribute(
+        'value',
+        '0xfoo'
+      );
+    });
+  });
 
   it('renders lookup for initial value', async () => {
-    let input: HTMLInputElement | null
+    let input: HTMLInputElement | null;
     act(() => {
-      const { container } = render(<AddressInput peerAddressOrName={'0xfoo'} />)
-      input = container.querySelector('input')
-    })
-    waitFor(() => expect(input).toHaveAttribute('value', 'foo.eth'))
-  })
+      const { container } = render(
+        <AddressInput peerAddressOrName={'0xfoo'} />
+      );
+      input = container.querySelector('input');
+    });
+    waitFor(() => expect(input).toHaveAttribute('value', 'foo.eth'));
+  });
 
   it('renders lookup for changed value', async () => {
-    let input: HTMLInputElement | null
+    let input: HTMLInputElement | null;
     act(() => {
       const rerenderWithInputValue = (value: string) =>
-        rerender(<AddressInput peerAddressOrName={value} />)
+        rerender(<AddressInput peerAddressOrName={value} />);
       const { container, rerender } = render(
         <AddressInput
           peerAddressOrName={'0xbar'}
           onInputChange={async (event: React.SyntheticEvent) => {
             const data = event.target as typeof event.target & {
-              value: string
-            }
-            rerenderWithInputValue(data.value)
+              value: string;
+            };
+            rerenderWithInputValue(data.value);
           }}
         />
-      )
-      input = container.querySelector('input')
-      assert.ok(input)
-      expect(input).toHaveAttribute('value', '0xbar')
-      fireEvent.change(input, { target: { value: '0xfoo' } })
-    })
-    waitFor(() => expect(input).toHaveAttribute('value', 'foo.eth'))
-  })
-})
+      );
+      input = container.querySelector('input');
+      assert.ok(input);
+      expect(input).toHaveAttribute('value', '0xbar');
+      fireEvent.change(input, { target: { value: '0xfoo' } });
+    });
+    waitFor(() => expect(input).toHaveAttribute('value', 'foo.eth'));
+  });
+});

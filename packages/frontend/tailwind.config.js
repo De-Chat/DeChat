@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { fontFamily } = require('tailwindcss/defaultTheme')
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
@@ -71,4 +71,4 @@ module.exports = {
     },
   },
   plugins: [require('@tailwindcss/forms')],
-}
+};

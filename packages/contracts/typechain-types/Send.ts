@@ -13,22 +13,36 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers'
-import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from './common'
+} from 'ethers';
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+  PromiseOrValue,
+} from './common';
 
 export interface SendInterface extends utils.Interface {
   functions: {
-    'sendErc1155(address,address,uint256,uint256,bytes)': FunctionFragment
-    'sendErc20(address,address,uint256)': FunctionFragment
-    'sendErc721(address,address,uint256)': FunctionFragment
-    'sendEth(address)': FunctionFragment
-  }
+    'sendErc1155(address,address,uint256,uint256,bytes)': FunctionFragment;
+    'sendErc20(address,address,uint256)': FunctionFragment;
+    'sendErc721(address,address,uint256)': FunctionFragment;
+    'sendEth(address)': FunctionFragment;
+  };
 
   getFunction(
-    nameOrSignatureOrTopic: 'sendErc1155' | 'sendErc20' | 'sendErc721' | 'sendEth'
-  ): FunctionFragment
+    nameOrSignatureOrTopic:
+      | 'sendErc1155'
+      | 'sendErc20'
+      | 'sendErc721'
+      | 'sendEth'
+  ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: 'sendErc1155',
@@ -39,101 +53,126 @@ export interface SendInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>
     ]
-  ): string
+  ): string;
   encodeFunctionData(
     functionFragment: 'sendErc20',
-    values: [PromiseOrValue<string>, PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
   encodeFunctionData(
     functionFragment: 'sendErc721',
-    values: [PromiseOrValue<string>, PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(functionFragment: 'sendEth', values: [PromiseOrValue<string>]): string
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'sendEth',
+    values: [PromiseOrValue<string>]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'sendErc1155', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'sendErc20', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'sendErc721', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'sendEth', data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: 'sendErc1155',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: 'sendErc20', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'sendErc721', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'sendEth', data: BytesLike): Result;
 
   events: {
-    'SendErc1155(address,address,uint256,uint256,address)': EventFragment
-    'SendErc20(address,address,uint256,address)': EventFragment
-    'SendErc721(address,address,uint256,address)': EventFragment
-    'SendEth(address,address,uint256)': EventFragment
-  }
+    'SendErc1155(address,address,uint256,uint256,address)': EventFragment;
+    'SendErc20(address,address,uint256,address)': EventFragment;
+    'SendErc721(address,address,uint256,address)': EventFragment;
+    'SendEth(address,address,uint256)': EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: 'SendErc1155'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SendErc20'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SendErc721'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SendEth'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'SendErc1155'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SendErc20'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SendErc721'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SendEth'): EventFragment;
 }
 
 export interface SendErc1155EventObject {
-  sender: string
-  recipient: string
-  tokenId: BigNumber
-  amount: BigNumber
-  erc1155ContractAddress: string
+  sender: string;
+  recipient: string;
+  tokenId: BigNumber;
+  amount: BigNumber;
+  erc1155ContractAddress: string;
 }
 export type SendErc1155Event = TypedEvent<
   [string, string, BigNumber, BigNumber, string],
   SendErc1155EventObject
->
+>;
 
-export type SendErc1155EventFilter = TypedEventFilter<SendErc1155Event>
+export type SendErc1155EventFilter = TypedEventFilter<SendErc1155Event>;
 
 export interface SendErc20EventObject {
-  sender: string
-  recipient: string
-  amount: BigNumber
-  erc20ContractAddress: string
+  sender: string;
+  recipient: string;
+  amount: BigNumber;
+  erc20ContractAddress: string;
 }
-export type SendErc20Event = TypedEvent<[string, string, BigNumber, string], SendErc20EventObject>
+export type SendErc20Event = TypedEvent<
+  [string, string, BigNumber, string],
+  SendErc20EventObject
+>;
 
-export type SendErc20EventFilter = TypedEventFilter<SendErc20Event>
+export type SendErc20EventFilter = TypedEventFilter<SendErc20Event>;
 
 export interface SendErc721EventObject {
-  sender: string
-  recipient: string
-  tokenId: BigNumber
-  erc721ContractAddress: string
+  sender: string;
+  recipient: string;
+  tokenId: BigNumber;
+  erc721ContractAddress: string;
 }
-export type SendErc721Event = TypedEvent<[string, string, BigNumber, string], SendErc721EventObject>
+export type SendErc721Event = TypedEvent<
+  [string, string, BigNumber, string],
+  SendErc721EventObject
+>;
 
-export type SendErc721EventFilter = TypedEventFilter<SendErc721Event>
+export type SendErc721EventFilter = TypedEventFilter<SendErc721Event>;
 
 export interface SendEthEventObject {
-  sender: string
-  recipient: string
-  amount: BigNumber
+  sender: string;
+  recipient: string;
+  amount: BigNumber;
 }
-export type SendEthEvent = TypedEvent<[string, string, BigNumber], SendEthEventObject>
+export type SendEthEvent = TypedEvent<
+  [string, string, BigNumber],
+  SendEthEventObject
+>;
 
-export type SendEthEventFilter = TypedEventFilter<SendEthEvent>
+export type SendEthEventFilter = TypedEventFilter<SendEthEvent>;
 
 export interface Send extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: SendInterface
+  interface: SendInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     sendErc1155(
@@ -143,27 +182,27 @@ export interface Send extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     sendErc20(
       erc20: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     sendErc721(
       erc721: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     sendEth(
       recipient: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   sendErc1155(
     erc1155: PromiseOrValue<string>,
@@ -172,26 +211,26 @@ export interface Send extends BaseContract {
     amount: PromiseOrValue<BigNumberish>,
     data: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   sendErc20(
     erc20: PromiseOrValue<string>,
     recipient: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   sendErc721(
     erc721: PromiseOrValue<string>,
     recipient: PromiseOrValue<string>,
     tokenId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   sendEth(
     recipient: PromiseOrValue<string>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     sendErc1155(
@@ -201,24 +240,27 @@ export interface Send extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     sendErc20(
       erc20: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     sendErc721(
       erc721: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
-    sendEth(recipient: PromiseOrValue<string>, overrides?: CallOverrides): Promise<boolean>
-  }
+    sendEth(
+      recipient: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+  };
 
   filters: {
     'SendErc1155(address,address,uint256,uint256,address)'(
@@ -227,52 +269,52 @@ export interface Send extends BaseContract {
       tokenId?: null,
       amount?: null,
       erc1155ContractAddress?: null
-    ): SendErc1155EventFilter
+    ): SendErc1155EventFilter;
     SendErc1155(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       tokenId?: null,
       amount?: null,
       erc1155ContractAddress?: null
-    ): SendErc1155EventFilter
+    ): SendErc1155EventFilter;
 
     'SendErc20(address,address,uint256,address)'(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       amount?: null,
       erc20ContractAddress?: null
-    ): SendErc20EventFilter
+    ): SendErc20EventFilter;
     SendErc20(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       amount?: null,
       erc20ContractAddress?: null
-    ): SendErc20EventFilter
+    ): SendErc20EventFilter;
 
     'SendErc721(address,address,uint256,address)'(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       tokenId?: null,
       erc721ContractAddress?: null
-    ): SendErc721EventFilter
+    ): SendErc721EventFilter;
     SendErc721(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       tokenId?: null,
       erc721ContractAddress?: null
-    ): SendErc721EventFilter
+    ): SendErc721EventFilter;
 
     'SendEth(address,address,uint256)'(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       amount?: null
-    ): SendEthEventFilter
+    ): SendEthEventFilter;
     SendEth(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       amount?: null
-    ): SendEthEventFilter
-  }
+    ): SendEthEventFilter;
+  };
 
   estimateGas: {
     sendErc1155(
@@ -282,27 +324,27 @@ export interface Send extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     sendErc20(
       erc20: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     sendErc721(
       erc721: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     sendEth(
       recipient: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     sendErc1155(
@@ -312,25 +354,25 @@ export interface Send extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     sendErc20(
       erc20: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     sendErc721(
       erc721: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     sendEth(
       recipient: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

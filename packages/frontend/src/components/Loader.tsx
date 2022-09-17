@@ -1,18 +1,18 @@
-import loaderStyles from '../styles/Loader.module.css'
+import loaderStyles from '../styles/Loader.module.css';
 
 type LoaderProps = {
-  isLoading: boolean
-}
+  isLoading: boolean;
+};
 
 type StyledLoaderProps = {
-  headingText: string
-  subHeadingText: string
-  isLoading: boolean
-}
+  headingText: string;
+  subHeadingText: string;
+  isLoading: boolean;
+};
 
 export const Spinner = ({ isLoading }: LoaderProps): JSX.Element | null => {
   if (!isLoading) {
-    return null
+    return null;
   }
 
   // This feels janky af, but I'm gonna run with it rather than import some bloated library just to make a spinner.
@@ -27,8 +27,8 @@ export const Spinner = ({ isLoading }: LoaderProps): JSX.Element | null => {
       <div></div>
       <div></div>
     </div>
-  )
-}
+  );
+};
 
 export const Loader = ({
   headingText,
@@ -46,6 +46,6 @@ export const Loader = ({
       </div>
     </div>
   </div>
-)
+);
 
-export default Loader
+export default Loader;
