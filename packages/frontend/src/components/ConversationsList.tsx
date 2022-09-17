@@ -1,39 +1,39 @@
-import { classNames, truncate, formatDate } from '../helpers'
-import Link from 'next/link'
-import Address from './Address'
-import { useRouter } from 'next/router'
-import { Conversation } from '@xmtp/xmtp-js/dist/types/src/conversations'
-import useConversation from '../hooks/useConversation'
-import { XmtpContext } from '../contexts/xmtp'
-import { Message } from '@xmtp/xmtp-js'
-import Avatar from './Avatar'
-import { useContext } from 'react'
-import useEns from '../hooks/useEns'
+import { classNames, truncate, formatDate } from '../helpers';
+import Link from 'next/link';
+import Address from './Address';
+import { useRouter } from 'next/router';
+import { Conversation } from '@xmtp/xmtp-js/dist/types/src/conversations';
+import useConversation from '../hooks/useConversation';
+import { XmtpContext } from '../contexts/xmtp';
+import { Message } from '@xmtp/xmtp-js';
+import Avatar from './Avatar';
+import { useContext } from 'react';
+import useEns from '../hooks/useEns';
 
 type ConversationsListProps = {
-  conversations: Conversation[]
-}
+  conversations: Conversation[];
+};
 
 type ConversationTileProps = {
-  conversation: Conversation
-  isSelected: boolean
-  onClick?: () => void
-}
+  conversation: Conversation;
+  isSelected: boolean;
+  onClick?: () => void;
+};
 
 const getLatestMessage = (messages: Message[]): Message | null =>
-  messages.length ? messages[messages.length - 1] : null
+  messages.length ? messages[messages.length - 1] : null;
 
 const ConversationTile = ({
   conversation,
   isSelected,
   onClick,
 }: ConversationTileProps): JSX.Element | null => {
-  const { messages } = useConversation(conversation.peerAddress)
-  const latestMessage = getLatestMessage(messages)
-  const { ensName } = useEns(conversation.peerAddress)
-  const path = `/dm/${ensName || conversation.peerAddress}`
+  const { messages } = useConversation(conversation.peerAddress);
+  const latestMessage = getLatestMessage(messages);
+  const { ensName } = useEns(conversation.peerAddress);
+  const path = `/dm/${ensName || conversation.peerAddress}`;
   if (!latestMessage) {
-    return null
+    return null;
   }
   return (
     <Link href={path} key={conversation.peerAddress}>
@@ -86,44 +86,44 @@ const ConversationTile = ({
         </div>
       </a>
     </Link>
-  )
-}
+  );
+};
 
 const ConversationsList = ({
   conversations,
 }: ConversationsListProps): JSX.Element => {
-  const router = useRouter()
-  const { getMessages } = useContext(XmtpContext)
-  const peerAddressOrName = router.query.peerAddressOrName as string
-  const { address, ensName } = useEns(peerAddressOrName)
+  const router = useRouter();
+  const { getMessages } = useContext(XmtpContext);
+  const peerAddressOrName = router.query.peerAddressOrName as string;
+  const { address, ensName } = useEns(peerAddressOrName);
   const orderByLatestMessage = (
     convoA: Conversation,
     convoB: Conversation
   ): number => {
-    const convoAMessages = getMessages(convoA.peerAddress)
-    const convoBMessages = getMessages(convoB.peerAddress)
+    const convoAMessages = getMessages(convoA.peerAddress);
+    const convoBMessages = getMessages(convoB.peerAddress);
     const convoALastMessageDate =
-      getLatestMessage(convoAMessages)?.sent || new Date()
+      getLatestMessage(convoAMessages)?.sent || new Date();
     const convoBLastMessageDate =
-      getLatestMessage(convoBMessages)?.sent || new Date()
-    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1
-  }
+      getLatestMessage(convoBMessages)?.sent || new Date();
+    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
+  };
   return (
     <div>
       {conversations &&
         conversations.sort(orderByLatestMessage).map((convo) => {
           const isSelected =
-            convo.peerAddress === address || convo.peerAddress === ensName
+            convo.peerAddress === address || convo.peerAddress === ensName;
           return (
             <ConversationTile
               key={convo.peerAddress}
               conversation={convo}
               isSelected={isSelected}
             />
-          )
+          );
         })}
     </div>
-  )
-}
+  );
+};
 
-export default ConversationsList
+export default ConversationsList;

@@ -1,14 +1,14 @@
-import { Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { useRouter } from 'next/router'
+import { Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { useRouter } from 'next/router';
 
 type NavigationViewProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 const NavigationView = ({ children }: NavigationViewProps): JSX.Element => {
-  const router = useRouter()
-  const show = router.pathname === '/'
+  const router = useRouter();
+  const show = router.pathname === '/';
 
   return (
     <>
@@ -33,7 +33,7 @@ const NavigationView = ({ children }: NavigationViewProps): JSX.Element => {
       {/* Always show in desktop layout */}
       <div className="hidden md:flex">{children}</div>
     </>
-  )
-}
+  );
+};
 
-export default NavigationView
+export default NavigationView;

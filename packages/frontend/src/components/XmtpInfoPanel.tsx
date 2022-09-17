@@ -1,24 +1,24 @@
-import packageJson from '../../package.json'
-import useXmtp from '../hooks/useXmtp'
-import { classNames } from '../helpers'
+import packageJson from '../../package.json';
+import useXmtp from '../hooks/useXmtp';
+import { classNames } from '../helpers';
 import {
   LinkIcon,
   BookOpenIcon,
   UserGroupIcon,
   ChevronRightIcon,
   ArrowSmRightIcon,
-} from '@heroicons/react/solid'
-import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit'
-import IPFS from './IPFS'
+} from '@heroicons/react/solid';
+import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
+import IPFS from './IPFS';
 
 type XmtpInfoRowProps = {
-  icon: JSX.Element
-  headingText: string
-  subHeadingText: string
-  onClick?: (() => void) | (() => Promise<void>)
-  isConnectButton?: boolean
-  disabled?: boolean
-}
+  icon: JSX.Element;
+  headingText: string;
+  subHeadingText: string;
+  onClick?: (() => void) | (() => Promise<void>);
+  isConnectButton?: boolean;
+  disabled?: boolean;
+};
 
 const InfoRow = ({
   icon,
@@ -44,7 +44,7 @@ const InfoRow = ({
         <ChevronRightIcon className="h-5" />
       </div>
     </div>
-  )
+  );
   return isConnectButton ? (
     <RKConnectButton.Custom>
       {({ openConnectModal }) => (
@@ -63,11 +63,11 @@ const InfoRow = ({
     >
       {rowContent}
     </a>
-  )
-}
+  );
+};
 
 const XmtpInfoPanel = (): JSX.Element => {
-  const { walletAddress, client } = useXmtp()
+  const { walletAddress, client } = useXmtp();
   const InfoRows = [
     {
       icon: <LinkIcon />,
@@ -90,7 +90,7 @@ const XmtpInfoPanel = (): JSX.Element => {
         'Talk about what you’re building or find out other projects that are building upon XMTP',
       onClick: () => window.open('https://community.xmtp.org', '_blank'),
     },
-  ]
+  ];
 
   return (
     // The info panel is only shown in desktop layouts.
@@ -116,7 +116,7 @@ const XmtpInfoPanel = (): JSX.Element => {
               isConnectButton={info.isConnectButton}
               disabled={info.disabled}
             />
-          )
+          );
         })}
       </div>
       <div className="flex justify-between items-center mt-4">
@@ -131,7 +131,7 @@ const XmtpInfoPanel = (): JSX.Element => {
         </a>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default XmtpInfoPanel
+export default XmtpInfoPanel;

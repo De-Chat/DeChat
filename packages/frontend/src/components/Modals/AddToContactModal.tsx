@@ -14,18 +14,18 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-} from '@chakra-ui/react'
-import React, { useState } from 'react'
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
 
 const AddToContactModal = (): JSX.Element => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const finalRef = React.useRef(null)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = React.useRef(null);
 
-  const [input, setInput] = useState<string>('')
+  const [input, setInput] = useState<string>('');
 
-  const handleInputChange = (e: any) => setInput(e.target.value)
+  const handleInputChange = (e: any) => setInput(e.target.value);
 
-  const isError = input === ''
+  const isError = input === '';
 
   return (
     <>
@@ -64,7 +64,7 @@ const AddToContactModal = (): JSX.Element => {
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default AddToContactModal
+export default AddToContactModal;

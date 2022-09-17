@@ -16,12 +16,12 @@ import {
   Thead,
   Tr,
   useDisclosure,
-} from '@chakra-ui/react'
-import React from 'react'
+} from '@chakra-ui/react';
+import React from 'react';
 
 const DepositProfile = (): JSX.Element => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const finalRef = React.useRef(null)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = React.useRef(null);
   return (
     <>
       <Box ref={finalRef} tabIndex={-1} aria-label="Focus moved to this box">
@@ -104,7 +104,7 @@ const DepositProfile = (): JSX.Element => {
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default DepositProfile
+export default DepositProfile;
