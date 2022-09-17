@@ -77,7 +77,7 @@ const MessagesList = ({
   messages,
   messagesEndRef,
 }: MessageListProps): JSX.Element => {
-  const { data: account } = useAccount()
+  const { address } = useAccount()
   let lastMessageDate: Date | undefined
   return (
     <div className="flex-grow flex">
@@ -88,7 +88,7 @@ const MessagesList = ({
               <ConversationBeginningNotice />
             ) : null}
             {messages?.map((msg: Message) => {
-              const isSender = msg.senderAddress === account?.address
+              const isSender = msg.senderAddress === address
               const tile = (
                 <MessageTile message={msg} key={msg.id} isSender={isSender} />
               )
