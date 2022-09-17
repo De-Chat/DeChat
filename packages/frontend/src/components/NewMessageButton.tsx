@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
-import { useRouter } from 'next/router'
+import { useCallback } from 'react';
+import { useRouter } from 'next/router';
 
 const NewMessageButton = (): JSX.Element => {
-  const router = useRouter()
+  const router = useRouter();
 
   const onNewMessageButtonClick = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    router.push('/dm/')
-  }, [router])
+    router.push('/dm/');
+  }, [router]);
 
   return (
     <button
@@ -16,7 +16,7 @@ const NewMessageButton = (): JSX.Element => {
     >
       + New Message
     </button>
-  )
-}
+  );
+};
 
-export default NewMessageButton
+export default NewMessageButton;

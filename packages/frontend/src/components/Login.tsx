@@ -11,10 +11,10 @@ import {
   Heading,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import ThemeToggler from 'src/pages/ThemeToggler'
-import Card from './Card'
+} from '@chakra-ui/react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import ThemeToggler from 'src/pages/ThemeToggler';
+import Card from './Card';
 
 const Login = () => {
   return (
@@ -44,7 +44,7 @@ const Login = () => {
         </Card>
       </Stack>
     </Flex>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

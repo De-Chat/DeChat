@@ -1,13 +1,13 @@
-import { useCallback, useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import AddressInput from '../AddressInput'
-import useXmtp from '../../hooks/useXmtp'
-import useEns from '../../hooks/useEns'
+import { useCallback, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import AddressInput from '../AddressInput';
+import useXmtp from '../../hooks/useXmtp';
+import useEns from '../../hooks/useEns';
 
 type RecipientInputProps = {
-  peerAddressOrName: string | undefined
-  onSubmit: (address: string) => Promise<void>
-}
+  peerAddressOrName: string | undefined;
+  onSubmit: (address: string) => Promise<void>;
+};
 
 const RecipientInputMode = {
   InvalidEntry: 0,
@@ -15,91 +15,91 @@ const RecipientInputMode = {
   FindingEntry: 2,
   Submitted: 3,
   NotOnNetwork: 4,
-}
+};
 
 const RecipientControl = ({
   peerAddressOrName,
   onSubmit,
 }: RecipientInputProps): JSX.Element => {
-  const { client } = useXmtp()
-  const router = useRouter()
+  const { client } = useXmtp();
+  const router = useRouter();
   const [recipientInputMode, setRecipientInputMode] = useState(
     RecipientInputMode.InvalidEntry
-  )
+  );
   const [pendingPeerAddressOrName, setPendingPeerAddressOrName] =
-    useState<string>('')
+    useState<string>('');
   const { address: pendingAddress, isLoading } = useEns(
     pendingPeerAddressOrName
-  )
+  );
   const { ensName: resolvedEnsName, address: resolvedAddress } =
-    useEns(peerAddressOrName)
+    useEns(peerAddressOrName);
 
   const checkIfOnNetwork = useCallback(
     async (pendingAddress: string): Promise<boolean> => {
-      return client?.canMessage(pendingAddress) || false
+      return client?.canMessage(pendingAddress) || false;
     },
     [client]
-  )
+  );
 
   const completeSubmit = useCallback(async () => {
     if (await checkIfOnNetwork(pendingAddress as string)) {
-      onSubmit(pendingPeerAddressOrName)
-      setRecipientInputMode(RecipientInputMode.Submitted)
+      onSubmit(pendingPeerAddressOrName);
+      setRecipientInputMode(RecipientInputMode.Submitted);
     } else {
-      setRecipientInputMode(RecipientInputMode.NotOnNetwork)
+      setRecipientInputMode(RecipientInputMode.NotOnNetwork);
     }
-  }, [checkIfOnNetwork, pendingAddress, pendingPeerAddressOrName, onSubmit])
+  }, [checkIfOnNetwork, pendingAddress, pendingPeerAddressOrName, onSubmit]);
 
   useEffect(() => {
     const handleRecipientInput = () => {
       if (peerAddressOrName) {
-        setRecipientInputMode(RecipientInputMode.Submitted)
+        setRecipientInputMode(RecipientInputMode.Submitted);
       } else if (isLoading) {
-        setRecipientInputMode(RecipientInputMode.FindingEntry)
+        setRecipientInputMode(RecipientInputMode.FindingEntry);
       } else if (pendingPeerAddressOrName) {
-        completeSubmit()
-        setPendingPeerAddressOrName('')
+        completeSubmit();
+        setPendingPeerAddressOrName('');
       } else {
-        setRecipientInputMode(RecipientInputMode.InvalidEntry)
+        setRecipientInputMode(RecipientInputMode.InvalidEntry);
       }
-    }
-    handleRecipientInput()
+    };
+    handleRecipientInput();
   }, [
     peerAddressOrName,
     isLoading,
     pendingPeerAddressOrName,
     setRecipientInputMode,
     completeSubmit,
-  ])
+  ]);
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent, value?: string) => {
-      e.preventDefault()
+      e.preventDefault();
       const data = e.target as typeof e.target & {
-        input: { value: string }
-      }
-      const inputValue = value || data.input.value
-      setPendingPeerAddressOrName(inputValue)
+        input: { value: string };
+      };
+      const inputValue = value || data.input.value;
+      setPendingPeerAddressOrName(inputValue);
     },
     []
-  )
+  );
 
   const handleInputChange = async (e: React.SyntheticEvent) => {
     const data = e.target as typeof e.target & {
-      value: string
-    }
+      value: string;
+    };
     if (router.pathname !== '/dm/') {
-      router.push('/dm')
+      router.push('/dm');
     }
     if (
       data.value.endsWith('.eth') ||
       (data.value.startsWith('0x') && data.value.length === 42)
     ) {
-      handleSubmit(e, data.value)
+      handleSubmit(e, data.value);
     } else {
-      setRecipientInputMode(RecipientInputMode.InvalidEntry)
+      setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }
+  };
 
   return (
     <div className="flex-1 flex-col shrink justify-center flex h-[72px] bg-zinc-50 md:border-b md:border-gray-200 md:px-4 md:pb-[2px]">
@@ -143,7 +143,7 @@ const RecipientControl = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default RecipientControl
+export default RecipientControl;

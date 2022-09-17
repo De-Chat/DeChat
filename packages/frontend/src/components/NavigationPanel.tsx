@@ -1,13 +1,14 @@
-import { LinkIcon } from '@heroicons/react/outline'
-import { ChatIcon } from '@heroicons/react/outline'
-import { ArrowSmRightIcon } from '@heroicons/react/solid'
-import useXmtp from '../hooks/useXmtp'
-import ConversationsList from './ConversationsList'
-import Loader from './Loader'
-import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit'
+import { LinkIcon } from '@heroicons/react/outline';
+import { ChatIcon } from '@heroicons/react/outline';
+import { ArrowSmRightIcon } from '@heroicons/react/solid';
+import useXmtp from '../hooks/useXmtp';
+import ConversationsList from './ConversationsList';
+import Loader from './Loader';
+import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
+import { ReactNode } from 'react';
 
 const NavigationPanel = (): JSX.Element => {
-  const { walletAddress } = useXmtp()
+  const { walletAddress } = useXmtp();
 
   return (
     <div className="flex-grow flex flex-col">
@@ -19,10 +20,10 @@ const NavigationPanel = (): JSX.Element => {
         </NoWalletConnectedMessage>
       )}
     </div>
-  )
-}
+  );
+};
 
-const NoWalletConnectedMessage: React.FC = ({ children }) => {
+const NoWalletConnectedMessage: React.FC<{children: ReactNode}> = ({ children }) => {
   return (
     <div className="flex flex-col flex-grow justify-center">
       <div className="flex flex-col items-center px-4 text-center">
@@ -39,8 +40,8 @@ const NoWalletConnectedMessage: React.FC = ({ children }) => {
       </div>
       {children}
     </div>
-  )
-}
+  );
+};
 
 const ConnectButton = (): JSX.Element => {
   return (
@@ -56,14 +57,14 @@ const ConnectButton = (): JSX.Element => {
               <ArrowSmRightIcon className="h-4" />
             </div>
           </button>
-        )
+        );
       }}
     </RKConnectButton.Custom>
-  )
-}
+  );
+};
 
 const ConversationsPanel = (): JSX.Element => {
-  const { conversations, loadingConversations, client } = useXmtp()
+  const { conversations, loadingConversations, client } = useXmtp();
   if (!client) {
     return (
       <Loader
@@ -71,7 +72,7 @@ const ConversationsPanel = (): JSX.Element => {
         subHeadingText="Use your wallet to sign"
         isLoading
       />
-    )
+    );
   }
   if (loadingConversations) {
     return (
@@ -80,7 +81,7 @@ const ConversationsPanel = (): JSX.Element => {
         subHeadingText="Please wait a moment"
         isLoading
       />
-    )
+    );
   }
 
   return conversations && conversations.length > 0 ? (
@@ -89,8 +90,8 @@ const ConversationsPanel = (): JSX.Element => {
     </nav>
   ) : (
     <NoConversationsMessage />
-  )
-}
+  );
+};
 
 const NoConversationsMessage = (): JSX.Element => {
   return (
@@ -108,7 +109,7 @@ const NoConversationsMessage = (): JSX.Element => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NavigationPanel
+export default NavigationPanel;

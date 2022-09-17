@@ -1,14 +1,14 @@
-import { Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { useRouter } from 'next/router'
+import { Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { useRouter } from 'next/router';
 
 type ConversationViewProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
-  const router = useRouter()
-  const show = router.pathname !== '/'
+  const router = useRouter();
+  const show = router.pathname !== '/';
 
   return (
     <>
@@ -35,7 +35,7 @@ const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
         {children}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ConversationView
+export default ConversationView;

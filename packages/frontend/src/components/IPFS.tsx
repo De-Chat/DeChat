@@ -1,15 +1,15 @@
-import { Web3Storage } from 'web3.storage'
-import { useEffect, useState } from 'react'
-import ImageUploading from 'react-images-uploading'
+import { Web3Storage } from 'web3.storage';
+import { useEffect, useState } from 'react';
+import ImageUploading from 'react-images-uploading';
 
 // Construct with token and endpoint
-const token = process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY
-console.log('web3 storage key: ', token)
+const token = process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY;
+console.log('web3 storage key: ', token);
 export const client = new Web3Storage({
-  token: process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY,
-})
+  token: process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY!,
+});
 // const rootCid = "bafybeih3ih2r7ymkihyh5dov2nttb6lyla3irryeeyt26ty76744a3bdhq"
-const rootCid = 'bafybeibxxglqpoefmvf4g72s2xcoeq2ybd7ptznpujetx7d6nlafv66vhi'
+const rootCid = 'bafybeibxxglqpoefmvf4g72s2xcoeq2ybd7ptznpujetx7d6nlafv66vhi';
 
 // // Pack files into a CAR and send to web3.storage
 // const rootCid = await client.put(fileInput.files) // Promise<CIDString>
@@ -32,32 +32,32 @@ const IPFS = () => {
   //         console.log(`${file.cid} ${file.name} ${file.size}`)
   //     }
   // }
-  const [images, setImages] = useState([])
-  const [preview, setPreview] = useState(null)
-  const getImgUrl = (rootCid, fileName) =>
-    `https://${rootCid}.ipfs.w3s.link/${fileName}`
+  const [images, setImages] = useState<any[]>([]);
+  const [preview, setPreview] = useState<string | undefined>(undefined);
+  const getImgUrl = (rootCid: string, fileName: string) =>
+    `https://${rootCid}.ipfs.w3s.link/${fileName}`;
   // useEffect(() => {
   //     getImage();
   // }, [])
 
   const upload = async () => {
-    const file = images[0].file
-    const name = 'test11.png'
-    const renamedFile = new File([file], name, { type: file.type })
-    const cid = await client.put([renamedFile])
+    const file = images[0].file;
+    const name = 'test11.png';
+    const renamedFile = new File([file], name, { type: file.type });
+    const cid = await client.put([renamedFile]);
 
-    const uploadedUrl = getImgUrl(cid, name)
-    console.log('uploaded ', uploadedUrl)
-    setPreview(uploadedUrl)
-    return { cid, name }
-  }
-  const maxNumber = 69
+    const uploadedUrl = getImgUrl(cid, name);
+    console.log('uploaded ', uploadedUrl);
+    setPreview(uploadedUrl);
+    return { cid, name };
+  };
+  const maxNumber = 69;
 
-  const onChange = (imageList, addUpdateIndex) => {
+  const onChange = (imageList: any[], addUpdateIndex: number[] | undefined) => {
     // data for submit
-    console.log(imageList, addUpdateIndex)
-    setImages(imageList)
-  }
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
 
   return (
     <div>
@@ -104,7 +104,7 @@ const IPFS = () => {
         )}
       </ImageUploading>
     </div>
-  )
-}
+  );
+};
 
-export default IPFS
+export default IPFS;

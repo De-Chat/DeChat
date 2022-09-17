@@ -1,27 +1,31 @@
-import { Message } from '@xmtp/xmtp-js'
-import React, { MutableRefObject } from 'react'
-import Emoji from 'react-emoji-render'
-import Avatar from '../Avatar'
-import { formatTime } from '../../helpers'
-import AddressPill from '../AddressPill'
-import { useAccount } from 'wagmi'
+import { Message } from '@xmtp/xmtp-js';
+import React, { MutableRefObject } from 'react';
+import Emoji from 'react-emoji-render';
+import Avatar from '../Avatar';
+import { formatTime } from '../../helpers';
+import AddressPill from '../AddressPill';
+import { useAccount } from 'wagmi';
 
 export type MessageListProps = {
-  messages: Message[]
-  messagesEndRef: MutableRefObject<null>
-}
+  messages: Message[];
+  messagesEndRef: MutableRefObject<null>;
+};
 
 type MessageTileProps = {
-  message: Message
-  isSender: boolean
-}
+  message: Message;
+  isSender: boolean;
+};
 
 const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
-  return d1?.toDateString() === d2?.toDateString()
-}
+  return d1?.toDateString() === d2?.toDateString();
+};
 
 const formatDate = (d?: Date) =>
-  d?.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  d?.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
 const MessageTile = ({ message, isSender }: MessageTileProps): JSX.Element => (
   <div className="flex items-start mx-auto mb-4">
@@ -45,15 +49,17 @@ const MessageTile = ({ message, isSender }: MessageTileProps): JSX.Element => (
       </span>
     </div>
   </div>
-)
+);
 
-const DateDividerBorder: React.FC = ({ children }) => (
+const DateDividerBorder: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <div className="grow h-0.5 bg-gray-300/25" />
     {children}
     <div className="grow h-0.5 bg-gray-300/25" />
   </>
-)
+);
 
 const DateDivider = ({ date }: { date?: Date }): JSX.Element => (
   <div className="flex align-items-center items-center pb-8 pt-4">
@@ -63,7 +69,7 @@ const DateDivider = ({ date }: { date?: Date }): JSX.Element => (
       </span>
     </DateDividerBorder>
   </div>
-)
+);
 
 const ConversationBeginningNotice = (): JSX.Element => (
   <div className="flex align-items-center justify-center pb-4">
@@ -71,14 +77,14 @@ const ConversationBeginningNotice = (): JSX.Element => (
       This is the beginning of the conversation
     </span>
   </div>
-)
+);
 
 const MessagesList = ({
   messages,
   messagesEndRef,
 }: MessageListProps): JSX.Element => {
-  const { address } = useAccount()
-  let lastMessageDate: Date | undefined
+  const { address } = useAccount();
+  let lastMessageDate: Date | undefined;
   return (
     <div className="flex-grow flex">
       <div className="pb-6 md:pb-0 w-full flex flex-col self-end">
@@ -88,12 +94,12 @@ const MessagesList = ({
               <ConversationBeginningNotice />
             ) : null}
             {messages?.map((msg: Message) => {
-              const isSender = msg.senderAddress === address
+              const isSender = msg.senderAddress === address;
               const tile = (
                 <MessageTile message={msg} key={msg.id} isSender={isSender} />
-              )
-              const dateHasChanged = !isOnSameDay(lastMessageDate, msg.sent)
-              lastMessageDate = msg.sent
+              );
+              const dateHasChanged = !isOnSameDay(lastMessageDate, msg.sent);
+              lastMessageDate = msg.sent;
               return dateHasChanged ? (
                 <div key={msg.id}>
                   <DateDivider date={msg.sent} />
@@ -101,13 +107,13 @@ const MessagesList = ({
                 </div>
               ) : (
                 tile
-              )
+              );
             })}
             <div ref={messagesEndRef} />
           </div>
         </div>
       </div>
     </div>
-  )
-}
-export default React.memo(MessagesList)
+  );
+};
+export default React.memo(MessagesList);

@@ -1,11 +1,11 @@
-import React from 'react'
-import { classNames } from '../helpers'
-import Address from './Address'
+import React from 'react';
+import { classNames } from '../helpers';
+import Address from './Address';
 
 type addressPillProps = {
-  address: string
-  userIsSender: boolean
-}
+  address: string;
+  userIsSender: boolean;
+};
 
 const AddressPill = ({
   address,
@@ -26,7 +26,7 @@ const AddressPill = ({
       )}
       address={address}
     ></Address>
-  )
-}
+  );
+};
 
-export default AddressPill
+export default AddressPill;
