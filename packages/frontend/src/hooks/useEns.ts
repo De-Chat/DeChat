@@ -2,8 +2,12 @@ import { useEnsAddress, useEnsName, useEnsAvatar } from 'wagmi'
 
 const useEns = (addressOrName: string | undefined) => {
   const probableAddress =
-    addressOrName?.startsWith('0x') && addressOrName?.length === 42 ? addressOrName : undefined
-  const probableName = addressOrName?.endsWith('.eth') ? addressOrName : undefined
+    addressOrName?.startsWith('0x') && addressOrName?.length === 42
+      ? addressOrName
+      : undefined
+  const probableName = addressOrName?.endsWith('.eth')
+    ? addressOrName
+    : undefined
   const { data: address, isLoading: loadingEnsAddress } = useEnsAddress({
     name: probableName,
   })

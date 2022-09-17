@@ -8,7 +8,11 @@ type AvatarProps = {
 const Avatar = ({ addressOrName }: AvatarProps) => {
   const { ensAvatar, isLoadingAvatar } = useEns(addressOrName)
   return ensAvatar && !isLoadingAvatar ? (
-    <img className={'rounded-full h-10 w-10'} src={ensAvatar} alt={addressOrName} />
+    <img
+      className={'rounded-full h-10 w-10'}
+      src={ensAvatar}
+      alt={addressOrName}
+    />
   ) : (
     <Blockies seed={addressOrName} size={10} className="rounded-full" />
   )

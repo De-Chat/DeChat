@@ -7,7 +7,10 @@ type addressPillProps = {
   userIsSender: boolean
 }
 
-const AddressPill = ({ address, userIsSender }: addressPillProps): JSX.Element => {
+const AddressPill = ({
+  address,
+  userIsSender,
+}: addressPillProps): JSX.Element => {
   return (
     <Address
       className={classNames(

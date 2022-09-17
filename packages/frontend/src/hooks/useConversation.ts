@@ -4,7 +4,10 @@ import { XmtpContext } from '../contexts/xmtp'
 
 type OnMessageCallback = () => void
 
-const useConversation = (peerAddress: string, onMessageCallback?: OnMessageCallback) => {
+const useConversation = (
+  peerAddress: string,
+  onMessageCallback?: OnMessageCallback
+) => {
   const { client, getMessages, dispatchMessages } = useContext(XmtpContext)
   const [conversation, setConversation] = useState<Conversation | null>(null)
   const [stream, setStream] = useState<Stream<Message>>()

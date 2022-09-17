@@ -17,13 +17,22 @@ const RecipientInputMode = {
   NotOnNetwork: 4,
 }
 
-const RecipientControl = ({ peerAddressOrName, onSubmit }: RecipientInputProps): JSX.Element => {
+const RecipientControl = ({
+  peerAddressOrName,
+  onSubmit,
+}: RecipientInputProps): JSX.Element => {
   const { client } = useXmtp()
   const router = useRouter()
-  const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry)
-  const [pendingPeerAddressOrName, setPendingPeerAddressOrName] = useState<string>('')
-  const { address: pendingAddress, isLoading } = useEns(pendingPeerAddressOrName)
-  const { ensName: resolvedEnsName, address: resolvedAddress } = useEns(peerAddressOrName)
+  const [recipientInputMode, setRecipientInputMode] = useState(
+    RecipientInputMode.InvalidEntry
+  )
+  const [pendingPeerAddressOrName, setPendingPeerAddressOrName] =
+    useState<string>('')
+  const { address: pendingAddress, isLoading } = useEns(
+    pendingPeerAddressOrName
+  )
+  const { ensName: resolvedEnsName, address: resolvedAddress } =
+    useEns(peerAddressOrName)
 
   const checkIfOnNetwork = useCallback(
     async (pendingAddress: string): Promise<boolean> => {
@@ -63,14 +72,17 @@ const RecipientControl = ({ peerAddressOrName, onSubmit }: RecipientInputProps):
     completeSubmit,
   ])
 
-  const handleSubmit = useCallback(async (e: React.SyntheticEvent, value?: string) => {
-    e.preventDefault()
-    const data = e.target as typeof e.target & {
-      input: { value: string }
-    }
-    const inputValue = value || data.input.value
-    setPendingPeerAddressOrName(inputValue)
-  }, [])
+  const handleSubmit = useCallback(
+    async (e: React.SyntheticEvent, value?: string) => {
+      e.preventDefault()
+      const data = e.target as typeof e.target & {
+        input: { value: string }
+      }
+      const inputValue = value || data.input.value
+      setPendingPeerAddressOrName(inputValue)
+    },
+    []
+  )
 
   const handleInputChange = async (e: React.SyntheticEvent) => {
     const data = e.target as typeof e.target & {
@@ -79,7 +91,10 @@ const RecipientControl = ({ peerAddressOrName, onSubmit }: RecipientInputProps):
     if (router.pathname !== '/dm/') {
       router.push('/dm')
     }
-    if (data.value.endsWith('.eth') || (data.value.startsWith('0x') && data.value.length === 42)) {
+    if (
+      data.value.endsWith('.eth') ||
+      (data.value.startsWith('0x') && data.value.length === 42)
+    ) {
       handleSubmit(e, data.value)
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry)
@@ -120,7 +135,8 @@ const RecipientControl = ({ peerAddressOrName, onSubmit }: RecipientInputProps):
         <div className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]">
           {recipientInputMode === RecipientInputMode.NotOnNetwork &&
             'Recipient is not on the XMTP network'}
-          {recipientInputMode === RecipientInputMode.FindingEntry && 'Finding ENS domain...'}
+          {recipientInputMode === RecipientInputMode.FindingEntry &&
+            'Finding ENS domain...'}
           {recipientInputMode === RecipientInputMode.InvalidEntry &&
             'Please enter a valid wallet address'}
           {recipientInputMode === RecipientInputMode.ValidEntry && <br />}

@@ -28,7 +28,10 @@ const MessageTile = ({ message, isSender }: MessageTileProps): JSX.Element => (
     <Avatar addressOrName={message.senderAddress as string} />
     <div className="ml-2">
       <div>
-        <AddressPill address={message.senderAddress as string} userIsSender={isSender} />
+        <AddressPill
+          address={message.senderAddress as string}
+          userIsSender={isSender}
+        />
         <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
           {formatTime(message.sent)}
         </span>
@@ -55,7 +58,9 @@ const DateDividerBorder: React.FC = ({ children }) => (
 const DateDivider = ({ date }: { date?: Date }): JSX.Element => (
   <div className="flex align-items-center items-center pb-8 pt-4">
     <DateDividerBorder>
-      <span className="mx-11 flex-none text-gray-300 text-sm font-bold">{formatDate(date)}</span>
+      <span className="mx-11 flex-none text-gray-300 text-sm font-bold">
+        {formatDate(date)}
+      </span>
     </DateDividerBorder>
   </div>
 )
@@ -68,7 +73,10 @@ const ConversationBeginningNotice = (): JSX.Element => (
   </div>
 )
 
-const MessagesList = ({ messages, messagesEndRef }: MessageListProps): JSX.Element => {
+const MessagesList = ({
+  messages,
+  messagesEndRef,
+}: MessageListProps): JSX.Element => {
   const { address } = useAccount()
   let lastMessageDate: Date | undefined
   return (
@@ -76,10 +84,14 @@ const MessagesList = ({ messages, messagesEndRef }: MessageListProps): JSX.Eleme
       <div className="pb-6 md:pb-0 w-full flex flex-col self-end">
         <div className="relative w-full bg-white px-4 pt-6 overflow-y-auto flex">
           <div className="w-full">
-            {messages && messages.length ? <ConversationBeginningNotice /> : null}
+            {messages && messages.length ? (
+              <ConversationBeginningNotice />
+            ) : null}
             {messages?.map((msg: Message) => {
               const isSender = msg.senderAddress === address
-              const tile = <MessageTile message={msg} key={msg.id} isSender={isSender} />
+              const tile = (
+                <MessageTile message={msg} key={msg.id} isSender={isSender} />
+              )
               const dateHasChanged = !isOnSameDay(lastMessageDate, msg.sent)
               lastMessageDate = msg.sent
               return dateHasChanged ? (

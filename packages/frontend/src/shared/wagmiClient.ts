@@ -15,7 +15,9 @@ export const defaultChain: Chain | undefined = allChains.find(
 export const isChainSupported = (chainId?: number): boolean => {
   return chainId && env.supportedChains.includes(chainId)
 }
-export const supportedChains: Chain[] = allChains.filter((chain) => isChainSupported(chain.id))
+export const supportedChains: Chain[] = allChains.filter((chain) =>
+  isChainSupported(chain.id)
+)
 
 export const getRpcUrl = (chainId: number): string => {
   return env.rpcUrls[chainId as keyof typeof env.rpcUrls]
@@ -25,7 +27,9 @@ export const {
   chains: [...chains],
   provider,
 } = configureChains(
-  Array.from(new Set([chain.mainnet, defaultChain, ...supportedChains])).filter(Boolean) as Chain[],
+  Array.from(new Set([chain.mainnet, defaultChain, ...supportedChains])).filter(
+    Boolean
+  ) as Chain[],
   [
     jsonRpcProvider({
       rpc: (chain) => {

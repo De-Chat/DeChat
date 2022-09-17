@@ -23,7 +23,9 @@ const NavigationView = ({ children }: NavigationViewProps): JSX.Element => {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <div className="relative flex-1 flex flex-col w-full bg-white">{children}</div>
+            <div className="relative flex-1 flex flex-col w-full bg-white">
+              {children}
+            </div>
           </Transition.Child>
         </div>
       </Transition.Root>

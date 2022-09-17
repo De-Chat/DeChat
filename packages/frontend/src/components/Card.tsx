@@ -3,7 +3,7 @@ import { BoxProps } from '@chakra-ui/react'
 
 function Card(props: BoxProps) {
   const { ...rest } = props
-    const bgColor = useColorModeValue('white', 'gray.700')
+  const bgColor = useColorModeValue('white', 'gray.700')
   return <Box bg={bgColor} {...rest} />
 }
 

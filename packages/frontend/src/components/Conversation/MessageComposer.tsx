@@ -73,7 +73,12 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
           required
         />
         <button type="submit" className={messageComposerStyles.arrow}>
-          <img src={message ? upArrowGreen : upArrowGrey} alt="send" height={32} width={32} />
+          <img
+            src={message ? upArrowGreen : upArrowGrey}
+            alt="send"
+            height={32}
+            width={32}
+          />
         </button>
       </form>
     </div>

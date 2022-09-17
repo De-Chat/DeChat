@@ -107,10 +107,9 @@ const Layout: React.FC = ({ children }) => {
     connect()
   }, [signer, prevSigner, connectXmtp, disconnectXmtp])
 
-  console.log("test account: ", signer, client, walletAddress)
-  
-  if (!client)
-    return <Login />
+  console.log('test account: ', signer, client, walletAddress)
+
+  if (!client) return <Login />
 
   return (
     <>
