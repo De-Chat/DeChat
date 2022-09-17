@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/solid';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import IPFS from './IPFS';
+import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
