@@ -34,7 +34,7 @@ const Send = () => {
         }
         try {
             let tsx;
-            tsx = await contract.sendEth(address, { value: ethers.utils.parseUnits("1", "ether") });
+            tsx = await contract.sendEth(address, { value: ethers.utils.parseUnits("0.00001", "ether") });
             const receipt = await tsx.wait()
             console.log({ receipt })
         } catch (e: any) {
