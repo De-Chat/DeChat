@@ -10,8 +10,7 @@ export const XmtpProvider: React.FC = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState<string>()
   const [client, setClient] = useState<Client>()
   const { getMessages, dispatchMessages } = useMessageStore()
-  const [loadingConversations, setLoadingConversations] =
-    useState<boolean>(false)
+  const [loadingConversations, setLoadingConversations] = useState<boolean>(false)
 
   const [conversations, dispatchConversations] = useReducer(
     (state: Conversation[], newConvos: Conversation[] | undefined) => {
@@ -114,11 +113,7 @@ export const XmtpProvider: React.FC = ({ children }) => {
     disconnect,
   ])
 
-  return (
-    <XmtpContext.Provider value={providerState}>
-      {children}
-    </XmtpContext.Provider>
-  )
+  return <XmtpContext.Provider value={providerState}>{children}</XmtpContext.Provider>
 }
 
 export default XmtpProvider

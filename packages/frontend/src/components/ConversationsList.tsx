@@ -89,31 +89,23 @@ const ConversationTile = ({
   )
 }
 
-const ConversationsList = ({
-  conversations,
-}: ConversationsListProps): JSX.Element => {
+const ConversationsList = ({ conversations }: ConversationsListProps): JSX.Element => {
   const router = useRouter()
   const { getMessages } = useContext(XmtpContext)
   const peerAddressOrName = router.query.peerAddressOrName as string
   const { address, ensName } = useEns(peerAddressOrName)
-  const orderByLatestMessage = (
-    convoA: Conversation,
-    convoB: Conversation
-  ): number => {
+  const orderByLatestMessage = (convoA: Conversation, convoB: Conversation): number => {
     const convoAMessages = getMessages(convoA.peerAddress)
     const convoBMessages = getMessages(convoB.peerAddress)
-    const convoALastMessageDate =
-      getLatestMessage(convoAMessages)?.sent || new Date()
-    const convoBLastMessageDate =
-      getLatestMessage(convoBMessages)?.sent || new Date()
+    const convoALastMessageDate = getLatestMessage(convoAMessages)?.sent || new Date()
+    const convoBLastMessageDate = getLatestMessage(convoBMessages)?.sent || new Date()
     return convoALastMessageDate < convoBLastMessageDate ? 1 : -1
   }
   return (
     <div>
       {conversations &&
         conversations.sort(orderByLatestMessage).map((convo) => {
-          const isSelected =
-            convo.peerAddress === address || convo.peerAddress === ensName
+          const isSelected = convo.peerAddress === address || convo.peerAddress === ensName
           return (
             <ConversationTile
               key={convo.peerAddress}

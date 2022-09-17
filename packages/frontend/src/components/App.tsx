@@ -1,7 +1,7 @@
 import XmtpProvider from './XmtpProvider'
 import Layout from './Layout'
 
-import '@rainbow-me/rainbowkit/styles.css'
+import '@rainbow-me/rainbowkitstyles.css'
 import { WagmiConfig } from 'wagmi'
 import { wagmiClient, chains } from '@shared/wagmiClient'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'

@@ -9,9 +9,7 @@ type ConversationProps = {
   peerAddressOrName: string
 }
 
-const Conversation = ({
-  peerAddressOrName,
-}: ConversationProps): JSX.Element => {
+const Conversation = ({ peerAddressOrName }: ConversationProps): JSX.Element => {
   const { walletAddress, client } = useXmtp()
   const messagesEndRef = useRef(null)
   const scrollToMessagesEndRef = useCallback(() => {
@@ -40,11 +38,7 @@ const Conversation = ({
   }
   if (loading && !messages?.length) {
     return (
-      <Loader
-        headingText="Loading messages..."
-        subHeadingText="Please wait a moment"
-        isLoading
-      />
+      <Loader headingText="Loading messages..." subHeadingText="Please wait a moment" isLoading />
     )
   }
 

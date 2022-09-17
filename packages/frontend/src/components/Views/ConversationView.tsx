@@ -23,9 +23,7 @@ const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <div className="md:hidden relative flex-1 flex flex-col w-full">
-              {children}
-            </div>
+            <div className="md:hidden relative flex-1 flex flex-col w-full">{children}</div>
           </Transition.Child>
         </div>
       </Transition.Root>

@@ -20,11 +20,7 @@ type AvatarBlockProps = {
 const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
   const { data: ensAvatar } = useEnsAvatar({ addressOrName })
   return ensAvatar ? (
-    <img
-      className={'rounded-full h-8 w-8 mr-2'}
-      src={ensAvatar}
-      alt={addressOrName}
-    />
+    <img className={'rounded-full h-8 w-8 mr-2'} src={ensAvatar} alt={addressOrName} />
   ) : (
     <Blockies seed={addressOrName} size={8} className="rounded-full mr-2" />
   )
@@ -81,21 +77,14 @@ const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
         <Menu>
           {({ open }) => (
             <>
-              <div
-                className={classNames(
-                  open ? 'opacity-75' : '',
-                  'flex items-center'
-                )}
-              >
+              <div className={classNames(open ? 'opacity-75' : '', 'flex items-center')}>
                 {client ? (
                   <>
                     <AvatarBlock addressOrName={walletAddress} />
                     <div className="flex flex-col">
                       <div className="flex items-center">
                         <div className="bg-g-100 rounded h-2 w-2 mr-1"></div>
-                        <p className="text-sm font-bold text-g-100">
-                          Connected as:
-                        </p>
+                        <p className="text-sm font-bold text-g-100">Connected as:</p>
                       </div>
                       <Address
                         address={walletAddress}
@@ -107,13 +96,9 @@ const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
                   <div className="h-14 flex flex-col flex-1 justify-center">
                     <div className="flex items-center">
                       <div className="bg-p-100 rounded h-2 w-2 mr-1"></div>
-                      <p className="text-sm font-bold text-p-100">
-                        Connecting...
-                      </p>
+                      <p className="text-sm font-bold text-p-100">Connecting...</p>
                     </div>
-                    <p className="text-sm font-normal text-p-100 ml-3">
-                      Verifying your wallet
-                    </p>
+                    <p className="text-sm font-normal text-p-100 ml-3">Verifying your wallet</p>
                   </div>
                 )}
               </div>

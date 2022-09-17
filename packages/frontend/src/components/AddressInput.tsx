@@ -24,9 +24,9 @@ const AddressInput = ({
   const inputElement = useRef(null)
 
   const { ensName, address } = useEns(peerAddressOrName)
-  const [resolvedNameOrAddress, setResolvedNameOrAddress] = useState<
-    string | undefined
-  >(ensName || address)
+  const [resolvedNameOrAddress, setResolvedNameOrAddress] = useState<string | undefined>(
+    ensName || address
+  )
   const [value, setValue] = useState<string>('')
 
   const focusInputElementRef = useCallback(() => {
@@ -51,12 +51,7 @@ const AddressInput = ({
       focusInputElementRef()
       setValue('')
     }
-  }, [
-    focusInputElementRef,
-    blurInputElementRef,
-    resolvedNameOrAddress,
-    peerAddressOrName,
-  ])
+  }, [focusInputElementRef, blurInputElementRef, resolvedNameOrAddress, peerAddressOrName])
 
   const userIsSender = address === walletAddress
 
@@ -94,9 +89,7 @@ const AddressInput = ({
 
   return (
     <div className="relative mb-5">
-      {peerAddressOrName && value && (
-        <span className={recipientPillInputStyle}>{value}</span>
-      )}
+      {peerAddressOrName && value && <span className={recipientPillInputStyle}>{value}</span>}
       <input
         id={id}
         name={name}

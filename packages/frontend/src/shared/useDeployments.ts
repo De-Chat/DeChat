@@ -12,13 +12,11 @@ export const useDeployments = () => {
   const [contractsChainId, setContractsChainId] = useState<number>()
   const [contracts, setContracts] = useState<HardhatExportContracts>()
 
-  const defaultChain: Chain | undefined = allChains.find(
-    (chain) => env.defaultChain === chain.id
-  )
+  const defaultChain: Chain | undefined = allChains.find((chain) => env.defaultChain === chain.id)
 
   useAsyncEffect(async () => {
     const contractsChain = !chain || chain.unsupported ? defaultChain : chain
-    console.log("test contractsChain: ", contractsChain)
+    console.log('test contractsChain: ', contractsChain)
     if (contractsChain) {
       const contracts = (await deployments[contractsChain.id]).contracts
       setUseDefaultChain(useDefaultChain)

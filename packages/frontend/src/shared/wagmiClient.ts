@@ -45,7 +45,7 @@ const { connectors } = getDefaultWallets({
   chains,
 })
 
-console.log("test wagmi client: ",chains)
+console.log('test wagmi client: ', chains)
 export const wagmiClient = createClient({
   autoConnect: true,
   connectors,
