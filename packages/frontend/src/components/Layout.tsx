@@ -13,6 +13,7 @@ import BackArrow from './BackArrow';
 import { useDisconnect, useSigner } from 'wagmi';
 import Login from './Login';
 import Send from './Send';
+import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 
 const NavigationColumnLayout: React.FC<{ children: ReactNode }> = ({
   children,
@@ -144,6 +145,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </NavigationColumnLayout>
         </NavigationView>
         <ConversationView>
+          <div>hellooo</div>
           {walletAddress && client ? (
             <ConversationLayout>{children}</ConversationLayout>
           ) : (
