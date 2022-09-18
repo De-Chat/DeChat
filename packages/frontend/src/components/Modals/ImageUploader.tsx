@@ -18,13 +18,6 @@ type MessageComposerProps = {
 };
 
 const ImageUploader = ({ onSend }: MessageComposerProps) => {
-  // const getImage = async () => {
-  //     const res = await client.get(rootCid) // Promise<Web3Response | null>
-  //     const files = await res.files() // Promise<Web3File[]>
-  //     for (const file of files) {
-  //         console.log(`${file.cid} ${file.name} ${file.size}`)
-  //     }
-  // }
   const [images, setImages] = useState<any[]>([]);
   const [sending, setSending] = useState<Boolean>(false);
 
@@ -51,6 +44,8 @@ const ImageUploader = ({ onSend }: MessageComposerProps) => {
 
     await onSend(`::image(${uploadedUrl})`);
     setSending(false);
+    disclosure.onClose();
+
     return uploadedUrl;
   }, [images, client, getImgUrl, onSend])
 
