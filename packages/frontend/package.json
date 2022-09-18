@@ -40,6 +40,7 @@
     "react-blockies": "^1.4.1",
     "react-dom": "18.2.0",
     "react-emoji-render": "^1.2.4",
+    "react-icons": "^4.4.0",
     "react-images-uploading": "^3.1.7",
     "use-async-effect": "^2.2.6",
     "wagmi": "^0.6.4",

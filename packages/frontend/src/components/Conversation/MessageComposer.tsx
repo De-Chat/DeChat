@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { classNames } from '../../helpers';
 import messageComposerStyles from '../../styles/MessageComposer.module.scss';
-import upArrowGreen from '@public/up-arrow-green.svg';
-import upArrowGrey from '@public/up-arrow-grey.svg';
 import { useRouter } from 'next/router';
+import ImageUploader from '@components/Modals/ImageUploader';
+import { Flex, FormControl, Icon, IconButton, Input } from '@chakra-ui/react';
+import { FiSend } from 'react-icons/fi'
 
 type MessageComposerProps = {
   onSend: (msg: string) => Promise<void>;
@@ -21,7 +22,7 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
   );
 
   const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: SyntheticEvent) => {
       e.preventDefault();
       if (!message) {
         return;
@@ -31,57 +32,40 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
     },
     [onSend, message]
   );
+
   return (
-    <div
-      className={classNames(
-        'sticky',
-        'bottom-0',
-        'pl-4',
-        'pt-2',
-        'flex-shrink-0',
-        'flex',
-        'h-[68px]',
-        'bg-white'
-      )}
+    <form
+      autoComplete='off'
+      onSubmit={onSubmit}
     >
-      <form
-        className={classNames(
-          'flex',
-          'w-full',
-          'border',
-          'py-2',
-          'pl-4',
-          'mr-3',
-          messageComposerStyles.bubble
-        )}
-        autoComplete="off"
-        onSubmit={onSubmit}
-      >
-        <input
-          type="text"
-          placeholder="Type something..."
-          className={classNames(
-            'block',
-            'w-full',
-            'text-md',
-            'md:text-sm',
-            messageComposerStyles.input
-          )}
-          name="message"
-          value={message}
-          onChange={onMessageChange}
-          required
-        />
-        <button type="submit" className={messageComposerStyles.arrow}>
-          <img
-            src={message ? upArrowGreen : upArrowGrey}
-            alt="send"
-            height={32}
-            width={32}
+      <FormControl>
+        <Flex gap={2} align="center">
+          <ImageUploader onSend={onSend} />
+          <Input
+            flex={1}
+            type="text"
+            placeholder="Type something..."
+            className={classNames(
+              'block',
+              'w-full',
+              'text-md',
+              'md:text-sm',
+              messageComposerStyles.input
+            )}
+            name="message"
+            value={message}
+            onChange={onMessageChange}
+            onKeyPress={e=> {
+              if (e.key === 'Enter') {
+                 onSubmit(e);
+              }
+           }}
+            required
           />
-        </button>
-      </form>
-    </div>
+          <IconButton type='submit' disabled={!message ? true : false} variant='outline' border='none' aria-label='Send message' icon={<Icon as={FiSend} />} />
+        </Flex>
+      </FormControl>
+    </form>
   );
 };
 

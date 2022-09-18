@@ -9,7 +9,6 @@ import {
   ArrowSmRightIcon,
 } from '@heroicons/react/solid';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
-import IPFS from './IPFS';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -103,7 +102,6 @@ const XmtpInfoPanel = (): JSX.Element => {
           Get started by reading the docs or joining the community
         </div>
       </div>
-      <IPFS />
       <div>
         {InfoRows.map((info, index) => {
           return (
