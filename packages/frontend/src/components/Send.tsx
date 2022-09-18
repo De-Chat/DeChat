@@ -1,12 +1,12 @@
 import { useDeployments } from '@shared/useDeployments';
 import { useAccount, useSigner } from 'wagmi';
 import { Send__factory } from '@dechat/contracts/typechain-types';
-import useXmtp from 'src/hooks/useXmtp';
+import useXmtp from '../hooks/useXmtp';
 import { useMemo } from 'react';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers';
-import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
-import { useGetNetworkTransfer } from 'src/hooks/useGetNetworkTransfer';
+import { useGetAllTransfer } from '../hooks/useGetAllTransfer';
+import { useGetNetworkTransfer } from '../hooks/useGetNetworkTransfer';
 
 const Send = () => {
   // const { data: signer } = useSigner();
@@ -30,6 +30,7 @@ const Send = () => {
   );
 
   if (!loading) {
+    console.log("here <<< ")
     console.log(`data has loaded: ${JSON.stringify(data)}`);
   } else {
     console.log('data is still loading');

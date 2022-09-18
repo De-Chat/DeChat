@@ -66,8 +66,6 @@ export const useGetNetworkTransfer = (
   recipient: string
 ) => {
   const client = useCustomApolloClient(networkName);
-  console.log(`client: ${client}`)
-  console.log(`networkName: ${networkName}`)
 
   const { loading, error, data } = useQuery(GET_TRANSFER, {
     variables: { count, from: sender, to: recipient },

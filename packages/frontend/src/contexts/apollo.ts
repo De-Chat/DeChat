@@ -10,7 +10,7 @@ export class ApolloTheGraphClient {
       this.clients.set(
         key,
         new ApolloClient({
-          uri: url,
+          uri: `/api/subgraph-dechat-${key}`,
           cache: new InMemoryCache(),
           name: key,
         })

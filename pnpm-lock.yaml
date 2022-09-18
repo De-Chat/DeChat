@@ -103,6 +103,7 @@ importers:
       '@walletconnect/web3-provider': ^1.7.1
       '@xmtp/xmtp-js': ^4.0.0
       autoprefixer: 10.4.5
+      axios: ^0.27.2
       babel-jest: ^27.5.1
       eslint: 8.8.0
       eslint-config-next: 12.0.9
@@ -143,6 +144,7 @@ importers:
       '@heroicons/react': 1.0.6_react@18.2.0
       '@rainbow-me/rainbowkit': 0.5.1_gbq4fvpdxvnjzm2mkmy6vtaaei
       '@xmtp/xmtp-js': 4.4.1_node-fetch@2.6.7
+      axios: 0.27.2
       ethers: 5.7.0
       framer-motion: 7.3.5_biqbaboplfbrettd7655fr4n2y
       graphql: 16.6.0
@@ -6717,6 +6719,15 @@ packages:
       - debug
     dev: true
 
+  /axios/0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+    dependencies:
+      follow-redirects: 1.15.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /axobject-query/2.2.0:
     resolution: {integrity: sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==}
     dev: true
@@ -10492,7 +10503,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    dev: true
 
   /forwarded/0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
