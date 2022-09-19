@@ -5,14 +5,16 @@ import Avatar from '../Avatar';
 import { formatTime } from '../../helpers';
 import AddressPill from '../AddressPill';
 import { useAccount } from 'wagmi';
+import MessageRenderer, { Transaction } from './MessageRenderer';
 
 export type MessageListProps = {
-  messages: Message[];
+  messages: MessageTileProps[];
   messagesEndRef: MutableRefObject<null>;
 };
 
-type MessageTileProps = {
-  message: Message;
+export type MessageTileProps = {
+  type: string,
+  message: Message | Transaction;
   isSender: boolean;
 };
 
@@ -27,7 +29,9 @@ const formatDate = (d?: Date) =>
     day: 'numeric',
   });
 
-const MessageTile = ({ message, isSender }: MessageTileProps): JSX.Element => (
+const MessageTile: React.FC<{messageTileData: MessageTileProps}> = ({messageTileData}) => {
+  const { message, isSender } = messageTileData;
+  return (
   <div className="flex items-start mx-auto mb-4">
     <Avatar addressOrName={message.senderAddress as string} />
     <div className="ml-2">
@@ -41,15 +45,11 @@ const MessageTile = ({ message, isSender }: MessageTileProps): JSX.Element => (
         </span>
       </div>
       <span className="block text-md px-2 mt-2 text-black font-normal">
-        {message.error ? (
-          `Error: ${message.error?.message}`
-        ) : (
-          <Emoji text={message.content || ''} />
-        )}
+        <MessageRenderer messageTileData={messageTileData}/>
       </span>
     </div>
   </div>
-);
+)}
 
 const DateDividerBorder: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -93,16 +93,16 @@ const MessagesList = ({
             {messages && messages.length ? (
               <ConversationBeginningNotice />
             ) : null}
-            {messages?.map((msg: Message) => {
-              const isSender = msg.senderAddress === address;
+            {messages?.map((msg: MessageTileProps, idx: number) => {
+              msg.isSender = msg.message.senderAddress === address;
               const tile = (
-                <MessageTile message={msg} key={msg.id} isSender={isSender} />
+                <MessageTile messageTileData={msg} />
               );
-              const dateHasChanged = !isOnSameDay(lastMessageDate, msg.sent);
-              lastMessageDate = msg.sent;
+              const dateHasChanged = !isOnSameDay(lastMessageDate, msg.message.sent);
+              lastMessageDate = msg.message.sent;
               return dateHasChanged ? (
-                <div key={msg.id}>
-                  <DateDivider date={msg.sent} />
+                <div key={idx}>
+                  <DateDivider date={msg.message.sent} />
                   {tile}
                 </div>
               ) : (

@@ -9,7 +9,7 @@ const BaseModal: React.FC<{ disclosure: UseDisclosureProps, children: React.Reac
     <>
       <IconButton onClick={onOpen} icon={<Icon as={icon} />} variant="outline" border={"none"} aria-label='Upload image'>Open Modal</IconButton>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen || false} onClose={onClose || (() => {})}>
         <ModalOverlay backdropFilter='blur(5px)' />
         <ModalContent>
           <ModalHeader />
