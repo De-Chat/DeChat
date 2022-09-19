@@ -29,6 +29,7 @@
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@rainbow-me/rainbowkit": "^0.5.1",
+    "@unstoppabledomains/resolution": "^8.3.3",
     "@xmtp/xmtp-js": "^4.0.0",
     "ethers": "^5.6.9",
     "framer-motion": "^7.3.5",
