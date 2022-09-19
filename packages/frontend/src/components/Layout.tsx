@@ -13,6 +13,7 @@ import BackArrow from './BackArrow';
 import { useDisconnect, useSigner } from 'wagmi';
 import Login from './Login';
 import Send from './Send';
+import UnlockButton from './UnlockButton';
 
 const NavigationColumnLayout: React.FC<{ children: ReactNode }> = ({
   children,
@@ -136,7 +137,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <NavigationView>
           <NavigationColumnLayout>
             <NavigationHeaderLayout>
-              {walletAddress && client && <NewMessageButton />}
+              {walletAddress && client && <UnlockButton/>}
+              {/* {walletAddress && client && <NewMessageButton />} */}
             </NavigationHeaderLayout>
             {walletAddress && client && <Send />}
             <NavigationPanel />
