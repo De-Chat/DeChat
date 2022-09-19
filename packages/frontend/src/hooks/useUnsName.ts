@@ -1,7 +1,7 @@
 import { Resolution } from '@unstoppabledomains/resolution';
 import { useState } from 'react';
 
-const useUnstoppableDomain = (walletAddress : string) => {
+const useUnsName = (walletAddress : string) => {
 
   const [domain, setDomain] = useState<string | null>(null);
   const resolution = new Resolution();
@@ -14,4 +14,4 @@ const useUnstoppableDomain = (walletAddress : string) => {
   return domain;
 }
 
-export default useUnstoppableDomain;
+export default useUnsName;

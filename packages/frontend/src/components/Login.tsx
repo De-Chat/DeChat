@@ -16,6 +16,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import ThemeToggler from 'src/pages/ThemeToggler';
 import Card from './Card';
 
+import useUnsAvatar from 'src/hooks/useUnsAvatar';
+
 const Login = () => {
   return (
     <Flex minH={'100vh'} align={'center'} justify={'center'}>
@@ -23,7 +25,8 @@ const Login = () => {
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>Sign in to your account</Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
-            to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
+            {/* to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️ */}
+            {useUnsAvatar("weihan37.wallet")}
           </Text>
         </Stack>
         <ConnectButton />
