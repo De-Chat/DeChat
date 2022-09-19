@@ -145,7 +145,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </NavigationColumnLayout>
         </NavigationView>
         <ConversationView>
-          <div>hellooo</div>
           {walletAddress && client ? (
             <ConversationLayout>{children}</ConversationLayout>
           ) : (
