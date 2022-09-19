@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import AddressInput from '../AddressInput';
 import useXmtp from '../../hooks/useXmtp';
 import useEns from '../../hooks/useEns';
+import AddToContactModal from '@components/Modals/AddToContactModal';
 
 type RecipientInputProps = {
   peerAddressOrName: string | undefined;
@@ -123,6 +124,7 @@ const RecipientControl = ({
             name="recipient"
             onInputChange={handleInputChange}
           />
+          <AddToContactModal />
           <button type="submit" className="hidden" />
         </div>
       </form>
