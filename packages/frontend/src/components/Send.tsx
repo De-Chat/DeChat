@@ -5,8 +5,6 @@ import useXmtp from '../hooks/useXmtp';
 import { useMemo } from 'react';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers';
-import { useGetAllTransfer } from '../hooks/useGetAllTransfer';
-import { useGetNetworkTransfer } from '../hooks/useGetNetworkTransfer';
 
 const Send = () => {
   // const { data: signer } = useSigner();
@@ -15,36 +13,6 @@ const Send = () => {
   const { wallet: signer, walletAddress: address } = useXmtp();
   console.log('test current addr: ', address, signer);
 
-//   const { loading, errors, data } = useGetAllTransfer(
-//     100,
-//     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-//     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
-//   );
-
-  const { loading, error, data } = useGetNetworkTransfer(
-    "mumbai",
-    '',
-    100,
-    '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-    '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
-  );
-
-  if (!loading) {
-    console.log("here <<< ")
-    console.log(`data has loaded: ${JSON.stringify(data)}`);
-  } else {
-    console.log('data is still loading');
-  }
-  // const getOwner = async () => {
-  //     if (!signer || !contracts) return
-  //     const contract = Send__factory.connect(contracts.Send.address, signer)
-  //     try {
-  //         const owner = await contract.owner()
-  //         console.log({ owner })
-  //     } catch (e) {
-  //         console.error(e)
-  //     }
-  // }
   const contract = useMemo(() => {
     if (!signer || !contracts) return null;
     return Send__factory.connect(contracts.Send.address, signer);
