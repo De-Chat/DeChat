@@ -4,17 +4,11 @@ import { GrTransaction } from 'react-icons/gr'
 import { MessageTileProps } from "./MessagesList";
 import Card from "@components/Card";
 
-interface ITxData {
-    txHash: string,
-    amount: number,
-    token: string
-}
-
 export interface Transaction {
     senderAddress: string,
     sent: Date,
     error?: Error,
-    content: ITxData
+    content: any // please refers to output of useGetAllTransfer()
 }
 
 const extractImgUrl = (message: string): string | null => {
@@ -23,7 +17,9 @@ const extractImgUrl = (message: string): string | null => {
     return found && found[1];
 }
 
-const TransactionBlock: React.FC<{ txData: ITxData }> = ({ txData }) => {
+
+const TransactionBlock: React.FC<{ txData: any }> = ({ txData }) => {
+    console.log('transaction block: ', txData)
     return (
         <LinkBox as='article'>
             <LinkOverlay href="https://www.google.com" target='_blank' />
@@ -31,9 +27,9 @@ const TransactionBlock: React.FC<{ txData: ITxData }> = ({ txData }) => {
                 <Flex>
                     <Avatar icon={<Icon as={GrTransaction} />} />
                     <Box ml='3'>
-                        <Text fontSize='sm'>Transaction</Text>
+                        <Text fontSize='sm'>{txData.transferType}</Text>
                         <Text fontWeight='bold'>
-                            {txData.amount} {txData.token}
+                            placeholder
                         </Text>
                     </Box>
                 </Flex>

@@ -7,6 +7,7 @@ import useEns from '../../hooks/useEns';
 import { useAccount } from 'wagmi';
 import { MessageTileProps } from './MessagesList';
 import { Transaction } from './MessageRenderer';
+import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 
 type ConversationProps = {
   peerAddressOrName: string;
@@ -24,11 +25,27 @@ const Conversation = ({
 
   const { address: peerAddress } = useEns(peerAddressOrName);
 
+  // prepare XMTP messages
   const { messages, sendMessage, loading } = useConversation(
     peerAddress as string,
     scrollToMessagesEndRef
   );
+  // prepare Graph transactions
+  const transactions = useGetAllTransfer(100, walletAddress, walletAddress)
+  // console.log('test getGraph: ', tx)
+  // const transactions: Transaction[] = useMemo(() => {
+  //   return [{
+  //     senderAddress: address || "0x000",
+  //     sent: new Date(),
+  //     content: {
+  //       txHash: "0x123",
+  //       amount: 1234,
+  //       token: "USDT"
+  //     }
+  //   }]
+  // }, [])
 
+  // process XMTP messages and Graph transactions
   const { address } = useAccount();
   const allMessages: MessageTileProps[] = useMemo(() => {
     const textMessages = messages.map(m => ({
@@ -36,22 +53,18 @@ const Conversation = ({
       message: m,
       isSender: m.senderAddress == address
     }))
-    const transactions: Transaction[] = [{
-      senderAddress: address || "0x000",
-      sent: new Date(),
-      content: {
-        txHash: "0x123",
-        amount: 1234,
-        token: "USDT"
-      }
-    }]
+
     const txMessages = transactions.map(tx => ({
       type: 'transaction',
-      message: tx,
+      message: {
+        senderAddress: tx.from,
+        sent: new Date(tx.timestamp * 1000),
+        content: tx // just to follow xmtp message.content format
+      },
       isSender: tx.senderAddress == address
     }))
 
-    return [...textMessages, ...txMessages];
+    return [...textMessages, ...txMessages].sort((a, b) => a.message.sent - b.message.sent);
   }, [messages])
 
   const hasMessages = messages.length > 0;
