@@ -45,6 +45,7 @@
     "react-emoji-render": "^1.2.4",
     "react-icons": "^4.4.0",
     "react-images-uploading": "^3.1.7",
+    "truncate-eth-address": "^1.0.2",
     "use-async-effect": "^2.2.6",
     "wagmi": "^0.6.4",
     "web3.storage": "^4.4.0"

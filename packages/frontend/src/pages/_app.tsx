@@ -1,12 +1,16 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import App from '../components/App';
+import dynamic from 'next/dynamic';
+
+const AppWithoutSSR = dynamic(() => import('../components/App'), {
+  ssr: false,
+})
 
 function AppWrapper({ Component, pageProps }: AppProps) {
   return (
-    <App>
+    <AppWithoutSSR>
       <Component {...pageProps} />
-    </App>
+    </AppWithoutSSR>
   );
 }
 

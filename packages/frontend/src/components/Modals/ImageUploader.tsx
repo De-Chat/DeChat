@@ -19,12 +19,13 @@ type MessageComposerProps = {
 
 const ImageUploader = ({ onSend }: MessageComposerProps) => {
   const [images, setImages] = useState<any[]>([]);
-  const [sending, setSending] = useState<Boolean>(false);
+  const [busy, setBusy] = useState<Boolean>(false);
 
   const disclosure = useDisclosure();
   useEffect(() => {
     if (!disclosure.isOpen)
       setImages([]);
+      setBusy(false)
   }, [disclosure.isOpen])
 
   const maxNumber = 1;
@@ -33,7 +34,7 @@ const ImageUploader = ({ onSend }: MessageComposerProps) => {
     `https://${rootCid}.ipfs.w3s.link/${fileName}`;
 
   const upload = useCallback(async () => {
-    setSending(true);
+    setBusy(true);
     const file = images[0].file;
     const name = 'test11.png';
     const renamedFile = new File([file], name, { type: file.type });
@@ -43,7 +44,7 @@ const ImageUploader = ({ onSend }: MessageComposerProps) => {
     console.log('uploaded to url: ', uploadedUrl);
 
     await onSend(`::image(${uploadedUrl})`);
-    setSending(false);
+    setBusy(false);
     disclosure.onClose();
 
     return uploadedUrl;
@@ -96,7 +97,7 @@ const ImageUploader = ({ onSend }: MessageComposerProps) => {
                 </div>
               )}
             </ImageUploading>
-            {!sending ?
+            {!busy ?
               <IconButton onClick={upload} variant="outline" border={"none"} aria-label='Send image' icon={<Icon as={FiSend} />} />
               : <Spinner />
             }
