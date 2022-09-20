@@ -1,17 +1,17 @@
 export const ERC20 = {
     80001: [
         {
-            name: "weth",
+            name: "WETH",
             address: "0x0f6CBCdEb4d46dF83b677F88E78f96548b9CB525",
             decimals: 18
         },
         {
-            name: "usdc",
+            name: "USDC",
             address: "0x81724514154C957319B857c8CEF90D7629533684",
             decimals: 18
         },
         {
-            name: "wbtc",
+            name: "WBTC",
             address: "0xEdfA38bf6A3ffeaD4937Cf288b369729D0aCF8B0",
             decimals: 8
         },
@@ -40,3 +40,5 @@ export const ERC1155 = {
 export const getERC20s = (chainId) => ERC20[chainId]
 export const getERC721s = (chainId) => ERC721[chainId]
 export const getERC1155s = (chainId) => ERC1155[chainId]
+
+export const getERC20ByName = (chainId, name) => ERC20[chainId].find(token => token.name == name)

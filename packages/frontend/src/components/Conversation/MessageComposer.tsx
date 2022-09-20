@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import ImageUploader from '@components/Modals/ImageUploader';
 import { Flex, FormControl, Icon, IconButton, Input } from '@chakra-ui/react';
 import { FiSend } from 'react-icons/fi'
+import SendModal from '@components/Modals/SendModal';
 
 type MessageComposerProps = {
   onSend: (msg: string) => Promise<void>;
@@ -41,6 +42,7 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
       <FormControl>
         <Flex gap={2} align="center">
           <ImageUploader onSend={onSend} />
+          <SendModal />
           <Input
             flex={1}
             type="text"

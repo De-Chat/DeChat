@@ -12,7 +12,6 @@ import UserMenu from './UserMenu';
 import BackArrow from './BackArrow';
 import { useDisconnect, useSigner } from 'wagmi';
 import Login from './Login';
-import Send from './Send';
 
 const NavigationColumnLayout: React.FC<{ children: ReactNode }> = ({
   children,
@@ -138,7 +137,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <NavigationHeaderLayout>
               {walletAddress && client && <NewMessageButton />}
             </NavigationHeaderLayout>
-            {walletAddress && client && <Send />}
             <NavigationPanel />
             <UserMenu onDisconnect={disconnect} />
           </NavigationColumnLayout>
