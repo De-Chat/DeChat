@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { ethers } from "ethers";
 
 // {
 //     "contract_decimals": 18,
@@ -40,26 +40,26 @@ export type IBalances = {
 export const getTokenBalancesForAddress = async (chain_id: number, address: string) => {
     return await axios.get(
         `https://api.covalenthq.com/v1/${chain_id}/address/${address}/balances_v2/?&key=${process.env.NEXT_PUBLIC_COVALENT_API}`
-    ).then(
-        res => {
-            const data = res.data.data
-            let nonZeroTokens = data.items.filter(token => token.quote > 0)
-            let tokens: ITokenBalance[] = nonZeroTokens.map(token => ({
+    ).then(res => {
+        const data = res.data.data
+        let nonZeroTokens = data.items.filter(token => token.quote > 0)
+        let tokens: ITokenBalance[] = nonZeroTokens.map(token => {
+            return {
                 address: token.contract_address,
                 symbol: token.contract_ticker_symbol,
                 decimals: token.contract_decimals,
                 logo: token.logo_url,
-                amount: token.balance,
+                amount: ethers.utils.formatUnits(token.balance, token.contract_decimals),
                 amountUSD: token.quote,
-                price: token.quote_rate,
-            }))
-            const totalUSD = tokens.reduce((partialSum: number, token: ITokenBalance) => partialSum += token.amountUSD, 0)
-
-            const returnData = {
-                totalUSD,
-                tokens
+                price: token.quote_rate
             }
-            console.log(returnData)
-            return returnData
-        }).catch(e => console.warn("Covalent service encouters error: ", e))
+        })
+        const totalUSD = tokens.reduce((partialSum: number, token: ITokenBalance) => partialSum += token.amountUSD, 0)
+
+        const returnData = {
+            totalUSD,
+            tokens: tokens.sort((a, b) => a.amountUSD - b.amountUSD)
+        }
+        return returnData
+    }).catch(e => console.warn("Covalent service encouters error: ", e))
 }
