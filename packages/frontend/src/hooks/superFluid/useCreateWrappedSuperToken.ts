@@ -6,22 +6,9 @@ const getWrappedSuperToken = async (
 ) => {
   return await framework.loadWrapperSuperToken(tokenAddress);
 };
-export const useCreateWrapperSuperToken = (
+export const createWrappedSuperToken = async (
   framework: Framework,
   tokenAddress: string
 ) => {
-  const [sT, setST] = useState<WrapperSuperToken | undefined>(undefined);
-
-  useEffect(() => {
-    getWrappedSuperToken(framework, tokenAddress).then((st) => {
-      setST(st);
-    });
-  });
-
-  let loading = true;
-  if (sT) {
-    loading = true;
-  }
-
-  return { loading, superToken: sT };
+  return await getWrappedSuperToken(framework, tokenAddress)
 };

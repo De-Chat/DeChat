@@ -15,18 +15,6 @@ export const getSuperFluidFramework = async (
   });
 };
 
-export const useCreateFramework = (provider: SupportedProvider) => {
-  const [sf, setSf] = useState<Framework | undefined>(undefined);
-  useEffect(() => {
-    getSuperFluidFramework(provider).then((sf) => {
-      setSf(sf);
-    });
-  }, [provider]);
-
-  let loading = true;
-  if (sf) {
-    loading = false;
-  }
-
-  return { loading, framework: sf };
+export const createFramework = async (provider: SupportedProvider) => {
+  return await getSuperFluidFramework(provider)
 };
