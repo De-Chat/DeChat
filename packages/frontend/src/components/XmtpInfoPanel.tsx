@@ -1,15 +1,15 @@
-import packageJson from '../../package.json';
-import useXmtp from '../hooks/useXmtp';
-import { classNames } from '../helpers';
 import {
-  LinkIcon,
-  BookOpenIcon,
-  UserGroupIcon,
-  ChevronRightIcon,
   ArrowSmRightIcon,
+  BookOpenIcon,
+  ChevronRightIcon,
+  LinkIcon,
+  UserGroupIcon,
 } from '@heroicons/react/solid';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
-import IPFS from './IPFS';
+
+import packageJson from '../../package.json';
+import { classNames } from '../helpers';
+import useXmtp from '../hooks/useXmtp';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -103,7 +103,6 @@ const XmtpInfoPanel = (): JSX.Element => {
           Get started by reading the docs or joining the community
         </div>
       </div>
-      <IPFS />
       <div>
         {InfoRows.map((info, index) => {
           return (

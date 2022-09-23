@@ -1,8 +1,10 @@
-import { useCallback, useState, useEffect } from 'react';
+import AddToContactModal from '@components/Modals/AddToContactModal';
 import { useRouter } from 'next/router';
-import AddressInput from '../AddressInput';
-import useXmtp from '../../hooks/useXmtp';
+import { useCallback, useEffect, useState } from 'react';
+
 import useEns from '../../hooks/useEns';
+import useXmtp from '../../hooks/useXmtp';
+import AddressInput from '../AddressInput';
 
 type RecipientInputProps = {
   peerAddressOrName: string | undefined;
@@ -123,6 +125,7 @@ const RecipientControl = ({
             name="recipient"
             onInputChange={handleInputChange}
           />
+          <AddToContactModal />
           <button type="submit" className="hidden" />
         </div>
       </form>

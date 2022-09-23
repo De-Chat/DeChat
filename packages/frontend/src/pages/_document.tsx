@@ -1,11 +1,11 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import theme from '@styles/theme';
 import Document, {
-  Html,
+  DocumentContext,
   Head,
+  Html,
   Main,
   NextScript,
-  DocumentContext,
 } from 'next/document';
 
 class AppDocument extends Document {
@@ -18,13 +18,14 @@ class AppDocument extends Document {
     return (
       <Html className="h-full bg-gray-100">
         <Head>
-          <meta name="description" content="Chat via XMTP" />
+          <meta name="description" content="DeChat" />
           <link rel="icon" href="/favicon.ico" />
           <link
             href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700|Inconsolata:400,600,700&display=swap"
             rel="stylesheet"
           />
         </Head>
+
         <body className="h-full">
           <Main />
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

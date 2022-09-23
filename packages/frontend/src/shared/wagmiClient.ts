@@ -1,7 +1,8 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { allChains, chain, Chain, configureChains, createClient } from 'wagmi';
+import { allChains, Chain, chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
+
 import { env } from './environment';
 
 /**
@@ -23,25 +24,30 @@ export const getRpcUrl = (chainId: number): string => {
   return env.rpcUrls[chainId as keyof typeof env.rpcUrls];
 };
 
-export const {
-  chains: [...chains],
-  provider,
-} = configureChains(
-  Array.from(new Set([chain.mainnet, defaultChain, ...supportedChains])).filter(
-    Boolean
-  ) as Chain[],
-  [
-    jsonRpcProvider({
-      rpc: (chain) => {
-        const rpcUrl = getRpcUrl(chain.id);
-        if (!rpcUrl) {
-          throw new Error(`No RPC provided for chain ${chain.id}`);
-        }
-        return { http: rpcUrl };
-      },
-    }),
-    // publicProvider(),
-  ]
+// export const {
+//   chains: [...chains],
+//   provider,
+// } = configureChains(
+//   Array.from(new Set([chain.mainnet, defaultChain, ...supportedChains])).filter(
+//     Boolean
+//   ) as Chain[],
+//   [
+//     jsonRpcProvider({
+//       rpc: (chain) => {
+//         const rpcUrl = getRpcUrl(chain.id);
+//         if (!rpcUrl) {
+//           throw new Error(`No RPC provided for chain ${chain.id}`);
+//         }
+//         return { http: rpcUrl };
+//       },
+//     }),
+//     // publicProvider(),
+//   ]
+// );
+
+export const { chains, provider } = configureChains(
+  [chain.mainnet, chain.polygonMumbai],
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
@@ -49,7 +55,6 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-console.log('test wagmi client: ', chains);
 export const wagmiClient = createClient({
   autoConnect: true,
   connectors,

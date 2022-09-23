@@ -1,14 +1,15 @@
-import { classNames, truncate, formatDate } from '../helpers';
-import Link from 'next/link';
-import Address from './Address';
-import { useRouter } from 'next/router';
-import { Conversation } from '@xmtp/xmtp-js/dist/types/src/conversations';
-import useConversation from '../hooks/useConversation';
-import { XmtpContext } from '../contexts/xmtp';
 import { Message } from '@xmtp/xmtp-js';
-import Avatar from './Avatar';
+import { Conversation } from '@xmtp/xmtp-js/dist/types/src/conversations';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
+
+import { XmtpContext } from '../contexts/xmtp';
+import { classNames, formatDate, truncate } from '../helpers';
+import useConversation from '../hooks/useConversation';
 import useEns from '../hooks/useEns';
+import Address from './Address';
+import Avatar from './Avatar';
 
 type ConversationsListProps = {
   conversations: Conversation[];

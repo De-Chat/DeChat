@@ -1,11 +1,12 @@
 import { LinkIcon } from '@heroicons/react/outline';
 import { ChatIcon } from '@heroicons/react/outline';
 import { ArrowSmRightIcon } from '@heroicons/react/solid';
+import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
+import { ReactNode } from 'react';
+
 import useXmtp from '../hooks/useXmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
-import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
-import { ReactNode } from 'react';
 
 const NavigationPanel = (): JSX.Element => {
   const { walletAddress } = useXmtp();
@@ -23,7 +24,9 @@ const NavigationPanel = (): JSX.Element => {
   );
 };
 
-const NoWalletConnectedMessage: React.FC<{children: ReactNode}> = ({ children }) => {
+const NoWalletConnectedMessage: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   return (
     <div className="flex flex-col flex-grow justify-center">
       <div className="flex flex-col items-center px-4 text-center">

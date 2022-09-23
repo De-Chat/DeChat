@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import useXmtp from '../hooks/useXmtp';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { classNames } from '../helpers';
 import useEns from '../hooks/useEns';
+import useXmtp from '../hooks/useXmtp';
 
 type AddressInputProps = {
   peerAddressOrName?: string;
@@ -30,12 +31,10 @@ const AddressInput = ({
   const [value, setValue] = useState<string>('');
 
   const focusInputElementRef = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (inputElement.current as any)?.focus();
   }, [inputElement]);
 
   const blurInputElementRef = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (inputElement.current as any)?.blur();
   }, [inputElement]);
 

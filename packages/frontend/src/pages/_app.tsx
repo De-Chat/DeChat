@@ -1,12 +1,27 @@
 import '../styles/globals.css';
+
 import type { AppProps } from 'next/app';
-import App from '../components/App';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+
+const AppWithoutSSR = dynamic(() => import('../components/App'), {
+  ssr: false,
+});
 
 function AppWrapper({ Component, pageProps }: AppProps) {
   return (
-    <App>
-      <Component {...pageProps} />
-    </App>
+    <>
+      <Head>
+        <title>DeChat</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </Head>
+      <AppWithoutSSR>
+        <Component {...pageProps} />
+      </AppWithoutSSR>
+    </>
   );
 }
 

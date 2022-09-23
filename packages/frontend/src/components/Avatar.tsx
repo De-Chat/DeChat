@@ -1,4 +1,5 @@
 import Blockies from 'react-blockies';
+
 import useEns from '../hooks/useEns';
 
 type AvatarProps = {

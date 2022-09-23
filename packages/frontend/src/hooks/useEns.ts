@@ -1,4 +1,4 @@
-import { useEnsAddress, useEnsName, useEnsAvatar } from 'wagmi';
+import { useEnsAddress, useEnsAvatar, useEnsName } from 'wagmi';
 
 const useEns = (addressOrName: string | undefined) => {
   const probableAddress =

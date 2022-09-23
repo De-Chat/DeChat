@@ -1,0 +1,4 @@
+{
+  "mumbai": "https://api.thegraph.com/subgraphs/name/chee-chyuan/subgraph-dechat-mumbai",
+  "goerli": "https://api.thegraph.com/subgraphs/name/chee-chyuan/subgraph-dechat-goerli"
+}

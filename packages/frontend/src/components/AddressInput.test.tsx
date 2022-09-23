@@ -1,8 +1,9 @@
-import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
-import AddressInput from './AddressInput';
+import { act, fireEvent, render } from '@testing-library/react';
 import assert from 'assert';
+import React from 'react';
+
+import AddressInput from './AddressInput';
 
 // const lookupAddress = async (address: string) =>
 //   address === '0xfoo' ? 'foo.eth' : undefined

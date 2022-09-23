@@ -1,13 +1,25 @@
-import { useColorMode } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
+import { Icon, IconButton, useColorMode } from '@chakra-ui/react';
+import { useMemo } from 'react';
+import { BsMoonStars, BsSun } from 'react-icons/bs';
 
-export default () => {
+const ThemeToggler = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const buttonIcon = useMemo(
+    () => (colorMode == 'light' ? BsSun : BsMoonStars),
+    [colorMode]
+  );
+
   return (
-    <header>
-      <Button onClick={toggleColorMode}>
-        Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-      </Button>
-    </header>
+    <IconButton
+      aria-label="Toggle theme"
+      variant="outline"
+      border="none"
+      icon={<Icon as={buttonIcon} />}
+      onClick={toggleColorMode}
+    >
+      Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+    </IconButton>
   );
 };
+
+export default ThemeToggler;
