@@ -2,30 +2,22 @@ import { BigNumber, ethers } from 'ethers';
 import { useState } from 'react';
 import { SuperfluidToken } from 'src/services/superFluidService';
 
-export const useCreateFlow = (
+export const upgradeCreateFlow = async (
   wrapperSuperToken: SuperfluidToken,
+  upgradeAmount: BigNumber,
   sender: string,
   receiver: string,
   flowRate: string,
   userData?: string
 ) => {
-  const [receipt, setReceipt] = useState<
-    ethers.providers.TransactionResponse | undefined
-  >(undefined);
-
+  const upgradeOp = wrapperSuperToken.upgradeOp(upgradeAmount);
   const createFlowOp = wrapperSuperToken.createFlow(
     sender,
     receiver,
     flowRate,
     userData
   );
-  createFlowOp.exec(wrapperSuperToken.getSigner()).then((receipt) => {
-    setReceipt(receipt);
-  });
 
-  if (receipt) {
-    return { done: true, receipt };
-  }
-
-  return { done: false, receipt: undefined };
+  const receipt = await wrapperSuperToken.execBatchCall([upgradeOp, createFlowOp])
+  return receipt
 };

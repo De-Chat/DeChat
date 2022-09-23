@@ -4,7 +4,6 @@ import { SuperfluidToken } from 'src/services/superFluidService';
 
 export const useDeleteFlow = (
   wrapperSuperToken: SuperfluidToken,
-  signer: ethers.Signer,
   sender: string,
   receiver: string,
   flowRate: string,
@@ -20,7 +19,7 @@ export const useDeleteFlow = (
     flowRate,
     userData
   );
-  deleteFlowOp.exec(signer).then((receipt) => {
+  deleteFlowOp.exec(wrapperSuperToken.getSigner()).then((receipt) => {
     setReceipt(receipt);
   });
 

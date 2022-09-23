@@ -5,10 +5,15 @@ import useXmtp from '../../hooks/useXmtp';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
 import BaseModal from './BaseModal';
-import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, HStack, Input, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, HStack, Input, InputGroup, InputRightAddon, Link, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { IoRocketOutline } from 'react-icons/io5'
 import { getTokenBalancesForAddress, getNFTForAddress } from 'src/services/covalentService';
 import useAsyncEffect from 'use-async-effect';
+import { getSuperfluidBaseTokens, getSuperfluidSupertoken } from 'src/hooks/superFluid/wrappingMap';
+import { createFramework } from 'src/hooks/superFluid/useCreateFramework';
+import { createWrappedSuperToken } from 'src/hooks/superFluid/useCreateWrappedSuperToken';
+import { SuperfluidToken } from 'src/services/superFluidService';
+import { upgradeCreateFlow } from 'src/hooks/superFluid/useUpgradeCreateFlow';
 
 // helpers
 const approveErc20 = async (contract: ethers.Contract, address: string, amount: string, decimals: number) => {
@@ -21,6 +26,7 @@ const approveErc20 = async (contract: ethers.Contract, address: string, amount: 
     tsx = await contract.approve(address, ethers.utils.parseUnits(amount, decimals));
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -36,6 +42,7 @@ const approveErc721 = async (contract: ethers.Contract, address: string, tokenId
     tsx = await contract.approve(address, tokenId);
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -53,6 +60,7 @@ const sendEth = async (contract: ethers.Contract, address: string, amount: strin
     });
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -74,6 +82,7 @@ const sendERC20 = async (
     let tsx = await contract.sendErc20(tokenAddr, recipient, formattedAmount);
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -93,6 +102,7 @@ const sendERC721 = async (
     let tsx = await contract.sendErc721(tokenAddr, recipient, id);
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -119,13 +129,14 @@ const sendERC1155 = async (
     );
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
 };
 
 // send token
-const SendToken = ({ disclosure }) => {
+const SendToken = ({ disclosure, showTxToast }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -145,20 +156,20 @@ const SendToken = ({ disclosure }) => {
     setForm({ ...form, token: getTokenByAddress(tokenAddr) })
     console.log('test select token: ', e.target.value)
   }
-  const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => setForm({ ...form, [e.currentTarget.name]: e.currentTarget.checked})
+  const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => setForm({ ...form, [e.currentTarget.name]: e.currentTarget.checked })
   // TODO: validation
   const validateForm = () => {
     if (!form['to'] || !form['token'] || !form['amount']) {
       setError('Transaction info is incomplete')
       return false
     }
+    setError(null)
     return true
   }
   console.log('test form: ', form)
 
   // contract and stuff
   const { wallet: signer, walletAddress: address } = useXmtp();
-  console.log('test current addr: ', address, signer);
   const { contracts } = useDeployments();
   // Approve contract and read / write function
   const { data: allowance, isError, isLoading } = useContractRead({
@@ -190,12 +201,13 @@ const SendToken = ({ disclosure }) => {
     setBusy(true)
     let { to, token, amount } = form
     const tokenContract = new ethers.Contract(
-      form.token?.address, 
-      erc20ABI, 
+      form.token?.address,
+      erc20ABI,
       signer)
     console.log('test erc20: ', token.address, to, amount)
-    await approveErc20(tokenContract, contracts?.Send.address, amount, token.decimals)
+    const receipt = await approveErc20(tokenContract, contracts?.Send.address, amount, token.decimals)
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // ERC20 contract and write function
@@ -210,12 +222,12 @@ const SendToken = ({ disclosure }) => {
 
     setBusy(true)
     let { to, token, amount } = form
-    await sendERC20(sendContract, token.address, to, amount, token.decimals)
+    const receipt = await sendERC20(sendContract, token.address, to, amount, token.decimals)
 
     // TODO: write to tableland if this is a lend
-
     disclosure.onClose()
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // tokenlist
@@ -234,7 +246,7 @@ const SendToken = ({ disclosure }) => {
 
   return (
     <Container centerContent>
-      <FormControl mt={3} mb={3} onSubmit={onSend}>
+      <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onSend}>
         <VStack spacing={4}>
           <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
           <HStack gap={2}>
@@ -245,7 +257,7 @@ const SendToken = ({ disclosure }) => {
             </Select>
             <Input placeholder='Amount' name='amount' type='number' onChange={handleFormChange} />
           </HStack>
-          <Checkbox name='lend' onChange={handleCheckboxChange}>Lend to receiver</Checkbox>
+          {/* <Checkbox name='lend' onChange={handleCheckboxChange}>Lend to receiver</Checkbox> */}
           {error && (
             <FormErrorMessage>
               {error}
@@ -265,7 +277,7 @@ const SendToken = ({ disclosure }) => {
 }
 
 // send NFT
-const SendNFT = ({ disclosure }) => {
+const SendNFT = ({ disclosure, showTxToast }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -288,13 +300,13 @@ const SendNFT = ({ disclosure }) => {
       setError('Transaction info is incomplete')
       return false
     }
+    setError(null)
     return true
   }
   console.log('test form: ', form)
 
   // contract and stuff
   const { wallet: signer, walletAddress: address } = useXmtp();
-  console.log('test current addr: ', address, signer);
   const { contracts } = useDeployments();
   // Approve contract and read / write function
   const { data: getApproved, isError, isLoading } = useContractRead({
@@ -322,12 +334,12 @@ const SendNFT = ({ disclosure }) => {
 
     setBusy(true)
     const nftContract = new ethers.Contract(
-      form.contract, 
-      erc721ABI, 
+      form.contract,
+      erc721ABI,
       signer)
-    console.log('test erc721: ', )
-    await approveErc721(nftContract, contracts?.Send.address, form?.tokenId)
+    const receipt = await approveErc721(nftContract, contracts?.Send.address, form?.tokenId)
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // ERC721 contract and write function
@@ -342,12 +354,13 @@ const SendNFT = ({ disclosure }) => {
 
     setBusy(true)
     let { to, contract, tokenId } = form
-    await sendERC721(sendContract, contract, to, tokenId)
+    const receipt = await sendERC721(sendContract, contract, to, tokenId)
 
     // TODO: write to tableland if this is a lend
 
     disclosure.onClose()
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // tokenlist
@@ -369,19 +382,19 @@ const SendNFT = ({ disclosure }) => {
 
   return (
     <Container centerContent>
-      <FormControl mt={3} mb={3} onSubmit={onSend}>
+      <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onSend}>
         <VStack spacing={4}>
           <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
-            <Select placeholder='Contract' name='contract' onChange={handleSelectChange}>
-              {nfts.map((nft: any) =>
-                <option key={nft.name} value={nft.address}>{nft.name}</option>
-              )}
-            </Select>
-            <Select placeholder='Token ID' name='tokenId' onChange={handleSelectChange}>
-              {tokenIds.map((tokenId: any) =>
-                <option key={tokenId.name} value={tokenId.id}>{tokenId.name}</option>
-              )}
-            </Select>
+          <Select placeholder='Contract' name='contract' onChange={handleSelectChange}>
+            {nfts.map((nft: any) =>
+              <option key={nft.name} value={nft.address}>{nft.name}</option>
+            )}
+          </Select>
+          <Select placeholder='Token ID' name='tokenId' onChange={handleSelectChange}>
+            {tokenIds.map((tokenId: any) =>
+              <option key={tokenId.name} value={tokenId.id}>{tokenId.name}</option>
+            )}
+          </Select>
           {error && (
             <FormErrorMessage>
               {error}
@@ -400,6 +413,151 @@ const SendNFT = ({ disclosure }) => {
   )
 }
 
+// send Stream
+const SendStream = ({ disclosure, showTxToast }) => {
+  const [busy, setBusy] = useState(false)
+  useEffect(() => {
+    if (!disclosure.isOpen) {
+      setBusy(false)
+      setForm({})
+    }
+  }, [disclosure.isOpen])
+
+  // form update 
+  const [form, setForm] = useState<any>({})
+  const [error, setError] = useState(null)
+  const handleFormChange = (e: React.FormEvent<HTMLInputElement>) => setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value })
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const tokenAddr = e.target.value
+    const chainId = chain?.id
+    console.log('test select: ', chainId, tokenAddr, getTokenByAddress(tokenAddr))
+    setForm({ ...form, token: getTokenByAddress(tokenAddr) })
+    console.log('test select token: ', e.target.value)
+  }
+  // TODO: validation
+  const validateForm = () => {
+    if (!form['to'] || !form['token'] || !form['flowrate'] || !form['upgradeAmount']) {
+      setError('Transaction info is incomplete')
+      return false
+    }
+    setError(null)
+    return true
+  }
+  console.log('test form: ', form)
+
+  // contract and stuff
+  const { wallet: signer, walletAddress: address } = useXmtp();
+  const { contracts } = useDeployments();
+  // Approve contract and read / write function
+  const { data: allowance, isError, isLoading } = useContractRead({
+    addressOrName: form.token?.address,
+    contractInterface: erc20ABI,
+    functionName: 'allowance',
+    args: [address, form.token?.supertokenAddress],
+    watch: true
+  })
+  const approved = useMemo(() => {
+    try {
+      const upgradeAmount = form.upgradeAmount
+      const decimals = form.token.decimals
+      const parsedAmount = ethers.utils.parseUnits(upgradeAmount, decimals)
+      return allowance.gte(parsedAmount)
+    } catch (e) {
+      return false
+    }
+  }, [form, allowance])
+  const onApprove = async () => {
+    if (!validateForm())
+      return
+
+    setBusy(true)
+    let { to, token, upgradeAmount } = form
+    const tokenContract = new ethers.Contract(
+      form.token?.address,
+      erc20ABI,
+      signer)
+    const receipt = await approveErc20(tokenContract, form.token?.supertokenAddress, upgradeAmount, token.decimals)
+    setBusy(false)
+    showTxToast(receipt.transactionHash)
+  }
+
+  const provider = useProvider()
+  const onUpgradeAndStream = async () => {
+    if (!validateForm())
+      return
+
+    setBusy(true)
+
+    const framework = await createFramework(provider)
+    const wrappedSuperToken = await createWrappedSuperToken(framework, form.token?.supertokenAddress)
+    const supertoken = new SuperfluidToken(framework, signer, wrappedSuperToken)
+    const parsedUpgradeAmount = ethers.utils.parseUnits(form.upgradeAmount, form.token?.decimals)
+    const parsedFlowrate = ethers.utils.parseEther(form.flowrate)
+    const receipt = await upgradeCreateFlow(supertoken, parsedUpgradeAmount, address, form.to, parsedFlowrate, undefined)
+    console.log({ receipt })
+
+    // TODO: write to tableland if this is a lend
+    disclosure.onClose()
+    setBusy(false)
+    showTxToast(receipt.transactionHash)
+  }
+
+  // tokenlist
+  const { chain } = useNetwork()
+  // const tokenlist = useMemo(() => getERC20s(chain?.id) || [], [chain?.id])
+  const [tokenlist, setTokenlist] = useState([])
+  useAsyncEffect(async () => {
+    if (chain?.id) {
+      let userTokenlist = await getTokenBalancesForAddress(chain?.id, address)
+      // filter only Superfluid base token listed in src/hooks/superfluid/wrappingMap
+      const superfluidBasetokens = getSuperfluidBaseTokens()
+      console.log('test superfluid: ', userTokenlist, superfluidBasetokens)
+      let userSuperfluidBaseTokens = userTokenlist?.tokens.filter(t => superfluidBasetokens.includes(t.address))
+      userSuperfluidBaseTokens = userSuperfluidBaseTokens?.map(t => ({
+        ...t, supertokenAddress: getSuperfluidSupertoken(t.address)
+      }))
+      setTokenlist(userSuperfluidBaseTokens || [])
+    }
+  }, [chain?.id, address])
+  const getTokenByAddress = useCallback((tokenAddr) => tokenlist.find(t => t.address == tokenAddr), [tokenlist])
+
+  console.log('test superfluid tokenlist: ', tokenlist)
+
+  return (
+    <Container centerContent>
+      <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onUpgradeAndStream}>
+        <VStack spacing={4}>
+          <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
+          <Select placeholder='Token' name='token' onChange={handleSelectChange}>
+            {tokenlist?.map((token: any) =>
+              <option key={token.address} value={token.address}>{token.symbol}</option>
+            )}
+          </Select>
+          <Input placeholder='Upgrade Amount' name='upgradeAmount' onChange={handleFormChange} />
+          <InputGroup>
+            <Input placeholder='Flowrate' name='flowrate' type='number' onChange={handleFormChange} />
+            <InputRightAddon children='/ second' />
+          </InputGroup>
+          {error ? (
+            <>
+              <FormErrorMessage>
+                {error}
+              </FormErrorMessage>
+            </>
+          ) : null}
+        </VStack>
+      </FormControl>
+
+      <Center mt={5} >
+        {busy ? <Spinner />
+          : (approved ? <Button onClick={onUpgradeAndStream}>Stream</Button>
+            : <Button onClick={onApprove}>Approve</Button>)
+        }
+      </Center>
+    </Container>
+  )
+}
+
 const tabs = [
   {
     name: 'TOKEN',
@@ -411,12 +569,21 @@ const tabs = [
   },
   {
     name: 'STREAM',
-    component: (props) => <>3</>
+    component: (props) => <SendStream {...props} />
   },
 ]
 
 const SendModal = () => {
   const disclosure = useDisclosure()
+  const toast = useToast()
+  const showTxToast = useCallback((tx: string) =>
+    toast({
+      title: 'Transaction submitted',
+      description: <>Check your transaction <Link fontWeight={700} target='_blank' href={`https://mumbai.polygonscan.com/tx/${tx}`}>HERE</Link>.</>,
+      status: 'success',
+      isClosable: true,
+      position: 'top-right'
+    }), [toast])
 
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -431,7 +598,7 @@ const SendModal = () => {
           </TabList>
           <TabPanels>
             {/* <BusyContext.Provider value={{ busy, setBusy }}> */}
-            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure })}</TabPanel>)}
+            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure, showTxToast })}</TabPanel>)}
             {/* </BusyContext.Provider> */}
           </TabPanels>
         </Tabs>

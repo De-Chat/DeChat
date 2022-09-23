@@ -39,7 +39,6 @@ import {
 
 export const useUpgradeSuperToken = (
   wrapperSuperToken: SuperfluidToken,
-  signer: ethers.Signer,
   amount: BigNumber
 ) => {
   const [receipt, setReceipt] = useState<
@@ -47,7 +46,7 @@ export const useUpgradeSuperToken = (
   >(undefined);
 
   const upgradeOp = wrapperSuperToken.upgradeOp(amount);
-  upgradeOp.exec(signer).then((receipt) => {
+  upgradeOp.exec(wrapperSuperToken.getSigner()).then((receipt) => {
     setReceipt(receipt);
   });
 
