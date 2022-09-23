@@ -23,12 +23,11 @@ function App({ children }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <ChakraProvider theme={theme}>
-        {/* <RainbowKitProvider chains={chains} initialChain={env.defaultChain} theme={colorMode == 'light' ? lightTheme() : darkTheme()}> */}
+        <RainbowKitProvider chains={chains} initialChain={env.defaultChain} theme={colorMode == 'light' ? lightTheme() : darkTheme()}>
         <XmtpProvider>
-          {children}
-          {/* <Layout>{children}</Layout> */}
+          <Layout>{children}</Layout>
         </XmtpProvider>
-        {/* </RainbowKitProvider> */}
+        </RainbowKitProvider>
       </ChakraProvider>
     </WagmiConfig>
   );

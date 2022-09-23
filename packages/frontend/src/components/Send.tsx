@@ -6,7 +6,10 @@ import { useMemo } from 'react';
 import { useAccount, useSigner } from 'wagmi';
 
 import { useGetAllTransfer } from '../hooks/useGetAllTransfer';
-import { useGetNetworkTransfer } from '../hooks/useGetNetworkTransfer';
+import {
+  useGetNetworkTransfer,
+  useGetNetworkTransferPoll,
+} from '../hooks/useGetNetworkTransfer';
 import useXmtp from '../hooks/useXmtp';
 
 const Send = () => {
@@ -22,9 +25,9 @@ const Send = () => {
   //     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
   //   );
 
-  const { loading, error, data } = useGetNetworkTransfer(
+  const { loading, error, data } = useGetNetworkTransferPoll(
     'mumbai',
-    '',
+    1000,
     100,
     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'

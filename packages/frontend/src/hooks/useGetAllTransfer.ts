@@ -1,7 +1,10 @@
 import { ApolloError } from '@apollo/client';
 
 import networkSubgraph from '../../networkSubgraph.json';
-import { useGetNetworkTransfer } from './useGetNetworkTransfer';
+import {
+  useGetNetworkTransfer,
+  useGetNetworkTransferPoll,
+} from './useGetNetworkTransfer';
 
 export const useGetAllTransfer = (
   count: number,
@@ -13,9 +16,9 @@ export const useGetAllTransfer = (
   const dataMap: Map<string, any[]> = new Map();
 
   Object.keys(networkSubgraph).forEach((key: string) => {
-    const { loading, error, data } = useGetNetworkTransfer(
+    const { loading, error, data } = useGetNetworkTransferPoll(
       key,
-      '',
+      1000,
       count,
       sender,
       recipient
