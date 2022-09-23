@@ -8,10 +8,11 @@ import { FiSend } from 'react-icons/fi'
 import SendModal from '@components/Modals/SendModal';
 
 type MessageComposerProps = {
+  peerAddress: string,
   onSend: (msg: string) => Promise<void>;
 };
 
-const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
+const MessageComposer = ({ peerAddress, onSend }: MessageComposerProps): JSX.Element => {
   const [message, setMessage] = useState('');
   const router = useRouter();
 
@@ -42,7 +43,7 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
       <FormControl>
         <Flex gap={2} align="center">
           <ImageUploader onSend={onSend} />
-          <SendModal />
+          <SendModal peerAddress={peerAddress} />
           <Input
             flex={1}
             type="text"

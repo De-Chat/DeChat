@@ -30,7 +30,7 @@ const Conversation = ({
     peerAddress as string,
     scrollToMessagesEndRef
   );
-  // prepare Graph transactions
+  // TODO: change here to peerAddress, walletAddress
   const transactions = useGetAllTransfer(100, walletAddress, walletAddress)
   // console.log('test getGraph: ', tx)
   // const transactions: Transaction[] = useMemo(() => {
@@ -92,7 +92,7 @@ const Conversation = ({
   return (
     <main className="flex flex-col flex-1 bg-white h-screen">
       <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
-      {walletAddress && <MessageComposer onSend={sendMessage} />}
+      {walletAddress && <MessageComposer peerAddress={peerAddress} onSend={sendMessage} />}
     </main>
   );
 };

@@ -2,10 +2,10 @@ import { useDeployments } from '@shared/useDeployments';
 import { useContractRead, useNetwork, erc20ABI, useProvider, useBlockNumber, useContract, erc721ABI } from 'wagmi';
 import { Send__factory } from '@dechat/contracts/typechain-types';
 import useXmtp from '../../hooks/useXmtp';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ethers } from 'ethers';
 import BaseModal from './BaseModal';
-import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, Input, InputGroup, InputRightAddon, Link, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, useToast, VStack } from '@chakra-ui/react';
+import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, Input, InputGroup, InputRightAddon, InputRightElement, Link, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { IoRocketOutline } from 'react-icons/io5'
 import { getTokenBalancesForAddress, getNFTForAddress } from 'src/services/covalentService';
 import useAsyncEffect from 'use-async-effect';
@@ -15,7 +15,7 @@ import { createWrappedSuperToken } from 'src/hooks/superFluid/useCreateWrappedSu
 import { SuperfluidToken } from 'src/services/superFluidService';
 import { upgradeCreateFlow } from 'src/hooks/superFluid/useUpgradeCreateFlow';
 
-// helpers
+///// helpers
 const approveErc20 = async (contract: ethers.Contract, address: string, amount: string, decimals: number) => {
   if (!contract) {
     console.warn('Contract not constructed!');
@@ -135,8 +135,35 @@ const sendERC1155 = async (
   }
 };
 
+///// components
+// helpers
+const InputWithPeerAddress = ({ peerAddress, form, setForm, handleFormChange }) => {
+  // TODO: peerAddress actually can be fetch from URL..
+  // UI helpers
+  const inputTo = useRef(null)
+  const onSetPeerAddress = useCallback(() => {
+    if (inputTo.current) {
+      console.log('test peerAddress: ', peerAddress)
+      inputTo.current.value = peerAddress
+      setForm({ ...form, to: peerAddress })
+    }
+  }, [inputTo, peerAddress, setForm, form])
+  return (
+    <InputGroup>
+      <Input ref={inputTo} placeholder='Receiver' name='to' onChange={handleFormChange} />
+      {!form.to ?
+        <InputRightElement width='4.5rem'>
+          <Button h='1.75rem' size='sm' onClick={onSetPeerAddress}>
+            Peer
+          </Button>
+        </InputRightElement>
+        : null
+      }
+    </InputGroup>
+  )
+}
 // send token
-const SendToken = ({ disclosure, showTxToast }) => {
+const SendToken = ({ disclosure, showTxToast, peerAddress }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -250,7 +277,7 @@ const SendToken = ({ disclosure, showTxToast }) => {
     <Container centerContent>
       <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onSend}>
         <VStack spacing={4}>
-          <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
+          <InputWithPeerAddress {...{ peerAddress, form, setForm, handleFormChange }} />
           <Select placeholder='Token' name='token' onChange={handleSelectChange}>
             {tokenlist?.map((token: any) =>
               <option key={token.address} value={token.address}>{token.symbol}</option>
@@ -277,7 +304,7 @@ const SendToken = ({ disclosure, showTxToast }) => {
 }
 
 // send NFT
-const SendNFT = ({ disclosure, showTxToast }) => {
+const SendNFT = ({ disclosure, showTxToast, peerAddress }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -384,7 +411,7 @@ const SendNFT = ({ disclosure, showTxToast }) => {
     <Container centerContent>
       <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onSend}>
         <VStack spacing={4}>
-          <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
+          <InputWithPeerAddress {...{ peerAddress, form, setForm, handleFormChange }} />
           <Select placeholder='Contract' name='contract' onChange={handleSelectChange}>
             {nfts.map((nft: any) =>
               <option key={nft.name} value={nft.address}>{nft.name}</option>
@@ -414,7 +441,7 @@ const SendNFT = ({ disclosure, showTxToast }) => {
 }
 
 // send Stream
-const SendStream = ({ disclosure, showTxToast }) => {
+const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -527,9 +554,14 @@ const SendStream = ({ disclosure, showTxToast }) => {
 
   return (
     <Container centerContent>
+      <Link
+        href={`https://console.superfluid.finance/mumbai/accounts/0xc183073817a1363b0c98565a2a9083f5f8e1aca1?tab=streams`}
+      >
+        Check current streamings
+      </Link>
       <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onUpgradeAndStream}>
         <VStack spacing={4}>
-          <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
+          <InputWithPeerAddress {...{ peerAddress, form, setForm, handleFormChange }} />
           <Select placeholder='Token' name='token' onChange={handleSelectChange}>
             {tokenlist?.map((token: any) =>
               <option key={token.address} value={token.address}>{token.symbol}</option>
@@ -575,7 +607,7 @@ const tabs = [
   },
 ]
 
-const SendModal = () => {
+const SendModal = ({ peerAddress }) => {
   const disclosure = useDisclosure()
   const toast = useToast()
   const showTxToast = useCallback((tx: string) =>
@@ -600,7 +632,7 @@ const SendModal = () => {
           </TabList>
           <TabPanels>
             {/* <BusyContext.Provider value={{ busy, setBusy }}> */}
-            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure, showTxToast })}</TabPanel>)}
+            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure, showTxToast, peerAddress })}</TabPanel>)}
             {/* </BusyContext.Provider> */}
           </TabPanels>
         </Tabs>
