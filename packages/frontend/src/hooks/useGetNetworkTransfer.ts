@@ -94,7 +94,7 @@ export const useGetNetworkTransferPoll = (
     return () => {
       stopPolling();
     };
-  }, [startPolling, stopPolling]);
+  }, [startPolling, stopPolling, pollInterval]);
 
   return { loading, error, data };
 };
