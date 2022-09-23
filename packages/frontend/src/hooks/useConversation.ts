@@ -1,5 +1,6 @@
 import { Conversation, Message, Stream } from '@xmtp/xmtp-js';
-import { useContext, useCallback, useState, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+
 import { XmtpContext } from '../contexts/xmtp';
 
 type OnMessageCallback = () => void;

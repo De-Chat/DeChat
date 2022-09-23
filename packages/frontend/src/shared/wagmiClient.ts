@@ -1,7 +1,8 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { allChains, chain, Chain, configureChains, createClient } from 'wagmi';
+import { allChains, Chain, chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
+
 import { env } from './environment';
 
 /**

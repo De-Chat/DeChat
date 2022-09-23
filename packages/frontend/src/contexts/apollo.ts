@@ -1,5 +1,6 @@
-import { createContext } from 'react';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { createContext } from 'react';
+
 import networkSubgraph from '../../networkSubgraph.json';
 
 export class ApolloTheGraphClient {

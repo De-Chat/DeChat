@@ -11,32 +11,33 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
-import { BiEditAlt } from 'react-icons/bi'
 import React, { type SyntheticEvent, useEffect, useState } from 'react';
+import { BiEditAlt } from 'react-icons/bi';
+
 import BaseModal from './BaseModal';
 
 const AddToContactModal = (): JSX.Element => {
   const disclosure = useDisclosure();
 
   const [input, setInput] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false)
+  const [busy, setBusy] = useState(false);
 
   const handleInputChange = (e: any) => setInput(e.target.value);
   const onSubmit = (e: SyntheticEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setBusy(true)
+    e.preventDefault();
+    e.stopPropagation();
+    setBusy(true);
     // TODO: write to tableland
     // setBusy(false)
     // disclosure.onClose()
-  }
+  };
 
   useEffect(() => {
     if (!disclosure.isOpen) {
-      setInput(null)
-      setBusy(false)
+      setInput(null);
+      setBusy(false);
     }
-  }, [disclosure.isOpen])
+  }, [disclosure.isOpen]);
 
   const isError = input === '';
 
@@ -65,9 +66,13 @@ const AddToContactModal = (): JSX.Element => {
           </ModalBody>
 
           <ModalFooter>
-            {busy ? <Spinner />
-              : <Button variant="ghost" disabled={isError}>Add</Button>
-            }
+            {busy ? (
+              <Spinner />
+            ) : (
+              <Button variant="ghost" disabled={isError}>
+                Add
+              </Button>
+            )}
           </ModalFooter>
         </Container>
       </BaseModal>
