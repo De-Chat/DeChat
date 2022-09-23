@@ -2,7 +2,10 @@ import { ApolloError } from '@apollo/client';
 import { useMemo } from 'react';
 
 import networkSubgraph from '../../networkSubgraph.json';
-import { useGetNetworkTransfer } from './useGetNetworkTransfer';
+import {
+  useGetNetworkTransfer,
+  useGetNetworkTransferPoll,
+} from './useGetNetworkTransfer';
 
 export const useGetAllTransfer = (
   count: number,
@@ -41,7 +44,6 @@ export const useGetAllDirectedTransfer = (
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { loading, error, data } = useGetNetworkTransfer(
       key,
-      '',
       count,
       sender,
       recipient

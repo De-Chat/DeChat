@@ -71,7 +71,7 @@ const Conversation = ({
     return [...textMessages, ...txMessages].sort(
       (a, b) => (a.message as any).sent - (b.message as any).sent
     );
-  }, [messages]);
+  }, [messages, transactions]);
 
   const hasMessages = messages.length > 0;
   useEffect(() => {

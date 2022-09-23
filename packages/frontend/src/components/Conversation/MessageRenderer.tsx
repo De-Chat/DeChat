@@ -11,11 +11,12 @@ import {
 import Card from '@components/Card';
 import { urlPrefix } from '@shared/environment';
 import { ethers } from 'ethers';
-import { useMemo } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 import Emoji from 'react-emoji-render';
 import { GrTransaction } from 'react-icons/gr';
 import { erc20ABI, useContractRead } from 'wagmi';
 
+import { decodeMessage } from './MessageParser';
 import { MessageTileProps } from './MessagesList';
 
 export interface Transaction {
@@ -25,10 +26,41 @@ export interface Transaction {
   content: any; // please refers to output of useGetAllTransfer()
 }
 
-const extractImgUrl = (message: string): string | null => {
-  const regex = /::image\((.+)\)/;
-  const found = message.match(regex);
-  return found && found[1];
+// General Card component, used in other components
+const MessageCard: React.FC<PropsWithChildren<{ href: string }>> = ({
+  href,
+  children,
+}) => {
+  return (
+    <LinkBox
+      as="article"
+      style={{ transitionDuration: '0.15s' }}
+      _hover={{ opacity: 0.8 }}
+    >
+      <LinkOverlay href={href} target="_blank" />
+      <Card padding={5} borderRadius={15}>
+        <Flex alignItems={'center'}>{children}</Flex>
+      </Card>
+    </LinkBox>
+  );
+};
+
+// streamData content could be found at frontend/src/components/Modals/SendModal.tsx sendStream()::payload
+const StreamFundTile = ({ streamData }: { streamData: any }) => {
+  return (
+    <MessageCard
+      href={`${urlPrefix.blockchainExplorer}/tx/${streamData.txHash}`}
+    >
+      <Avatar src="https://app.superfluid.finance/gifs/stream-loop.gif" />
+      <Box ml="3">
+        <Text fontSize="sm">Superfluid Stream</Text>
+        <Text fontWeight="bold">
+          {streamData.amount} {streamData.token}
+        </Text>
+        <Text fontWeight="bold">{streamData.flowrate} / sec</Text>
+      </Box>
+    </MessageCard>
+  );
 };
 
 // exmaple data
@@ -60,27 +92,15 @@ const TransactionBlock: React.FC<{ txData: any }> = ({ txData }) => {
     [txData.amount, decimals]
   );
   return (
-    <LinkBox
-      as="article"
-      style={{ transitionDuration: '0.15s' }}
-      _hover={{ opacity: 0.8 }}
-    >
-      <LinkOverlay
-        href={`${urlPrefix.blockchainExplorer}/tx/${txData.id}`}
-        target="_blank"
-      />
-      <Card padding={5} borderRadius={15}>
-        <Flex>
-          <Avatar icon={<Icon as={GrTransaction} />} />
-          <Box ml="3">
-            <Text fontSize="sm">{txData.transferType}</Text>
-            <Text fontWeight="bold">
-              {parsedAmount} {tokenName}
-            </Text>
-          </Box>
-        </Flex>
-      </Card>
-    </LinkBox>
+    <MessageCard href={`${urlPrefix.blockchainExplorer}/tx/${txData.id}`}>
+      <Avatar icon={<Icon as={GrTransaction} />} />
+      <Box ml="3">
+        <Text fontSize="sm">{txData.transferType}</Text>
+        <Text fontWeight="bold">
+          {parsedAmount} {tokenName}
+        </Text>
+      </Box>
+    </MessageCard>
   );
 };
 
@@ -91,15 +111,20 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
 
   if (type == 'message' && 'content' in message) {
     // text and images are "message"
-    const imgUrl = extractImgUrl(message.content);
+    const decodedMsg = decodeMessage(message.content);
     return message.error ? (
       <span>{`Error: ${message.error?.message}`}</span>
-    ) : imgUrl ? (
+    ) : decodedMsg?.command == 'image' ? (
       <Image
-        src={imgUrl}
+        src={decodedMsg.payload.url}
         width="100px"
         fallbackSrc="https://icon-library.com/images/loading-icon-animated-gif/loading-icon-animated-gif-20.jpg"
       />
+    ) : decodedMsg?.command == 'streamFund' ? (
+      <StreamFundTile streamData={decodedMsg.payload} />
+    ) : decodedMsg?.command == 'videoCall' ? (
+      // video call logic handler
+      <></>
     ) : (
       <Emoji text={message.content || ''} />
     );

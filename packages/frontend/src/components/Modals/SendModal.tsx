@@ -1,7 +1,6 @@
 import {
   Button,
   Center,
-  Checkbox,
   Container,
   FormControl,
   FormErrorMessage,
@@ -22,6 +21,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
+import { encodeMessage } from '@components/Conversation/MessageParser';
 import { Send__factory } from '@dechat/contracts/typechain-types';
 import { urlPrefix } from '@shared/environment';
 import { useDeployments } from '@shared/useDeployments';
@@ -602,10 +602,12 @@ const SendStream = ({
   disclosure,
   showTxToast,
   peerAddress,
+  sendPeer,
 }: {
   disclosure: any;
   showTxToast: Function;
   peerAddress: string;
+  sendPeer: Function;
 }) => {
   const [busy, setBusy] = useState(false);
   useEffect(() => {
@@ -641,6 +643,9 @@ const SendStream = ({
       !form['upgradeAmount']
     ) {
       setError('Transaction info is incomplete');
+      return false;
+    } else if (form['to'] == address) {
+      setError("You can't stream to yourself");
       return false;
     }
     setError(undefined);
@@ -726,6 +731,16 @@ const SendStream = ({
       undefined
     );
     console.log({ receipt });
+
+    // send the link to streaming via Xmtp conversation API
+    const payload = {
+      txHash: receipt.transactionHash,
+      token: form.token?.symbol,
+      amount: form.upgradeAmount,
+      flowrate: form.flowrate,
+    };
+    const encodedMsg = encodeMessage('streamFund', payload);
+    await sendPeer(encodedMsg);
 
     // TODO: write to tableland if this is a lend
     disclosure.onClose();
@@ -847,7 +862,13 @@ const tabs = [
   },
 ];
 
-const SendModal = ({ peerAddress }: { peerAddress: string }) => {
+const SendModal = ({
+  peerAddress,
+  sendPeer,
+}: {
+  peerAddress: string;
+  sendPeer: Function;
+}) => {
   const disclosure = useDisclosure();
   const toast = useToast();
   const showTxToast = useCallback(
@@ -895,7 +916,12 @@ const SendModal = ({ peerAddress }: { peerAddress: string }) => {
             {/* <BusyContext.Provider value={{ busy, setBusy }}> */}
             {tabs.map((tab) => (
               <TabPanel key={tab.name}>
-                {tab.component({ disclosure, showTxToast, peerAddress })}
+                {tab.component({
+                  disclosure,
+                  showTxToast,
+                  peerAddress,
+                  sendPeer,
+                })}
               </TabPanel>
             ))}
             {/* </BusyContext.Provider> */}
