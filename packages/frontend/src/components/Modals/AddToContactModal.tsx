@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import React, { type SyntheticEvent, useEffect, useState } from 'react';
 import { BiEditAlt } from 'react-icons/bi';
+import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 
 import BaseModal from './BaseModal';
 
