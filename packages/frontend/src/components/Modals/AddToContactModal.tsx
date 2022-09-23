@@ -40,13 +40,13 @@ const AddToContactModal = (): JSX.Element => {
       return;
     }
     // TODO: write to tableland
-    // setBusy(false)
-    // disclosure.onClose()
     const service = userContactContext.service!;
     await service.addContact(userContactContext.userContactTableId!, {
       address: address,
       name: input,
     });
+    setBusy(false)
+    disclosure.onClose()
   };
 
   useEffect(() => {
