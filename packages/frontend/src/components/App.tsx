@@ -1,18 +1,16 @@
+import XmtpProvider from './XmtpProvider';
+import Layout from './Layout';
 import '@rainbow-me/rainbowkit/styles.css';
-
-import { ChakraProvider, useColorMode } from '@chakra-ui/react';
+import { WagmiConfig } from 'wagmi';
+import { chains, wagmiClient } from '@shared/wagmiClient';
 import {
   darkTheme,
   lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { env } from '@shared/environment';
-import { chains, wagmiClient } from '@shared/wagmiClient';
+import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import theme from '@styles/theme';
-import { WagmiConfig } from 'wagmi';
-
-import Layout from './Layout';
-import XmtpProvider from './XmtpProvider';
+import { env } from '@shared/environment';
 
 type AppProps = {
   children?: React.ReactNode;
@@ -24,9 +22,9 @@ function App({ children }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <ChakraProvider theme={theme}>
         <RainbowKitProvider chains={chains} initialChain={env.defaultChain} theme={colorMode == 'light' ? lightTheme() : darkTheme()}>
-        <XmtpProvider>
-          <Layout>{children}</Layout>
-        </XmtpProvider>
+          <XmtpProvider>
+            <Layout>{children}</Layout>
+          </XmtpProvider>
         </RainbowKitProvider>
       </ChakraProvider>
     </WagmiConfig>

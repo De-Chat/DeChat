@@ -6,7 +6,6 @@ const withTM = require('next-transpile-modules')(['@dechat/contracts']);
 /** @type {import('next').NextConfig} */
 const nextConfig = optimizedImages({
   reactStrictMode: true,
-  handleImages: ['svg'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Fixes npm packages that depend on `fs` module

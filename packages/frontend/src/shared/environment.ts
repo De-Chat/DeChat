@@ -19,3 +19,8 @@ export const env = {
     80001: process.env.NEXT_PUBLIC_RPC_80001!, // Mumbai
   },
 };
+
+export const urlPrefix = {
+  blockchainExplorer: 'https://mumbai.polygonscan.com',
+  superfluidConsole: 'https://console.superfluid.finance/mumbai'
+}
