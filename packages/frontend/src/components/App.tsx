@@ -1,11 +1,13 @@
 import XmtpProvider from './XmtpProvider';
 import Layout from './Layout';
-
 import '@rainbow-me/rainbowkit/styles.css';
-
 import { WagmiConfig } from 'wagmi';
-import { wagmiClient, chains } from '@shared/wagmiClient';
-import { darkTheme, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { chains, wagmiClient } from '@shared/wagmiClient';
+import {
+  darkTheme,
+  lightTheme,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit';
 import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import theme from '@styles/theme';
 import { env } from '@shared/environment';

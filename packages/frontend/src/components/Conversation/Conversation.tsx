@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import useXmtp from '../../hooks/useXmtp';
-import useConversation from '../../hooks/useConversation';
-import { MessagesList, MessageComposer } from '.';
-import Loader from '../Loader';
-import useEns from '../../hooks/useEns';
 import { useAccount } from 'wagmi';
-import { MessageTileProps } from './MessagesList';
+
+import useConversation from '../../hooks/useConversation';
+import useEns from '../../hooks/useEns';
+import useXmtp from '../../hooks/useXmtp';
+import Loader from '../Loader';
+import { MessageComposer, MessagesList } from '.';
 import { Transaction } from './MessageRenderer';
 import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
+import { MessageTileProps } from './MessagesList';
 
 type ConversationProps = {
   peerAddressOrName: string;
@@ -48,7 +49,7 @@ const Conversation = ({
   // process XMTP messages and Graph transactions
   const { address } = useAccount();
   const allMessages: MessageTileProps[] = useMemo(() => {
-    const textMessages = messages.map(m => ({
+    const textMessages = messages.map((m) => ({
       type: 'message',
       message: m,
       isSender: m.senderAddress == address

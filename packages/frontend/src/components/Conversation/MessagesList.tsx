@@ -1,10 +1,11 @@
 import { Message } from '@xmtp/xmtp-js';
 import React, { MutableRefObject } from 'react';
 import Emoji from 'react-emoji-render';
-import Avatar from '../Avatar';
+import { useAccount } from 'wagmi';
+
 import { formatTime } from '../../helpers';
 import AddressPill from '../AddressPill';
-import { useAccount } from 'wagmi';
+import Avatar from '../Avatar';
 import MessageRenderer, { Transaction } from './MessageRenderer';
 
 export type MessageListProps = {
@@ -13,7 +14,7 @@ export type MessageListProps = {
 };
 
 export type MessageTileProps = {
-  type: string,
+  type: string;
   message: Message | Transaction;
   isSender: boolean;
 };
@@ -29,27 +30,30 @@ const formatDate = (d?: Date) =>
     day: 'numeric',
   });
 
-const MessageTile: React.FC<{messageTileData: MessageTileProps}> = ({messageTileData}) => {
+const MessageTile: React.FC<{ messageTileData: MessageTileProps }> = ({
+  messageTileData,
+}) => {
   const { message, isSender } = messageTileData;
   return (
-  <div className="flex items-start mx-auto mb-4">
-    <Avatar addressOrName={message.senderAddress as string} />
-    <div className="ml-2">
-      <div>
-        <AddressPill
-          address={message.senderAddress as string}
-          userIsSender={isSender}
-        />
-        <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
-          {formatTime(message.sent)}
+    <div className="flex items-start mx-auto mb-4">
+      <Avatar addressOrName={message.senderAddress as string} />
+      <div className="ml-2">
+        <div>
+          <AddressPill
+            address={message.senderAddress as string}
+            userIsSender={isSender}
+          />
+          <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
+            {formatTime(message.sent)}
+          </span>
+        </div>
+        <span className="block text-md px-2 mt-2 text-black font-normal">
+          <MessageRenderer messageTileData={messageTileData} />
         </span>
       </div>
-      <span className="block text-md px-2 mt-2 text-black font-normal">
-        <MessageRenderer messageTileData={messageTileData}/>
-      </span>
     </div>
-  </div>
-)}
+  );
+};
 
 const DateDividerBorder: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -95,10 +99,11 @@ const MessagesList = ({
             ) : null}
             {messages?.map((msg: MessageTileProps, idx: number) => {
               msg.isSender = msg.message.senderAddress === address;
-              const tile = (
-                <MessageTile messageTileData={msg} />
+              const tile = <MessageTile messageTileData={msg} />;
+              const dateHasChanged = !isOnSameDay(
+                lastMessageDate,
+                msg.message.sent
               );
-              const dateHasChanged = !isOnSameDay(lastMessageDate, msg.message.sent);
               lastMessageDate = msg.message.sent;
               return dateHasChanged ? (
                 <div key={idx}>

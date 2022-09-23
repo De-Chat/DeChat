@@ -1,8 +1,9 @@
 import { deployments } from '@deployments/deployments';
 import { useState } from 'react';
-import { HardhatExportContracts } from '../types/hardhat';
 import { useAsyncEffect } from 'use-async-effect';
-import { Chain, useNetwork, allChains } from 'wagmi';
+import { allChains, Chain, useNetwork } from 'wagmi';
+
+import { HardhatExportContracts } from '../types/hardhat';
 import { env } from './environment';
 
 export const useDeployments = () => {

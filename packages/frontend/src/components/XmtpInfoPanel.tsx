@@ -1,14 +1,15 @@
-import packageJson from '../../package.json';
-import useXmtp from '../hooks/useXmtp';
-import { classNames } from '../helpers';
 import {
-  LinkIcon,
-  BookOpenIcon,
-  UserGroupIcon,
-  ChevronRightIcon,
   ArrowSmRightIcon,
+  BookOpenIcon,
+  ChevronRightIcon,
+  LinkIcon,
+  UserGroupIcon,
 } from '@heroicons/react/solid';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
+
+import packageJson from '../../package.json';
+import { classNames } from '../helpers';
+import useXmtp from '../hooks/useXmtp';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;

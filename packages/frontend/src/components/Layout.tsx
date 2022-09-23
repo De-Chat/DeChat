@@ -1,17 +1,18 @@
-import { ReactNode, useCallback, useEffect, useRef } from 'react';
-import useXmtp from '../hooks/useXmtp';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import { NavigationView, ConversationView } from './Views';
-import { RecipientControl } from './Conversation';
-import NewMessageButton from './NewMessageButton';
-import NavigationPanel from './NavigationPanel';
-import XmtpInfoPanel from './XmtpInfoPanel';
-import UserMenu from './UserMenu';
-import BackArrow from './BackArrow';
+import { useRouter } from 'next/router';
+import { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useDisconnect, useSigner } from 'wagmi';
+
+import useXmtp from '../hooks/useXmtp';
+import BackArrow from './BackArrow';
+import { RecipientControl } from './Conversation';
 import Login from './Login';
+import NavigationPanel from './NavigationPanel';
+import NewMessageButton from './NewMessageButton';
+import UserMenu from './UserMenu';
+import { ConversationView, NavigationView } from './Views';
+import XmtpInfoPanel from './XmtpInfoPanel';
 
 const NavigationColumnLayout: React.FC<{ children: ReactNode }> = ({
   children,
@@ -124,31 +125,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      <Head>
-        <title>Chat via XMTP</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
-      </Head>
-      <div>
-        <NavigationView>
-          <NavigationColumnLayout>
-            <NavigationHeaderLayout>
-              {walletAddress && client && <NewMessageButton />}
-            </NavigationHeaderLayout>
-            <NavigationPanel />
-            <UserMenu onDisconnect={disconnect} />
-          </NavigationColumnLayout>
-        </NavigationView>
-        <ConversationView>
-          {walletAddress && client ? (
-            <ConversationLayout>{children}</ConversationLayout>
-          ) : (
-            <XmtpInfoPanel />
-          )}
-        </ConversationView>
-      </div>
+      <NavigationView>
+        <NavigationColumnLayout>
+          <NavigationHeaderLayout>
+            {walletAddress && client && <NewMessageButton />}
+          </NavigationHeaderLayout>
+          <NavigationPanel />
+          <UserMenu onDisconnect={disconnect} />
+        </NavigationColumnLayout>
+      </NavigationView>
+      <ConversationView>
+        {walletAddress && client ? (
+          <ConversationLayout>{children}</ConversationLayout>
+        ) : (
+          <XmtpInfoPanel />
+        )}
+      </ConversationView>
     </>
   );
 };

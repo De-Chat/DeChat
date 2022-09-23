@@ -24,19 +24,19 @@ import { ethers } from "ethers";
 // }
 
 export type ITokenBalance = {
-    address: string,
-    symbol: string,
-    decimals: number,
-    logo: string,
-    amount: number,
-    amountUSD: number,
-    price: number,
-}
+  address: string;
+  symbol: string;
+  decimals: number;
+  logo: string;
+  amount: number;
+  amountUSD: number;
+  price: number;
+};
 
 export type IBalances = {
-    totalUSD: number,
-    tokens: ITokenBalance[]
-}
+  totalUSD: number;
+  tokens: ITokenBalance[];
+};
 
 export const getTokenBalancesForAddress = async (chain_id: number, address: string) => {
     return await axios.get(

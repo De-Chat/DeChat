@@ -1,12 +1,13 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
-import { Fragment, useCallback } from 'react';
-import { classNames } from '../helpers';
-import Blockies from 'react-blockies';
-import Address from './Address';
-import useXmtp from '../hooks/useXmtp';
-import { useEnsAvatar } from 'wagmi';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
+import { Fragment, useCallback } from 'react';
+import Blockies from 'react-blockies';
+import { useEnsAvatar } from 'wagmi';
+
+import { classNames } from '../helpers';
+import useXmtp from '../hooks/useXmtp';
+import Address from './Address';
 
 type UserMenuProps = {
   onConnect?: () => Promise<void>;

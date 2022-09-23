@@ -6,6 +6,7 @@ import Card from "@components/Card";
 import { erc20ABI, useContractRead } from "wagmi";
 import { useMemo } from "react";
 import { ethers } from "ethers";
+import { urlPrefix } from "@shared/environment";
 
 export interface Transaction {
     senderAddress: string,
@@ -15,10 +16,10 @@ export interface Transaction {
 }
 
 const extractImgUrl = (message: string): string | null => {
-    const regex = /::image\((.+)\)/;
-    const found = message.match(regex);
-    return found && found[1];
-}
+  const regex = /::image\((.+)\)/;
+  const found = message.match(regex);
+  return found && found[1];
+};
 
 // exmaple data
 // {
@@ -47,7 +48,7 @@ const TransactionBlock: React.FC<{ txData: any }> = ({ txData }) => {
     const parsedAmount = useMemo(() => ethers.utils.formatUnits(txData.amount, decimals), [txData.amount, decimals])
     return (
         <LinkBox as='article' style={{ transitionDuration: '0.15s' }} _hover={{ opacity: 0.8 }}>
-            <LinkOverlay href="" target='_blank' />
+            <LinkOverlay href={`${urlPrefix.blockchainExplorer}/tx/${txData.id}`} target='_blank' />
             <Card padding={5} borderRadius={15} >
                 <Flex>
                     <Avatar icon={<Icon as={GrTransaction} />} />
@@ -63,8 +64,10 @@ const TransactionBlock: React.FC<{ txData: any }> = ({ txData }) => {
     )
 }
 
-const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({ messageTileData }) => {
-    const { message, type } = messageTileData
+const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
+  messageTileData,
+}) => {
+  const { message, type } = messageTileData;
 
     if (type == "message" && "content" in message) {
         // text and images are "message"
@@ -85,4 +88,4 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({ mess
     }
 }
 
-export default MessageRenderer
+export default MessageRenderer;

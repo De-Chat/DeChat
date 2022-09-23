@@ -14,6 +14,7 @@ import { createFramework } from 'src/hooks/superFluid/useCreateFramework';
 import { createWrappedSuperToken } from 'src/hooks/superFluid/useCreateWrappedSuperToken';
 import { SuperfluidToken } from 'src/services/superFluidService';
 import { upgradeCreateFlow } from 'src/hooks/superFluid/useUpgradeCreateFlow';
+import { urlPrefix } from '@shared/environment';
 
 ///// helpers
 const approveErc20 = async (contract: ethers.Contract, address: string, amount: string, decimals: number) => {
@@ -556,7 +557,7 @@ const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
     <Container centerContent>
       <Link
         target='_blank'
-        href={`https://console.superfluid.finance/mumbai/accounts/${address}?tab=streams`}
+        href={`${urlPrefix.superfluidConsole}/accounts/${address}?tab=streams`}
       >
         Check your streamings
       </Link>
@@ -614,7 +615,7 @@ const SendModal = ({ peerAddress }) => {
   const showTxToast = useCallback((tx: string) =>
     toast({
       title: 'Transaction submitted',
-      description: <>Check your transaction <Link fontWeight={700} target='_blank' href={`https://mumbai.polygonscan.com/tx/${tx}`}>HERE</Link>.</>,
+      description: <>Check your transaction <Link fontWeight={700} target='_blank' href={`${urlPrefix.blockchainExplorer}/tx/${tx}`}>HERE</Link>.</>,
       status: 'success',
       isClosable: true,
       position: 'top-right'
