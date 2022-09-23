@@ -555,9 +555,10 @@ const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
   return (
     <Container centerContent>
       <Link
-        href={`https://console.superfluid.finance/mumbai/accounts/0xc183073817a1363b0c98565a2a9083f5f8e1aca1?tab=streams`}
+        target='_blank'
+        href={`https://console.superfluid.finance/mumbai/accounts/${address}?tab=streams`}
       >
-        Check current streamings
+        Check your streamings
       </Link>
       <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onUpgradeAndStream}>
         <VStack spacing={4}>
