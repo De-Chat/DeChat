@@ -54,7 +54,7 @@ type Lends = {
   txLink: string;
 };
 
-const BalanceListItem = ({ token }: ITokenBalance) => {
+const BalanceListItem = ({ token }: { token: ITokenBalance }) => {
   return (
     <Button variant={'ghost'} width="full" justifyContent={'start'}>
       <HStack gap={2}>
@@ -67,7 +67,7 @@ const BalanceListItem = ({ token }: ITokenBalance) => {
   );
 };
 
-const BorrowerListItem = ({ lend }: Lends) => {
+const BorrowerListItem = ({ lend }: { lend: Lends }) => {
   const [busy, setBusy] = useState(false);
 
   const {
@@ -90,7 +90,7 @@ const BorrowerListItem = ({ lend }: Lends) => {
       <HStack flex={1}>
         <Button variant={'ghost'} width="full" justifyContent={'start'}>
           <HStack gap={2}>
-            <Avatar src={borrowerAvatar} />
+            <Avatar src={borrowerAvatar as string} />
             <Text>{truncateEthAddress(lend.addressTo)}</Text>
             <Text>
               {lend.amount} {lend.symbol}
@@ -148,7 +148,7 @@ const DepositProfile = (): JSX.Element => {
   return (
     <>
       <Box ref={finalRef} tabIndex={-1} aria-label="Focus moved to this box">
-        Some other content that'll receive focus on close.
+        Some other content that&apos;ll receive focus on close.
       </Box>
 
       <Button mt={4} onClick={onOpen}>

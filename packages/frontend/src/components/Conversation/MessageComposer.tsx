@@ -1,18 +1,22 @@
 import { Flex, FormControl, Icon, IconButton, Input } from '@chakra-ui/react';
+import ImageUploader from '@components/Modals/ImageUploader';
+import SendModal from '@components/Modals/SendModal';
 import { useRouter } from 'next/router';
 import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FiSend } from 'react-icons/fi';
+
 import { classNames } from '../../helpers';
 import messageComposerStyles from '../../styles/MessageComposer.module.scss';
-import ImageUploader from '@components/Modals/ImageUploader';
-import SendModal from '@components/Modals/SendModal';
 
 type MessageComposerProps = {
-  peerAddress: string,
+  peerAddress: string;
   onSend: (msg: string) => Promise<void>;
 };
 
-const MessageComposer = ({ peerAddress, onSend }: MessageComposerProps): JSX.Element => {
+const MessageComposer = ({
+  peerAddress,
+  onSend,
+}: MessageComposerProps): JSX.Element => {
   const [message, setMessage] = useState('');
   const router = useRouter();
 

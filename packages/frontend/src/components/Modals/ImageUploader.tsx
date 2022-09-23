@@ -52,8 +52,8 @@ const ImageUploader = ({ onSend }: MessageComposerProps) => {
     const uploadedUrl = getImgUrl(cid, name);
     console.log('uploaded to url: ', uploadedUrl);
 
-    const payload = { url: uploadedUrl }
-    const encodedMsg = encodeMessage('image', payload)
+    const payload = { url: uploadedUrl };
+    const encodedMsg = encodeMessage('image', payload);
     await onSend(encodedMsg);
     setBusy(false);
     disclosure.onClose();

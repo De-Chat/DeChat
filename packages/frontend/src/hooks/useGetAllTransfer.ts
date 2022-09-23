@@ -1,5 +1,6 @@
 import { ApolloError } from '@apollo/client';
 import { useMemo } from 'react';
+
 import networkSubgraph from '../../networkSubgraph.json';
 import {
   useGetNetworkTransfer,
@@ -8,16 +9,27 @@ import {
 
 export const useGetAllTransfer = (
   count: number,
-  userA: string, 
+  userA: string,
   userB: string
 ) => {
-  const {data: a2bTx, loading: a2bLoading} = useGetAllDirectedTransfer(count, userA, userB)
-  const {data: b2aTx, loading: b2aLoading} = useGetAllDirectedTransfer(count, userB, userA)
-  const flattenedA2bTx = useMemo(() => flattenTxs(a2bTx), [a2bTx])
-  const flattenedB2aTx = useMemo(() => flattenTxs(b2aTx), [b2aTx])
-  const txs = useMemo(() => sortTxs([...flattenedA2bTx, ...flattenedB2aTx]), [flattenedA2bTx, flattenedB2aTx])
-  return txs
-}
+  const { data: a2bTx, loading: a2bLoading } = useGetAllDirectedTransfer(
+    count,
+    userA,
+    userB
+  );
+  const { data: b2aTx, loading: b2aLoading } = useGetAllDirectedTransfer(
+    count,
+    userB,
+    userA
+  );
+  const flattenedA2bTx = useMemo(() => flattenTxs(a2bTx), [a2bTx]);
+  const flattenedB2aTx = useMemo(() => flattenTxs(b2aTx), [b2aTx]);
+  const txs = useMemo(
+    () => sortTxs([...flattenedA2bTx, ...flattenedB2aTx]),
+    [flattenedA2bTx, flattenedB2aTx]
+  );
+  return txs;
+};
 
 export const useGetAllDirectedTransfer = (
   count: number,
@@ -29,9 +41,9 @@ export const useGetAllDirectedTransfer = (
   const dataMap: Map<string, any[]> = new Map();
 
   Object.keys(networkSubgraph).forEach((key: string) => {
-    const { loading, error, data } = useGetNetworkTransferPoll(
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { loading, error, data } = useGetNetworkTransfer(
       key,
-      5000,
       count,
       sender,
       recipient
@@ -69,7 +81,6 @@ export const useGetAllDirectedTransfer = (
 //   }
 // }
 
-
 // sample output from flattenTxs()
 // [
 //   {
@@ -84,27 +95,29 @@ export const useGetAllDirectedTransfer = (
 //       "tokenId" // erc721, 1155
 //   }
 // ]
-// TODO: parse amout and chain 
-const flattenTxs = (data: Map<string, any[]>) => {
-  let flattenedTxs = []
+// TODO: parse amout and chain
+const flattenTxs = (data: Map<string, Record<string, any>>) => {
+  let flattenedTxs = [];
   // flatten transactions
   for (const network of data.keys()) {
-    const allTypeTransfers = data.get(network)
+    const allTypeTransfers = data.get(network);
     for (const transferType in allTypeTransfers) {
-      const txs: any[] = allTypeTransfers[transferType]
+      const txs: any[] = allTypeTransfers[transferType];
       let formattedObjs = txs.map((tx: any) => ({
         transferType,
         chain: network,
         ...tx,
-      }))
-      flattenedTxs.push(...formattedObjs)
+      }));
+      flattenedTxs.push(...formattedObjs);
     }
   }
-  
-  return flattenedTxs 
-}
+
+  return flattenedTxs;
+};
 
 // sort transactions
 const sortTxs = (data: any[]) => {
-  return data.sort((a,b) => new Date(a.sent).getTime() - new Date(b.sent).getTime());
-}
+  return data.sort(
+    (a, b) => new Date(a.sent).getTime() - new Date(b.sent).getTime()
+  );
+};

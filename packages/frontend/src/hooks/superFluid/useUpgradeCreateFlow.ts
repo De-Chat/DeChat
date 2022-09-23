@@ -18,6 +18,9 @@ export const upgradeCreateFlow = async (
     userData
   );
 
-  const receipt = await wrapperSuperToken.execBatchCall([upgradeOp, createFlowOp])
-  return receipt
+  const receipt = await wrapperSuperToken.execBatchCall([
+    upgradeOp,
+    createFlowOp,
+  ]);
+  return receipt;
 };

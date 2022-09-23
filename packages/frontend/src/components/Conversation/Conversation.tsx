@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 import { useAccount } from 'wagmi';
 
 import useConversation from '../../hooks/useConversation';
@@ -6,8 +7,6 @@ import useEns from '../../hooks/useEns';
 import useXmtp from '../../hooks/useXmtp';
 import Loader from '../Loader';
 import { MessageComposer, MessagesList } from '.';
-import { Transaction } from './MessageRenderer';
-import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 import { MessageTileProps } from './MessagesList';
 
 type ConversationProps = {
@@ -20,7 +19,6 @@ const Conversation = ({
   const { walletAddress, client } = useXmtp();
   const messagesEndRef = useRef(null);
   const scrollToMessagesEndRef = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (messagesEndRef.current as any)?.scrollIntoView({ behavior: 'smooth' });
   }, [messagesEndRef]);
 
@@ -31,8 +29,13 @@ const Conversation = ({
     peerAddress as string,
     scrollToMessagesEndRef
   );
+
   // TODO: change here to peerAddress, walletAddress
-  const transactions = useGetAllTransfer(100, walletAddress, walletAddress)
+  const transactions = useGetAllTransfer(
+    100,
+    walletAddress || '',
+    walletAddress || ''
+  );
   // console.log('test getGraph: ', tx)
   // const transactions: Transaction[] = useMemo(() => {
   //   return [{
@@ -52,23 +55,23 @@ const Conversation = ({
     const textMessages = messages.map((m) => ({
       type: 'message',
       message: m,
-      isSender: m.senderAddress == address
-    }))
+      isSender: m.senderAddress == address,
+    }));
 
-    const txMessages = transactions.map(tx => ({
+    const txMessages = transactions.map((tx) => ({
       type: 'transaction',
       message: {
         senderAddress: tx.from,
         sent: new Date(tx.timestamp * 1000),
-        content: tx // just to follow xmtp message.content format
+        content: tx, // just to follow xmtp message.content format
       },
-      isSender: tx.senderAddress == address
-    }))
+      isSender: tx.senderAddress == address,
+    }));
 
-    return [...textMessages, ...txMessages].sort((a, b) => a.message.sent - b.message.sent);
-  }, [messages, transactions])
-
-  useEffect(() => scrollToMessagesEndRef(), [scrollToMessagesEndRef, allMessages])
+    return [...textMessages, ...txMessages].sort(
+      (a, b) => (a.message as any).sent - (b.message as any).sent
+    );
+  }, [messages, transactions]);
 
   const hasMessages = messages.length > 0;
   useEffect(() => {
@@ -95,7 +98,9 @@ const Conversation = ({
   return (
     <main className="flex flex-col flex-1 bg-white h-screen">
       <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
-      {walletAddress && <MessageComposer peerAddress={peerAddress} onSend={sendMessage} />}
+      {walletAddress && (
+        <MessageComposer peerAddress={peerAddress || ''} onSend={sendMessage} />
+      )}
     </main>
   );
 };

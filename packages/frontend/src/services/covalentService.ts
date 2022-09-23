@@ -1,5 +1,5 @@
-import axios from "axios";
-import { ethers } from "ethers";
+import axios from 'axios';
+import { ethers } from 'ethers';
 
 // sample token return
 // {
@@ -38,34 +38,46 @@ export type IBalances = {
   tokens: ITokenBalance[];
 };
 
-export const getTokenBalancesForAddress = async (chain_id: number, address: string) => {
-    return await axios.get(
-        `https://api.covalenthq.com/v1/${chain_id}/address/${address}/balances_v2/?&key=${process.env.NEXT_PUBLIC_COVALENT_API}`
-    ).then(
-        res => {
-            const data = res.data.data
-            // let nonZeroTokens = data.items.filter(token => token.quote > 0)
-            // for now remove gas token from the list
-            let erc20Tokens = data.items.filter(t => !t.native_token)
-            let tokens: ITokenBalance[] = erc20Tokens.map(token => ({
-                address: token.contract_address,
-                symbol: token.contract_ticker_symbol,
-                decimals: token.contract_decimals,
-                logo: token.logo_url,
-                amount: ethers.utils.formatUnits(token.balance, token.contract_decimals),
-                amountUSD: token.quote,
-                price: token.quote_rate,
-            }))
-            const totalUSD = tokens.reduce((partialSum: number, token: ITokenBalance) => partialSum += token.amountUSD, 0)
+export const getTokenBalancesForAddress = async (
+  chain_id: number,
+  address: string
+) => {
+  return await axios
+    .get(
+      `https://api.covalenthq.com/v1/${chain_id}/address/${address}/balances_v2/?&key=${process.env.NEXT_PUBLIC_COVALENT_API}`
+    )
+    .then((res) => {
+      const data = res.data.data;
+      // let nonZeroTokens = data.items.filter(token => token.quote > 0)
+      // for now remove gas token from the list
+      let erc20Tokens = data.items.filter((t: any) => !t.native_token);
+      let tokens: ITokenBalance[] = erc20Tokens.map((token: any) => ({
+        address: token.contract_address,
+        symbol: token.contract_ticker_symbol,
+        decimals: token.contract_decimals,
+        logo: token.logo_url,
+        amount: ethers.utils.formatUnits(
+          token.balance,
+          token.contract_decimals
+        ),
+        amountUSD: token.quote,
+        price: token.quote_rate,
+      }));
+      const totalUSD = tokens.reduce(
+        (partialSum: number, token: ITokenBalance) =>
+          (partialSum += token.amountUSD),
+        0
+      );
 
-            const returnData = {
-                totalUSD,
-                tokens
-            }
-            console.log(returnData)
-            return returnData
-        }).catch(e => console.warn("Covalent service encouters error: ", e))
-}
+      const returnData = {
+        totalUSD,
+        tokens,
+      };
+      console.log(returnData);
+      return returnData;
+    })
+    .catch((e) => console.warn('Covalent service encouters error: ', e));
+};
 
 // sample NFT return
 // {
@@ -118,23 +130,25 @@ export const getTokenBalancesForAddress = async (chain_id: number, address: stri
 //     ]
 // }
 export const getNFTForAddress = async (chain_id: number, address: string) => {
-    return await axios.get(
-        `https://api.covalenthq.com/v1/${chain_id}/address/${address}/balances_v2/?&nft=true&key=${process.env.NEXT_PUBLIC_COVALENT_API}`
-    ).then(
-        res => {
-            const data = res.data.data
-            let nfts = data.items.filter(token => token.type == 'nft')
-            const returnData = nfts.map(nft => ({
-                address: nft.contract_address,
-                name: nft.contract_name,
-                data: nft.nft_data.map(id => ({
-                    id: id.token_id,
-                    image: id.external_data?.image,
-                    name: id.external_data?.name
-                }))
-            }))
+  return await axios
+    .get(
+      `https://api.covalenthq.com/v1/${chain_id}/address/${address}/balances_v2/?&nft=true&key=${process.env.NEXT_PUBLIC_COVALENT_API}`
+    )
+    .then((res) => {
+      const data = res.data.data;
+      let nfts = data.items.filter((token: any) => token.type == 'nft');
+      const returnData = nfts.map((nft: any) => ({
+        address: nft.contract_address,
+        name: nft.contract_name,
+        data: nft.nft_data.map((id: any) => ({
+          id: id.token_id,
+          image: id.external_data?.image,
+          name: id.external_data?.name,
+        })),
+      }));
 
-            console.log(returnData)
-            return returnData
-        }).catch(e => console.warn("Covalent NFT service encouters error: ", e))
-}
+      console.log(returnData);
+      return returnData;
+    })
+    .catch((e) => console.warn('Covalent NFT service encouters error: ', e));
+};
