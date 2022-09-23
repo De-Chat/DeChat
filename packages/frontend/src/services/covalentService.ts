@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ethers } from "ethers";
 
 // sample token return
 // {
@@ -44,13 +45,14 @@ export const getTokenBalancesForAddress = async (chain_id: number, address: stri
         res => {
             const data = res.data.data
             // let nonZeroTokens = data.items.filter(token => token.quote > 0)
-            let nonZeroTokens = data.items
-            let tokens: ITokenBalance[] = nonZeroTokens.map(token => ({
+            // for now remove gas token from the list
+            let erc20Tokens = data.items.filter(t => !t.native_token)
+            let tokens: ITokenBalance[] = erc20Tokens.map(token => ({
                 address: token.contract_address,
                 symbol: token.contract_ticker_symbol,
                 decimals: token.contract_decimals,
                 logo: token.logo_url,
-                amount: token.balance,
+                amount: ethers.utils.formatUnits(token.balance, token.contract_decimals),
                 amountUSD: token.quote,
                 price: token.quote_rate,
             }))
