@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 import { useRouter } from 'next/router';
+import { Fragment } from 'react';
 
 type NavigationViewProps = {
   children?: React.ReactNode;

@@ -1,12 +1,13 @@
-import { useDeployments } from '@shared/useDeployments';
-import { useAccount, useSigner } from 'wagmi';
 import { Send__factory } from '@dechat/contracts/typechain-types';
-import useXmtp from '../hooks/useXmtp';
-import { useMemo } from 'react';
+import { useDeployments } from '@shared/useDeployments';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers';
+import { useMemo } from 'react';
+import { useAccount, useSigner } from 'wagmi';
+
 import { useGetAllTransfer } from '../hooks/useGetAllTransfer';
 import { useGetNetworkTransfer } from '../hooks/useGetNetworkTransfer';
+import useXmtp from '../hooks/useXmtp';
 
 const Send = () => {
   // const { data: signer } = useSigner();
@@ -15,14 +16,14 @@ const Send = () => {
   const { wallet: signer, walletAddress: address } = useXmtp();
   console.log('test current addr: ', address, signer);
 
-//   const { loading, errors, data } = useGetAllTransfer(
-//     100,
-//     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-//     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
-//   );
+  //   const { loading, errors, data } = useGetAllTransfer(
+  //     100,
+  //     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+  //     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
+  //   );
 
   const { loading, error, data } = useGetNetworkTransfer(
-    "mumbai",
+    'mumbai',
     '',
     100,
     '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
@@ -30,7 +31,7 @@ const Send = () => {
   );
 
   if (!loading) {
-    console.log("here <<< ")
+    console.log('here <<< ');
     console.log(`data has loaded: ${JSON.stringify(data)}`);
   } else {
     console.log('data is still loading');

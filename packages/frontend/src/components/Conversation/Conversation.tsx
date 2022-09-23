@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import useXmtp from '../../hooks/useXmtp';
-import useConversation from '../../hooks/useConversation';
-import { MessagesList, MessageComposer } from '.';
-import Loader from '../Loader';
-import useEns from '../../hooks/useEns';
 import { useAccount } from 'wagmi';
-import { MessageTileProps } from './MessagesList';
+
+import useConversation from '../../hooks/useConversation';
+import useEns from '../../hooks/useEns';
+import useXmtp from '../../hooks/useXmtp';
+import Loader from '../Loader';
+import { MessageComposer, MessagesList } from '.';
 import { Transaction } from './MessageRenderer';
+import { MessageTileProps } from './MessagesList';
 
 type ConversationProps = {
   peerAddressOrName: string;
@@ -31,28 +32,30 @@ const Conversation = ({
 
   const { address } = useAccount();
   const allMessages: MessageTileProps[] = useMemo(() => {
-    const textMessages = messages.map(m => ({
+    const textMessages = messages.map((m) => ({
       type: 'message',
       message: m,
-      isSender: m.senderAddress == address
-    }))
-    const transactions: Transaction[] = [{
-      senderAddress: address || "0x000",
-      sent: new Date(),
-      content: {
-        txHash: "0x123",
-        amount: 1234,
-        token: "USDT"
-      }
-    }]
-    const txMessages = transactions.map(tx => ({
+      isSender: m.senderAddress == address,
+    }));
+    const transactions: Transaction[] = [
+      {
+        senderAddress: address || '0x000',
+        sent: new Date(),
+        content: {
+          txHash: '0x123',
+          amount: 1234,
+          token: 'USDT',
+        },
+      },
+    ];
+    const txMessages = transactions.map((tx) => ({
       type: 'transaction',
       message: tx,
-      isSender: tx.senderAddress == address
-    }))
+      isSender: tx.senderAddress == address,
+    }));
 
     return [...textMessages, ...txMessages];
-  }, [messages])
+  }, [messages]);
 
   const hasMessages = messages.length > 0;
   useEffect(() => {

@@ -1,24 +1,24 @@
 import {
+  Button,
   Flex,
   FormControl,
-  Input,
-  Stack,
-  Link,
-  Button,
   Heading,
-  Text,
-  Spinner,
+  Input,
   InputGroup,
   InputRightElement,
+  Spinner,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
-import { BsAward } from 'react-icons/bs';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SyntheticEvent, useCallback, useState } from 'react';
+import { BsAward } from 'react-icons/bs';
+import useUnsAvatar from 'src/hooks/useUnsAvatar';
 import ThemeToggler from 'src/pages/ThemeToggler';
 import { useAccount } from 'wagmi';
+
 import Card from './Card';
-import useUnsAvatar from 'src/hooks/useUnsAvatar';
 
 const RegisterNickName = () => {
   const [nickname, setNickname] = useState<string>('');

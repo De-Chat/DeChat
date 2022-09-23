@@ -1,7 +1,7 @@
 import {
-  extendTheme,
   type ThemeConfig,
   ComponentStyleConfig,
+  extendTheme,
   StyleFunctionProps,
 } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
@@ -46,13 +46,20 @@ const Button: ComponentStyleConfig = {
 
 const Text: ComponentStyleConfig = {
   baseStyle: (props: StyleFunctionProps) => ({
-    color: mode('black', 'white')(props)
+    color: mode('black', 'white')(props),
   }),
 };
 
 // 2. add your styled setting to the following object
 const theme = extendTheme({
   config,
+  colors: {
+    primary: '#1FF48E',
+    primaryDark: '#0adb76',
+    primaryDarker: '#09c369',
+    secondary: '#333639',
+    secondaryDark: '#1F1F1F',
+  },
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
@@ -65,7 +72,7 @@ const theme = extendTheme({
     Input,
     Button,
     Checkbox,
-    Text
+    Text,
   },
 });
 

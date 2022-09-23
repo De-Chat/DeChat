@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+
 import { useCustomApolloClient } from './useCustomApolloClient';
 
 const GET_TRANSFER = gql`
@@ -69,7 +70,7 @@ export const useGetNetworkTransfer = (
 
   const { loading, error, data } = useQuery(GET_TRANSFER, {
     variables: { count, from: sender, to: recipient },
-    client
+    client,
   });
 
   return { loading, error, data };

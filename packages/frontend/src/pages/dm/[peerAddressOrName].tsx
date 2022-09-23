@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
+
 import { Conversation } from '../../components/Conversation';
 
 const ConversationPage: NextPage = () => {

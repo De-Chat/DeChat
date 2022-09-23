@@ -1,4 +1,5 @@
 import { ApolloError } from '@apollo/client';
+
 import networkSubgraph from '../../networkSubgraph.json';
 import { useGetNetworkTransfer } from './useGetNetworkTransfer';
 

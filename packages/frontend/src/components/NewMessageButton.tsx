@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
 const NewMessageButton = (): JSX.Element => {
   const router = useRouter();

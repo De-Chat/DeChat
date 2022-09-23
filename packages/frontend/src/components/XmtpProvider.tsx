@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useReducer, useState } from 'react';
 import { Conversation } from '@xmtp/xmtp-js';
 import { Client } from '@xmtp/xmtp-js';
 import { Signer } from 'ethers';
+import { useCallback, useEffect, useReducer, useState } from 'react';
+
 import { XmtpContext, XmtpContextType } from '../contexts/xmtp';
 import useMessageStore from '../hooks/useMessageStore';
 

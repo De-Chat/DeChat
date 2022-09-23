@@ -1,9 +1,10 @@
-import { useCallback, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import AddressInput from '../AddressInput';
-import useXmtp from '../../hooks/useXmtp';
-import useEns from '../../hooks/useEns';
 import AddToContactModal from '@components/Modals/AddToContactModal';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+
+import useEns from '../../hooks/useEns';
+import useXmtp from '../../hooks/useXmtp';
+import AddressInput from '../AddressInput';
 
 type RecipientInputProps = {
   peerAddressOrName: string | undefined;

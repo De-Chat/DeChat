@@ -1,10 +1,11 @@
+import { Flex, FormControl, Icon, IconButton, Input } from '@chakra-ui/react';
+import ImageUploader from '@components/Modals/ImageUploader';
+import { useRouter } from 'next/router';
 import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { FiSend } from 'react-icons/fi';
+
 import { classNames } from '../../helpers';
 import messageComposerStyles from '../../styles/MessageComposer.module.scss';
-import { useRouter } from 'next/router';
-import ImageUploader from '@components/Modals/ImageUploader';
-import { Flex, FormControl, Icon, IconButton, Input } from '@chakra-ui/react';
-import { FiSend } from 'react-icons/fi'
 
 type MessageComposerProps = {
   onSend: (msg: string) => Promise<void>;
@@ -34,10 +35,7 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
   );
 
   return (
-    <form
-      autoComplete='off'
-      onSubmit={onSubmit}
-    >
+    <form autoComplete="off" onSubmit={onSubmit}>
       <FormControl>
         <Flex gap={2} align="center">
           <ImageUploader onSend={onSend} />
@@ -55,14 +53,21 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
             name="message"
             value={message}
             onChange={onMessageChange}
-            onKeyPress={e=> {
+            onKeyPress={(e) => {
               if (e.key === 'Enter') {
-                 onSubmit(e);
+                onSubmit(e);
               }
-           }}
+            }}
             required
           />
-          <IconButton type='submit' disabled={!message ? true : false} variant='outline' border='none' aria-label='Send message' icon={<Icon as={FiSend} />} />
+          <IconButton
+            type="submit"
+            disabled={!message ? true : false}
+            variant="outline"
+            border="none"
+            aria-label="Send message"
+            icon={<Icon as={FiSend} />}
+          />
         </Flex>
       </FormControl>
     </form>
