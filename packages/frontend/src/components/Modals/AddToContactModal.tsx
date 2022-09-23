@@ -11,31 +11,47 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { type SyntheticEvent, useEffect, useState } from 'react';
+import React, {
+  type SyntheticEvent,
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import { BiEditAlt } from 'react-icons/bi';
+import { UserContactContext } from 'src/contexts/user-contact';
 import { useUserContact } from 'src/hooks/user-contact/useUserContact';
+import { useAccount } from 'wagmi';
 
 import BaseModal from './BaseModal';
 
 const AddToContactModal = (): JSX.Element => {
   const disclosure = useDisclosure();
 
-  const [input, setInput] = useState<string | null>(null);
+  const [input, setInput] = useState<string>();
   const [busy, setBusy] = useState(false);
+  const userContactContext = useContext(UserContactContext);
+  const { address } = useAccount();
 
   const handleInputChange = (e: any) => setInput(e.target.value);
-  const onSubmit = (e: SyntheticEvent) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    e.stopPropagation();
     setBusy(true);
+    if (!input) {
+      return;
+    }
     // TODO: write to tableland
     // setBusy(false)
     // disclosure.onClose()
+    const service = userContactContext.service!;
+    await service.addContact(userContactContext.userContactTableId!, {
+      address: address,
+      name: input,
+    });
   };
 
   useEffect(() => {
     if (!disclosure.isOpen) {
-      setInput(null);
+      setInput(undefined);
       setBusy(false);
     }
   }, [disclosure.isOpen]);
