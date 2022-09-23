@@ -40,7 +40,7 @@ const MessageComposer = ({ peerAddress, onSend }: MessageComposerProps): JSX.Ele
       <FormControl>
         <Flex gap={2} align="center">
           <ImageUploader onSend={onSend} />
-          <SendModal peerAddress={peerAddress} />
+          <SendModal peerAddress={peerAddress} sendPeer={onSend} />
           <Input
             flex={1}
             type="text"

@@ -15,6 +15,7 @@ import { createWrappedSuperToken } from 'src/hooks/superFluid/useCreateWrappedSu
 import { SuperfluidToken } from 'src/services/superFluidService';
 import { upgradeCreateFlow } from 'src/hooks/superFluid/useUpgradeCreateFlow';
 import { urlPrefix } from '@shared/environment';
+import { encodeMessage } from '@components/Conversation/MessageParser';
 
 ///// helpers
 const approveErc20 = async (contract: ethers.Contract, address: string, amount: string, decimals: number) => {
@@ -440,7 +441,7 @@ const SendNFT = ({ disclosure, showTxToast, peerAddress }) => {
 }
 
 // send Stream
-const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
+const SendStream = ({ disclosure, showTxToast, peerAddress, sendPeer }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -465,7 +466,11 @@ const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
     if (!form['to'] || !form['token'] || !form['flowrate'] || !form['upgradeAmount']) {
       setError('Transaction info is incomplete')
       return false
+    } else if (form['to'] == address) {
+      setError('You can\'t stream to yourself')
+      return false
     }
+
     setError(null)
     return true
   }
@@ -521,6 +526,16 @@ const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
     const parsedFlowrate = ethers.utils.parseEther(form.flowrate)
     const receipt = await upgradeCreateFlow(supertoken, parsedUpgradeAmount, address, form.to, parsedFlowrate, undefined)
     console.log({ receipt })
+
+    // send the link to streaming via Xmtp conversation API
+    const payload = {
+      txHash: receipt.transactionHash,
+      token: form.token?.symbol,
+      amount: form.upgradeAmount,
+      flowrate: form.flowrate
+    }
+    const encodedMsg = encodeMessage('streamFund', payload)
+    await sendPeer(encodedMsg)
 
     // TODO: write to tableland if this is a lend
     setBusy(false)
@@ -606,7 +621,7 @@ const tabs = [
   },
 ]
 
-const SendModal = ({ peerAddress }) => {
+const SendModal = ({ peerAddress, sendPeer }) => {
   const disclosure = useDisclosure()
   const toast = useToast()
   const showTxToast = useCallback((tx: string) =>
@@ -631,7 +646,7 @@ const SendModal = ({ peerAddress }) => {
           </TabList>
           <TabPanels>
             {/* <BusyContext.Provider value={{ busy, setBusy }}> */}
-            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure, showTxToast, peerAddress })}</TabPanel>)}
+            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure, showTxToast, peerAddress, sendPeer })}</TabPanel>)}
             {/* </BusyContext.Provider> */}
           </TabPanels>
         </Tabs>
