@@ -7,6 +7,7 @@ import useXmtp from '../../hooks/useXmtp';
 import Loader from '../Loader';
 import { MessageComposer, MessagesList } from '.';
 import { Transaction } from './MessageRenderer';
+import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 import { MessageTileProps } from './MessagesList';
 
 type ConversationProps = {
@@ -25,37 +26,47 @@ const Conversation = ({
 
   const { address: peerAddress } = useEns(peerAddressOrName);
 
+  // prepare XMTP messages
   const { messages, sendMessage, loading } = useConversation(
     peerAddress as string,
     scrollToMessagesEndRef
   );
+  // TODO: change here to peerAddress, walletAddress
+  const transactions = useGetAllTransfer(100, walletAddress, walletAddress)
+  // console.log('test getGraph: ', tx)
+  // const transactions: Transaction[] = useMemo(() => {
+  //   return [{
+  //     senderAddress: address || "0x000",
+  //     sent: new Date(),
+  //     content: {
+  //       txHash: "0x123",
+  //       amount: 1234,
+  //       token: "USDT"
+  //     }
+  //   }]
+  // }, [])
 
+  // process XMTP messages and Graph transactions
   const { address } = useAccount();
   const allMessages: MessageTileProps[] = useMemo(() => {
     const textMessages = messages.map((m) => ({
       type: 'message',
       message: m,
-      isSender: m.senderAddress == address,
-    }));
-    const transactions: Transaction[] = [
-      {
-        senderAddress: address || '0x000',
-        sent: new Date(),
-        content: {
-          txHash: '0x123',
-          amount: 1234,
-          token: 'USDT',
-        },
-      },
-    ];
-    const txMessages = transactions.map((tx) => ({
-      type: 'transaction',
-      message: tx,
-      isSender: tx.senderAddress == address,
-    }));
+      isSender: m.senderAddress == address
+    }))
 
-    return [...textMessages, ...txMessages];
-  }, [messages]);
+    const txMessages = transactions.map(tx => ({
+      type: 'transaction',
+      message: {
+        senderAddress: tx.from,
+        sent: new Date(tx.timestamp * 1000),
+        content: tx // just to follow xmtp message.content format
+      },
+      isSender: tx.senderAddress == address
+    }))
+
+    return [...textMessages, ...txMessages].sort((a, b) => a.message.sent - b.message.sent);
+  }, [messages])
 
   const hasMessages = messages.length > 0;
   useEffect(() => {
@@ -82,7 +93,7 @@ const Conversation = ({
   return (
     <main className="flex flex-col flex-1 bg-white h-screen">
       <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
-      {walletAddress && <MessageComposer onSend={sendMessage} />}
+      {walletAddress && <MessageComposer peerAddress={peerAddress} onSend={sendMessage} />}
     </main>
   );
 };

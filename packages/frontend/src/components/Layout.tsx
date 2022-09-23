@@ -10,7 +10,6 @@ import { RecipientControl } from './Conversation';
 import Login from './Login';
 import NavigationPanel from './NavigationPanel';
 import NewMessageButton from './NewMessageButton';
-import Send from './Send';
 import UserMenu from './UserMenu';
 import { ConversationView, NavigationView } from './Views';
 import XmtpInfoPanel from './XmtpInfoPanel';
@@ -131,7 +130,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <NavigationHeaderLayout>
             {walletAddress && client && <NewMessageButton />}
           </NavigationHeaderLayout>
-          {walletAddress && client && <Send />}
           <NavigationPanel />
           <UserMenu onDisconnect={disconnect} />
         </NavigationColumnLayout>
