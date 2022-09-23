@@ -66,7 +66,9 @@ const Conversation = ({
     }))
 
     return [...textMessages, ...txMessages].sort((a, b) => a.message.sent - b.message.sent);
-  }, [messages])
+  }, [messages, transactions])
+
+  useEffect(() => scrollToMessagesEndRef(), [scrollToMessagesEndRef, allMessages])
 
   const hasMessages = messages.length > 0;
   useEffect(() => {
