@@ -19,7 +19,7 @@ import BaseModal from './BaseModal';
 const AddToContactModal = (): JSX.Element => {
   const disclosure = useDisclosure();
 
-  const [input, setInput] = useState<string | null>(null);
+  const [input, setInput] = useState<string>();
   const [busy, setBusy] = useState(false);
 
   const handleInputChange = (e: any) => setInput(e.target.value);
@@ -34,7 +34,7 @@ const AddToContactModal = (): JSX.Element => {
 
   useEffect(() => {
     if (!disclosure.isOpen) {
-      setInput(null);
+      setInput(undefined);
       setBusy(false);
     }
   }, [disclosure.isOpen]);

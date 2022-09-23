@@ -80,7 +80,7 @@ const theme = extendTheme({
     Button,
     Checkbox,
     Text,
-    Select
+    Select,
   },
 });
 

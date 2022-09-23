@@ -19,9 +19,11 @@ export const useCreateFlow = (
     flowRate,
     userData
   );
-  createFlowOp.exec(wrapperSuperToken.getSigner()).then((receipt) => {
-    setReceipt(receipt);
-  });
+  createFlowOp
+    .exec(wrapperSuperToken.getSigner())
+    .then((receipt: ethers.providers.TransactionResponse) => {
+      setReceipt(receipt);
+    });
 
   if (receipt) {
     return { done: true, receipt };

@@ -10,5 +10,5 @@ export const createWrappedSuperToken = async (
   framework: Framework,
   tokenAddress: string
 ) => {
-  return await getWrappedSuperToken(framework, tokenAddress)
+  return await getWrappedSuperToken(framework, tokenAddress);
 };

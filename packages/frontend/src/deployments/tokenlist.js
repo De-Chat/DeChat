@@ -36,8 +36,9 @@ export const ERC1155 = {
   ],
 };
 
-export const getERC20s = (chainId) => ERC20[chainId]
-export const getERC721s = (chainId) => ERC721[chainId]
-export const getERC1155s = (chainId) => ERC1155[chainId]
+export const getERC20s = (chainId) => ERC20[chainId];
+export const getERC721s = (chainId) => ERC721[chainId];
+export const getERC1155s = (chainId) => ERC1155[chainId];
 
-export const getERC20ByName = (chainId, name) => ERC20[chainId].find(token => token.name == name)
+export const getERC20ByName = (chainId, name) =>
+  ERC20[chainId].find((token) => token.name == name);
