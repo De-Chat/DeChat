@@ -2,7 +2,7 @@ import { Icon, IconButton, useColorMode } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { BsMoonStars, BsSun } from 'react-icons/bs';
 
-export default () => {
+const ThemeToggler = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const buttonIcon = useMemo(
     () => (colorMode == 'light' ? BsSun : BsMoonStars),
@@ -21,3 +21,5 @@ export default () => {
     </IconButton>
   );
 };
+
+export default ThemeToggler;

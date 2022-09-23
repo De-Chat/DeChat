@@ -31,12 +31,10 @@ const AddressInput = ({
   const [value, setValue] = useState<string>('');
 
   const focusInputElementRef = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (inputElement.current as any)?.focus();
   }, [inputElement]);
 
   const blurInputElementRef = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (inputElement.current as any)?.blur();
   }, [inputElement]);
 

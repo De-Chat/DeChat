@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const env = {
   url:
     process.env.NEXT_PUBLIC_VERCEL_URL &&
@@ -22,5 +21,5 @@ export const env = {
 
 export const urlPrefix = {
   blockchainExplorer: 'https://mumbai.polygonscan.com',
-  superfluidConsole: 'https://console.superfluid.finance/mumbai'
-}
+  superfluidConsole: 'https://console.superfluid.finance/mumbai',
+};
