@@ -253,7 +253,6 @@ const SendToken = ({ disclosure, showTxToast, peerAddress }) => {
     const receipt = await sendERC20(sendContract, token.address, to, amount, token.decimals)
 
     // TODO: write to tableland if this is a lend
-    disclosure.onClose()
     setBusy(false)
     showTxToast(receipt.transactionHash)
   }
@@ -386,7 +385,6 @@ const SendNFT = ({ disclosure, showTxToast, peerAddress }) => {
 
     // TODO: write to tableland if this is a lend
 
-    disclosure.onClose()
     setBusy(false)
     showTxToast(receipt.transactionHash)
   }
@@ -525,7 +523,6 @@ const SendStream = ({ disclosure, showTxToast, peerAddress }) => {
     console.log({ receipt })
 
     // TODO: write to tableland if this is a lend
-    disclosure.onClose()
     setBusy(false)
     showTxToast(receipt.transactionHash)
   }
