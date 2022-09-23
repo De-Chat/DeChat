@@ -5,7 +5,7 @@ import useXmtp from '../../hooks/useXmtp';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
 import BaseModal from './BaseModal';
-import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, HStack, Input, InputGroup, InputRightAddon, Link, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, useToast, VStack } from '@chakra-ui/react';
+import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, Input, InputGroup, InputRightAddon, Link, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { IoRocketOutline } from 'react-icons/io5'
 import { getTokenBalancesForAddress, getNFTForAddress } from 'src/services/covalentService';
 import useAsyncEffect from 'use-async-effect';
@@ -242,6 +242,8 @@ const SendToken = ({ disclosure, showTxToast }) => {
   }, [chain?.id, address])
   const getTokenByAddress = useCallback((tokenAddr) => tokenlist.find(t => t.address == tokenAddr), [tokenlist])
 
+  const amountPlaceholder = useMemo(() => form.token?.amount ? `Bal: ${parseFloat(form.token?.amount).toFixed(4)}` : 'Amount', [form.token])
+
   console.log('test tokenlist: ', tokenlist)
 
   return (
@@ -249,14 +251,12 @@ const SendToken = ({ disclosure, showTxToast }) => {
       <FormControl mt={3} mb={3} isInvalid={error} onSubmit={onSend}>
         <VStack spacing={4}>
           <Input placeholder='Receiver' name='to' onChange={handleFormChange} />
-          <HStack gap={2}>
-            <Select placeholder='Token' name='token' onChange={handleSelectChange}>
-              {tokenlist?.map((token: any) =>
-                <option key={token.address} value={token.address}>{token.symbol}</option>
-              )}
-            </Select>
-            <Input placeholder='Amount' name='amount' type='number' onChange={handleFormChange} />
-          </HStack>
+          <Select placeholder='Token' name='token' onChange={handleSelectChange}>
+            {tokenlist?.map((token: any) =>
+              <option key={token.address} value={token.address}>{token.symbol}</option>
+            )}
+          </Select>
+          <Input placeholder={amountPlaceholder} name='amount' type='number' onChange={handleFormChange} />
           {/* <Checkbox name='lend' onChange={handleCheckboxChange}>Lend to receiver</Checkbox> */}
           {error && (
             <FormErrorMessage>
@@ -521,6 +521,8 @@ const SendStream = ({ disclosure, showTxToast }) => {
   }, [chain?.id, address])
   const getTokenByAddress = useCallback((tokenAddr) => tokenlist.find(t => t.address == tokenAddr), [tokenlist])
 
+  const upgradeAmountPlaceholder = useMemo(() => form.token?.amount ? `Bal: ${parseFloat(form.token?.amount).toFixed(4)}` : 'Upgrade Amount', [form.token])
+
   console.log('test superfluid tokenlist: ', tokenlist)
 
   return (
@@ -533,7 +535,7 @@ const SendStream = ({ disclosure, showTxToast }) => {
               <option key={token.address} value={token.address}>{token.symbol}</option>
             )}
           </Select>
-          <Input placeholder='Upgrade Amount' name='upgradeAmount' onChange={handleFormChange} />
+          <Input placeholder={upgradeAmountPlaceholder} name='upgradeAmount' onChange={handleFormChange} />
           <InputGroup>
             <Input placeholder='Flowrate' name='flowrate' type='number' onChange={handleFormChange} />
             <InputRightAddon children='/ second' />

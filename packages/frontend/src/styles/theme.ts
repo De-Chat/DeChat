@@ -50,6 +50,13 @@ const Text: ComponentStyleConfig = {
   }),
 };
 
+const Select: ComponentStyleConfig = {
+  defaultProps: {
+    colorScheme,
+    focusBorderColor: defaultColor,
+  },
+};
+
 // 2. add your styled setting to the following object
 const theme = extendTheme({
   config,
@@ -65,7 +72,8 @@ const theme = extendTheme({
     Input,
     Button,
     Checkbox,
-    Text
+    Text,
+    Select
   },
 });
 
