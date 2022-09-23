@@ -5,7 +5,7 @@ import useXmtp from '../../hooks/useXmtp';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
 import BaseModal from './BaseModal';
-import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, HStack, Input, InputGroup, InputRightAddon, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, Center, Checkbox, Container, FormControl, FormErrorMessage, HStack, Input, InputGroup, InputRightAddon, Link, ModalHeader, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { IoRocketOutline } from 'react-icons/io5'
 import { getTokenBalancesForAddress, getNFTForAddress } from 'src/services/covalentService';
 import useAsyncEffect from 'use-async-effect';
@@ -26,6 +26,7 @@ const approveErc20 = async (contract: ethers.Contract, address: string, amount: 
     tsx = await contract.approve(address, ethers.utils.parseUnits(amount, decimals));
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -41,6 +42,7 @@ const approveErc721 = async (contract: ethers.Contract, address: string, tokenId
     tsx = await contract.approve(address, tokenId);
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -58,6 +60,7 @@ const sendEth = async (contract: ethers.Contract, address: string, amount: strin
     });
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -79,6 +82,7 @@ const sendERC20 = async (
     let tsx = await contract.sendErc20(tokenAddr, recipient, formattedAmount);
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -98,6 +102,7 @@ const sendERC721 = async (
     let tsx = await contract.sendErc721(tokenAddr, recipient, id);
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
@@ -124,13 +129,14 @@ const sendERC1155 = async (
     );
     const receipt = await tsx.wait();
     console.log({ receipt });
+    return receipt;
   } catch (e: any) {
     console.error(e);
   }
 };
 
 // send token
-const SendToken = ({ disclosure }) => {
+const SendToken = ({ disclosure, showTxToast }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -199,8 +205,9 @@ const SendToken = ({ disclosure }) => {
       erc20ABI,
       signer)
     console.log('test erc20: ', token.address, to, amount)
-    await approveErc20(tokenContract, contracts?.Send.address, amount, token.decimals)
+    const receipt = await approveErc20(tokenContract, contracts?.Send.address, amount, token.decimals)
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // ERC20 contract and write function
@@ -215,12 +222,12 @@ const SendToken = ({ disclosure }) => {
 
     setBusy(true)
     let { to, token, amount } = form
-    await sendERC20(sendContract, token.address, to, amount, token.decimals)
+    const receipt = await sendERC20(sendContract, token.address, to, amount, token.decimals)
 
     // TODO: write to tableland if this is a lend
-
     disclosure.onClose()
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // tokenlist
@@ -270,7 +277,7 @@ const SendToken = ({ disclosure }) => {
 }
 
 // send NFT
-const SendNFT = ({ disclosure }) => {
+const SendNFT = ({ disclosure, showTxToast }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -330,8 +337,9 @@ const SendNFT = ({ disclosure }) => {
       form.contract,
       erc721ABI,
       signer)
-    await approveErc721(nftContract, contracts?.Send.address, form?.tokenId)
+    const receipt = await approveErc721(nftContract, contracts?.Send.address, form?.tokenId)
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // ERC721 contract and write function
@@ -346,12 +354,13 @@ const SendNFT = ({ disclosure }) => {
 
     setBusy(true)
     let { to, contract, tokenId } = form
-    await sendERC721(sendContract, contract, to, tokenId)
+    const receipt = await sendERC721(sendContract, contract, to, tokenId)
 
     // TODO: write to tableland if this is a lend
 
     disclosure.onClose()
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // tokenlist
@@ -405,7 +414,7 @@ const SendNFT = ({ disclosure }) => {
 }
 
 // send Stream
-const SendStream = ({ disclosure }) => {
+const SendStream = ({ disclosure, showTxToast }) => {
   const [busy, setBusy] = useState(false)
   useEffect(() => {
     if (!disclosure.isOpen) {
@@ -467,12 +476,10 @@ const SendStream = ({ disclosure }) => {
       form.token?.address,
       erc20ABI,
       signer)
-    await approveErc20(tokenContract, form.token?.supertokenAddress, upgradeAmount, token.decimals)
+    const receipt = await approveErc20(tokenContract, form.token?.supertokenAddress, upgradeAmount, token.decimals)
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
-
-  // TODO: Stream with CC's logic
-  // 
 
   const provider = useProvider()
   const onUpgradeAndStream = async () => {
@@ -480,7 +487,7 @@ const SendStream = ({ disclosure }) => {
       return
 
     setBusy(true)
-    
+
     const framework = await createFramework(provider)
     const wrappedSuperToken = await createWrappedSuperToken(framework, form.token?.supertokenAddress)
     const supertoken = new SuperfluidToken(framework, signer, wrappedSuperToken)
@@ -492,6 +499,7 @@ const SendStream = ({ disclosure }) => {
     // TODO: write to tableland if this is a lend
     disclosure.onClose()
     setBusy(false)
+    showTxToast(receipt.transactionHash)
   }
 
   // tokenlist
@@ -532,9 +540,9 @@ const SendStream = ({ disclosure }) => {
           </InputGroup>
           {error ? (
             <>
-            <FormErrorMessage>
-              {error}
-            </FormErrorMessage>
+              <FormErrorMessage>
+                {error}
+              </FormErrorMessage>
             </>
           ) : null}
         </VStack>
@@ -567,6 +575,15 @@ const tabs = [
 
 const SendModal = () => {
   const disclosure = useDisclosure()
+  const toast = useToast()
+  const showTxToast = useCallback((tx: string) =>
+    toast({
+      title: 'Transaction submitted',
+      description: <>Check your transaction <Link fontWeight={700} target='_blank' href={`https://mumbai.polygonscan.com/tx/${tx}`}>HERE</Link>.</>,
+      status: 'success',
+      isClosable: true,
+      position: 'top-right'
+    }), [toast])
 
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -581,7 +598,7 @@ const SendModal = () => {
           </TabList>
           <TabPanels>
             {/* <BusyContext.Provider value={{ busy, setBusy }}> */}
-            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure })}</TabPanel>)}
+            {tabs.map(tab => <TabPanel key={tab.name} >{tab.component({ disclosure, showTxToast })}</TabPanel>)}
             {/* </BusyContext.Provider> */}
           </TabPanels>
         </Tabs>
