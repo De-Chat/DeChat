@@ -8,7 +8,7 @@ import {
   LinkOverlay,
   Text,
 } from '@chakra-ui/react';
-import Card from '@components/Card';
+import Card from '@components/commons/Card';
 import { ethers } from 'ethers';
 import { PropsWithChildren, useMemo } from 'react';
 import Emoji from 'react-emoji-render';

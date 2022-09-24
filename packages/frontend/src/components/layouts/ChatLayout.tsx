@@ -1,5 +1,6 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, IconButton } from '@chakra-ui/react';
 import useXmtp from '@hooks/useXmtp';
+import AddContact from '@public/chat-icons/add-contact.svg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -19,7 +20,6 @@ import {
   RecipientControl,
 } from '../Conversation';
 import NavigationPanel from '../NavigationPanel';
-import NewMessageButton from '../NewMessageButton';
 import UserMenu from '../UserMenu';
 import XmtpInfoPanel from '../XmtpInfoPanel';
 
@@ -36,7 +36,9 @@ const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   </aside>
 );
 
-const NavigationHeaderLayout: React.FC = () => (
+const NavigationHeaderLayout: React.FC<PropsWithChildren<{}>> = ({
+  children,
+}) => (
   <Flex
     height="72px"
     alignItems="center"
@@ -50,6 +52,7 @@ const NavigationHeaderLayout: React.FC = () => (
     <Link href="/" passHref={true}>
       <TitleText>DeChat</TitleText>
     </Link>
+    {children}
   </Flex>
 );
 
@@ -136,8 +139,16 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     <>
       <ChatListView>
         <NavigationSidebarContainer>
-          <NavigationHeaderLayout />
-          {walletAddress && client && <NewMessageButton />}
+          <NavigationHeaderLayout>
+            {walletAddress && client && (
+              <IconButton
+                aria-label="Add new chat"
+                icon={<img src={AddContact}/>}
+                size="xs"
+                variant="unstyled"
+              />
+            )}
+          </NavigationHeaderLayout>
           <NavigationPanel />
           <UserMenu onDisconnect={disconnect} />
         </NavigationSidebarContainer>

@@ -12,7 +12,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
-import Card from '@components/Card';
+import Card from '@components/commons/Card';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { BsAward } from 'react-icons/bs';
