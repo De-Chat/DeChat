@@ -19,7 +19,6 @@ import React, {
 } from 'react';
 import { BiEditAlt } from 'react-icons/bi';
 import { UserContactContext } from 'src/contexts/user-contact';
-import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 
 import BaseModal from './BaseModal';
 
@@ -36,12 +35,12 @@ const AddToContactModal = ({
 
   const handleInputChange = (e: any) => setInput(e.target.value);
   const onSubmit = async (e: SyntheticEvent) => {
+    debugger;
     e.preventDefault();
-    setBusy(true);
     if (!input) {
       return;
     }
-    // TODO: write to tableland
+    setBusy(true);
     const service = userContactContext.service!;
     await service.addContact(userContactContext.userContactTableId!, {
       address: peerAddress,
@@ -52,11 +51,12 @@ const AddToContactModal = ({
   };
 
   const onUpdate = async (e: SyntheticEvent) => {
+    debugger;
     e.preventDefault();
-    setBusy(true);
     if (!input) {
       return;
     }
+    setBusy(true);
     // TODO: write to tableland
     const service = userContactContext.service!;
     await service.updateContract(
@@ -69,12 +69,12 @@ const AddToContactModal = ({
   };
 
   const onDelete = async (e: SyntheticEvent) => {
+    debugger;
     e.preventDefault();
-    setBusy(true);
     if (!input) {
       return;
     }
-    // TODO: write to tableland
+    setBusy(true);
     const service = userContactContext.service!;
     await service.removeContact(
       userContactContext.userContactTableId!,
@@ -100,7 +100,7 @@ const AddToContactModal = ({
           <ModalHeader fontSize={'3xl'}>Add to Contacts</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={onSubmit}>
+            <form>
               <FormControl isInvalid={isError}>
                 <Input
                   type="nickname"
@@ -122,11 +122,11 @@ const AddToContactModal = ({
               <Spinner />
             ) : (
               <>
-                <Button variant="ghost" disabled={isError}>
+                <Button variant="ghost" disabled={isError} onClick={onSubmit}>
                   Add
                 </Button>
                 <Button onClick={onUpdate}>Update</Button>
-                <Button onClick={onDelete}>Delete</Button>
+                {/* <Button onClick={onDelete}>Delete</Button> */}
               </>
             )}
           </ModalFooter>

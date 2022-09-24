@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback, useEffect, useRef } from 'react';
+import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 import { useDisconnect, useSigner } from 'wagmi';
 
 import useXmtp from '../hooks/useXmtp';
@@ -86,6 +87,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     client,
   } = useXmtp();
   const router = useRouter();
+  let contact = useUserContact();
 
   const { disconnect } = useDisconnect({
     onSettled() {
@@ -106,6 +108,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const prevSigner = usePrevious(signer);
 
   useEffect(() => {
+    const connecttoTableland = async (signer: any) => {
+      if (contact) {
+        const tableId = await contact.service.connectToTableland(signer);
+        console.log(`tableId: ${tableId}`);
+        return tableId;
+      }
+    };
     if ((!signer && prevSigner) || signer !== prevSigner) {
       disconnectXmtp();
     }
@@ -114,10 +123,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       const prevAddress = await prevSigner?.getAddress();
       const address = await signer.getAddress();
       if (address === prevAddress) return;
+      const tableId = await connecttoTableland(signer);
+      contact?.setUserContactTableId(tableId);
       connectXmtp(signer);
+
+      // load from tableland
+      debugger;
+      const xx = await contact?.service.loadContacts(tableId!);
+      console.log(xx);
     };
     connect();
-  }, [signer, prevSigner, connectXmtp, disconnectXmtp]);
+  }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
 
   console.log('test account: ', signer, client, walletAddress);
 

@@ -18,13 +18,13 @@ export class UserContactService {
   async connectToTableland(signer?: ethers.Signer) {
     const tableland = await this.getConnection(signer);
     if (!tableland.signer) {
-      tableland.siwe();
+      await tableland.siwe();
     }
 
     const allTables = await tableland.list();
 
     // return a tableid
-    let tableId = allTables.find((t) => t.name.startsWith('contact_'))?.name;
+    let tableId = allTables?.find((t) => t.name.startsWith('contact_'))?.name;
     if (!tableId) {
       tableId = await this.createContactTable();
     }
@@ -38,6 +38,7 @@ export class UserContactService {
       address TEXT,
       name TEXT,
       id INT UNIQUE,
+      primary key (id)
     `,
       { prefix: 'contact_' }
     );
@@ -57,20 +58,24 @@ export class UserContactService {
     contact: { address: string; name: string }
   ) {
     const tableland = await this.getConnection();
+
+    const res = await this.loadContacts(tableId);
+    const id = res.rows.length;
+
     return tableland.write(
-      `INSERT INTO ${tableId} (address, name) VALUES (${contact.address}, ${contact.name})`
+      `INSERT INTO ${tableId} (id, address, name) VALUES (${id}, '${contact.address}', '${contact.name}')`
     );
   }
 
   async removeContact(tableId: string, address: string) {
     const tableland = await this.getConnection();
-    return tableland.write(`DELETE FROM ${tableId} where address = ${address}`);
+    return tableland.write(`DELETE FROM ${tableId} where address = '${address}'`);
   }
 
   async updateContract(tableId: string, address: string, name: string) {
     const tableland = await this.getConnection();
     return tableland.write(
-      ` UPDATE ${tableId} SET name = ${name} WHERE  address = ${address} `
+      ` UPDATE ${tableId} SET name = '${name}' WHERE  address = '${address}' `
     );
   }
 }
