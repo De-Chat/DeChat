@@ -11,25 +11,77 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { type SyntheticEvent, useEffect, useState } from 'react';
+import React, {
+  type SyntheticEvent,
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import { BiEditAlt } from 'react-icons/bi';
+import { UserContactContext } from 'src/contexts/user-contact';
+import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 
 import BaseModal from './BaseModal';
 
-const AddToContactModal = (): JSX.Element => {
+const AddToContactModal = ({
+  peerAddress,
+}: {
+  peerAddress: string;
+}): JSX.Element => {
   const disclosure = useDisclosure();
 
   const [input, setInput] = useState<string>();
   const [busy, setBusy] = useState(false);
+  const userContactContext = useContext(UserContactContext);
 
   const handleInputChange = (e: any) => setInput(e.target.value);
-  const onSubmit = (e: SyntheticEvent) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    e.stopPropagation();
     setBusy(true);
+    if (!input) {
+      return;
+    }
     // TODO: write to tableland
-    // setBusy(false)
-    // disclosure.onClose()
+    const service = userContactContext.service!;
+    await service.addContact(userContactContext.userContactTableId!, {
+      address: peerAddress,
+      name: input,
+    });
+    setBusy(false);
+    disclosure.onClose();
+  };
+
+  const onUpdate = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    if (!input) {
+      return;
+    }
+    // TODO: write to tableland
+    const service = userContactContext.service!;
+    await service.updateContract(
+      userContactContext.userContactTableId!,
+      peerAddress,
+      input
+    );
+    setBusy(false);
+    disclosure.onClose();
+  };
+
+  const onDelete = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    if (!input) {
+      return;
+    }
+    // TODO: write to tableland
+    const service = userContactContext.service!;
+    await service.removeContact(
+      userContactContext.userContactTableId!,
+      peerAddress
+    );
+    setBusy(false);
+    disclosure.onClose();
   };
 
   useEffect(() => {
@@ -69,9 +121,13 @@ const AddToContactModal = (): JSX.Element => {
             {busy ? (
               <Spinner />
             ) : (
-              <Button variant="ghost" disabled={isError}>
-                Add
-              </Button>
+              <>
+                <Button variant="ghost" disabled={isError}>
+                  Add
+                </Button>
+                <Button onClick={onUpdate}>Update</Button>
+                <Button onClick={onDelete}>Delete</Button>
+              </>
             )}
           </ModalFooter>
         </Container>

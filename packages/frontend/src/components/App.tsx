@@ -13,6 +13,7 @@ import { WagmiConfig } from 'wagmi';
 
 import Layout from './Layout';
 import XmtpProvider from './XmtpProvider';
+import { TablelandProvider } from './provider/TablelandProvider';
 
 type AppProps = {
   children?: React.ReactNode;
@@ -29,7 +30,9 @@ function App({ children }: AppProps) {
           theme={colorMode == 'light' ? lightTheme() : darkTheme()}
         >
           <XmtpProvider>
-            <Layout>{children}</Layout>
+            <TablelandProvider>
+              <Layout>{children}</Layout>
+            </TablelandProvider>
           </XmtpProvider>
         </RainbowKitProvider>
       </ChakraProvider>
