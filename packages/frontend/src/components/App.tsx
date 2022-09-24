@@ -9,16 +9,16 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { chains, wagmiClient } from '@services/wagmiClient';
 import theme from '@styles/theme';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 import { WagmiConfig } from 'wagmi';
 
 import { SwitchingLayout } from './layouts/SwitchingLayout';
-import { TablelandProvider } from './provider/TablelandProvider';
+import { UserContactProvider } from './provider/UserContactProvider';
 import XmtpProvider from './provider/XmtpProvider';
 
 const App: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const { colorMode } = useColorMode();
-
+  
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
@@ -27,11 +27,11 @@ const App: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         theme={colorMode == 'light' ? lightTheme() : darkTheme()}
       >
         <XmtpProvider>
-          <TablelandProvider>
+          <UserContactProvider>
             <ChakraProvider theme={theme}>
               <SwitchingLayout>{children}</SwitchingLayout>
             </ChakraProvider>
-          </TablelandProvider>
+          </UserContactProvider>
         </XmtpProvider>
       </RainbowKitProvider>
     </WagmiConfig>

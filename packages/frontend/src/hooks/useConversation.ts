@@ -35,10 +35,7 @@ const useConversation = (
   useEffect(() => {
     const listMessages = async () => {
       if (!conversation) return;
-      console.log(
-        'Listing messages for peer address',
-        conversation.peerAddress
-      );
+      
       setLoading(true);
       const msgs = await conversation.messages({ pageSize: 100 });
       if (dispatchMessages) {

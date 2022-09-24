@@ -84,7 +84,6 @@ const approveErc20 = async (
       ethers.utils.parseUnits(amount, decimals)
     );
     const receipt = await tsx.wait();
-    console.log({ receipt });
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -104,7 +103,7 @@ const approveErc721 = async (
     let tsx;
     tsx = await contract.approve(address, tokenId);
     const receipt = await tsx.wait();
-    console.log({ receipt });
+    
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -126,7 +125,7 @@ const sendEth = async (
       value: ethers.utils.parseEther(amount),
     });
     const receipt = await tsx.wait();
-    console.log({ receipt });
+    
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -148,7 +147,7 @@ const sendERC20 = async (
     const formattedAmount = ethers.utils.parseUnits(amount, decimals);
     let tsx = await contract.sendErc20(tokenAddr, recipient, formattedAmount);
     const receipt = await tsx.wait();
-    console.log({ receipt });
+    
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -168,7 +167,7 @@ const sendERC721 = async (
   try {
     let tsx = await contract.sendErc721(tokenAddr, recipient, id);
     const receipt = await tsx.wait();
-    console.log({ receipt });
+    
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -195,7 +194,7 @@ const sendERC1155 = async (
       []
     );
     const receipt = await tsx.wait();
-    console.log({ receipt });
+    
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -504,7 +503,6 @@ const SendNFT = ({
     setError(undefined);
     return true;
   };
-  console.log('test form: ', form);
 
   // contract and stuff
   const { wallet: signer, walletAddress: address } = useXmtp();
@@ -605,7 +603,7 @@ const SendNFT = ({
   }, [chain?.id, address]);
   const tokenIds = useMemo(() => {
     if (form.contract && nfts.length)
-      return nfts.find((n) => n.address == form.contract).data;
+      return nfts?.find((n) => n.address == form.contract).data;
     return [];
   }, [nfts, form.contract]);
 
@@ -790,7 +788,7 @@ const SendStream = ({
       parsedFlowrate.toString(),
       undefined
     );
-    console.log({ receipt });
+    
 
     // check if transaction is succesful
     if (receipt.status === 1) {
@@ -846,7 +844,7 @@ const SendStream = ({
       let userTokenlist = await getTokenBalancesForAddress(chain?.id, address);
       // filter only Superfluid base token listed in src/hooks/superfluid/wrappingMap
       const superfluidBasetokens = getSuperfluidBaseTokens();
-      console.log('test superfluid: ', userTokenlist, superfluidBasetokens);
+
       let userSuperfluidBaseTokens = userTokenlist?.tokens.filter((t) =>
         superfluidBasetokens.includes(t.address)
       );
@@ -869,8 +867,6 @@ const SendStream = ({
         : 'Upgrade Amount',
     [form.token]
   );
-
-  console.log('test superfluid tokenlist: ', tokenlist);
 
   return (
     <Container centerContent>

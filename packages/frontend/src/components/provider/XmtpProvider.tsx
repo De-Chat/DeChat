@@ -61,7 +61,6 @@ export const XmtpProvider: React.FC<XmtpProviderProps> = ({ children }) => {
   useEffect(() => {
     const listConversations = async () => {
       if (!client) return;
-      console.log('Listing conversations');
       setLoadingConversations(true);
       const convos = await client.conversations.list();
       convos.forEach((convo: Conversation) => {

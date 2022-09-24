@@ -1,83 +1,74 @@
-import { ChainName, connect, Connection, NetworkName } from '@tableland/sdk';
-import { ethers } from 'ethers';
+import { ChainName, connect, Connection, NetworkName, ReadQueryResult } from '@tableland/sdk';
 
-export class UserContactService {
-  private connection?: Connection;
 
-  async getConnection(signer?: ethers.Signer): Promise<Connection> {
-    if (this.connection === undefined) {
-      this.connection = await connect({
-        network: 'testnet',
-        chain: 'polygon-mumbai',
-        signer: signer,
-      });
-    }
-    return this.connection;
-  }
+export interface UserContactModel {
+  address: string;
+  name: string;
+  id: number;
+}
 
-  async connectToTableland(signer?: ethers.Signer) {
-    const tableland = await this.getConnection(signer);
-    if (!tableland.signer) {
-      await tableland.siwe();
-    }
+/**
+ * Process raw query results into its represented model
+ * @param result 
+ * @returns {UserContactModel} UserContactModel
+ */
+export const rawToModel = (result: ReadQueryResult) => {
+  return result.rows.map((row) => {
+    const newEntry: Partial<UserContactModel> = {};
+    result.columns.forEach((col, idx) => {
+      newEntry[col.name as keyof UserContactModel] = row[idx] 
+    })
 
-    const allTables = await tableland.list();
+    return newEntry as UserContactModel
+  })
+}
 
-    // return a tableid
-    let tableId = allTables?.find((t) => t.name.startsWith('contact_'))?.name;
-    if (!tableId) {
-      tableId = await this.createContactTable();
-    }
-    return tableId;
-  }
+export const createContactTable = async (tableland: Connection) => {
+  const contactTable = await tableland.create(
+    `
+    address TEXT,
+    name TEXT,
+    id INT UNIQUE,
+    primary key (id)
+  `,
+    { prefix: 'contact_' }
+  );
 
-  async createContactTable() {
-    const tableland = await this.getConnection();
-    const contactTable = await tableland.create(
-      `
-      address TEXT,
-      name TEXT,
-      id INT UNIQUE,
-      primary key (id)
-    `,
-      { prefix: 'contact_' }
-    );
+  return contactTable.name;
+};
 
-    return contactTable.name;
-  }
+export const loadContacts = async (tableland: Connection, tableId: string) => {
+  const myContacts = await tableland.read(`select * from ${tableId}`);
 
-  async loadContacts(tableId: string) {
-    const tableLand = await this.getConnection();
-    const myContacts = await tableLand.read(`select * from ${tableId}`);
+  return rawToModel(myContacts);
+}
 
-    return myContacts;
-  }
+export const getNextId = async (tableland: Connection, tableId: string): Promise<number> => {
+  const res = await tableland.read(`select id from ${tableId} order by id desc limit 1`);
+  return (res.rows.length > 0 && res.rows[0].length > 0 ? res.rows[0][0] : 1) as number;
+}
 
-  async addContact(
-    tableId: string,
-    contact: { address: string; name: string }
-  ) {
-    const tableland = await this.getConnection();
+export const addContact = async (
+  tableland: Connection,
+  tableId: string,
+  contact: Omit<UserContactModel, 'id'>
+) => {
+  const id = await getNextId(tableland, tableId);
 
-    const res = await this.loadContacts(tableId);
-    const id = res.rows.length;
+  
+  return tableland.write(
+    `INSERT INTO ${tableId} (id, address, name) VALUES (${id}, '${contact.address}', '${contact.name}')`
+  );
+}
 
-    return tableland.write(
-      `INSERT INTO ${tableId} (id, address, name) VALUES (${id}, '${contact.address}', '${contact.name}')`
-    );
-  }
+export const removeContact = async (tableland: Connection, tableId: string, address: string) => {
+  return tableland.write(
+    `DELETE FROM ${tableId} where address = '${address}'`
+  );
+}
 
-  async removeContact(tableId: string, address: string) {
-    const tableland = await this.getConnection();
-    return tableland.write(
-      `DELETE FROM ${tableId} where address = '${address}'`
-    );
-  }
-
-  async updateContract(tableId: string, address: string, name: string) {
-    const tableland = await this.getConnection();
-    return tableland.write(
-      ` UPDATE ${tableId} SET name = '${name}' WHERE  address = '${address}' `
-    );
-  }
+export const updateContact = async (tableland: Connection, tableId: string, address: string, name: string) => {
+  return tableland.write(
+    ` UPDATE ${tableId} SET name = '${name}' WHERE  address = '${address}' `
+  );
 }
