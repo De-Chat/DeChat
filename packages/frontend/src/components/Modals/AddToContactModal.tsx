@@ -35,7 +35,6 @@ const AddToContactModal = ({
 
   const handleInputChange = (e: any) => setInput(e.target.value);
   const onSubmit = async (e: SyntheticEvent) => {
-    debugger;
     e.preventDefault();
     if (!input) {
       return;
@@ -51,7 +50,6 @@ const AddToContactModal = ({
   };
 
   const onUpdate = async (e: SyntheticEvent) => {
-    debugger;
     e.preventDefault();
     if (!input) {
       return;
@@ -69,7 +67,6 @@ const AddToContactModal = ({
   };
 
   const onDelete = async (e: SyntheticEvent) => {
-    debugger;
     e.preventDefault();
     if (!input) {
       return;

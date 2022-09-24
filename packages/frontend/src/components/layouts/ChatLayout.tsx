@@ -1,4 +1,5 @@
 import { Flex, IconButton } from '@chakra-ui/react';
+import { useDomainName } from '@hooks/useDomainName';
 import { getEnsMainnet } from '@hooks/useEns';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
@@ -124,6 +125,9 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   };
   const prevSigner = usePrevious(signer);
 
+  const { isLoading, domain, resolveDomainName } = useDomainName();
+  resolveDomainName('cheechyuan.eth')
+
   useEffect(() => {
     const connecttoTableland = async (signer: any) => {
       if (contact) {
@@ -144,16 +148,13 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       contact?.setUserContactTableId(tableId);
       connectXmtp(signer);
 
-      // load ens data
-      const ens = await getEnsMainnet('0x7D7b6DFCF3287Feb5BC7E88dec12323f5b29e893');
-      console.log(`ens: ${JSON.stringify(ens)}`);
-
       // load from tableland
-      debugger;
       const xx = await contact?.service.loadContacts(tableId!);
       console.log(xx);
     };
     connect();
+
+
   }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
 
   return (
