@@ -1,4 +1,5 @@
 import { Login } from '@components/Login';
+import { useServiceManager } from '@hooks/useServiceManager';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import { useAccount } from 'wagmi';
@@ -12,7 +13,7 @@ export const SwitchingLayout: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
   const router = useRouter();
-  const { isConnected, address } = useAccount();
+  const { address, isConnected, isReady } = useServiceManager();
 
   // Used to prevent unauthorized url access and confusing urls
   if (router.pathname !== '/' && !router.pathname.startsWith('/dm')) {
@@ -20,10 +21,12 @@ export const SwitchingLayout: React.FC<PropsWithChildren<{}>> = ({
   }
 
   // If already logged in, directly render here
-  if (isConnected && address !== undefined) {
+  if (isReady) {
     return <ChatLayout>{children}</ChatLayout>;
   }
 
   // If not logged in navigate them to the login page.
-  return <Login />;
+  return (
+    <Login address={address} isConnected={isConnected} isReady={isReady} />
+  );
 };

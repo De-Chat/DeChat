@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { UserContactContext } from '@contexts/user-contact';
+import { useUserContact } from '@hooks/user-contact/useUserContact';
 import React, {
   type SyntheticEvent,
   useContext,
@@ -31,20 +32,22 @@ const AddToContactModal = ({
 
   const [input, setInput] = useState<string>();
   const [busy, setBusy] = useState(false);
-  const userContactContext = useContext(UserContactContext);
+
+  const { addContact, updateContact, removeContact, loadContacts } = useUserContact();
 
   const handleInputChange = (e: any) => setInput(e.target.value);
+
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     if (!input) {
       return;
     }
     setBusy(true);
-    const service = userContactContext.service!;
-    await service.addContact(userContactContext.userContactTableId!, {
+    await addContact({
       address: peerAddress,
       name: input,
     });
+    await loadContacts()
     setBusy(false);
     disclosure.onClose();
   };
@@ -55,13 +58,7 @@ const AddToContactModal = ({
       return;
     }
     setBusy(true);
-    // TODO: write to tableland
-    const service = userContactContext.service!;
-    await service.updateContract(
-      userContactContext.userContactTableId!,
-      peerAddress,
-      input
-    );
+    await updateContact(peerAddress, input);
     setBusy(false);
     disclosure.onClose();
   };
@@ -72,11 +69,7 @@ const AddToContactModal = ({
       return;
     }
     setBusy(true);
-    const service = userContactContext.service!;
-    await service.removeContact(
-      userContactContext.userContactTableId!,
-      peerAddress
-    );
+    removeContact(peerAddress);
     setBusy(false);
     disclosure.onClose();
   };

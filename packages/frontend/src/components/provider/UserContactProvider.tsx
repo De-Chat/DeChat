@@ -1,4 +1,5 @@
 import { UserContactContext } from '@contexts/user-contact';
+import { UserContactModel } from '@services/user-contact.service';
 import { connect, Connection } from '@tableland/sdk';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { useSigner } from 'wagmi';
@@ -8,6 +9,7 @@ export const UserContactProvider: React.FC<PropsWithChildren<{}>> = ({
 }) => {
   const [connection, setConnection] = useState<Connection>();
   const [tableId, setTableId] = useState<string>();
+  const [contactList, setContactList] = useState<UserContactModel[]>();
 
   const { data: signer } = useSigner();
 
@@ -15,7 +17,6 @@ export const UserContactProvider: React.FC<PropsWithChildren<{}>> = ({
   useEffect(() => {
     const asyncFn = async () => {
       if (signer !== undefined && signer !== null) {
-        console.log('?????????')
         const newConnection = await connect({
           network: 'testnet',
           chain: 'polygon-mumbai',
@@ -35,6 +36,8 @@ export const UserContactProvider: React.FC<PropsWithChildren<{}>> = ({
         connection,
         setUserContactTableId: setTableId,
         userContactTableId: tableId,
+        currentContacts: contactList,
+        setCurrentContacts: setContactList
       }}
     >
       {children}

@@ -46,7 +46,7 @@ import React, {
   useState,
 } from 'react';
 import { IoRocketOutline } from 'react-icons/io5';
-import { Notification,sendEpnsNotification } from 'src/services/epnsService';
+import { Notification, sendEpnsNotification } from 'src/services/epnsService';
 import useAsyncEffect from 'use-async-effect';
 import {
   erc20ABI,
@@ -103,7 +103,7 @@ const approveErc721 = async (
     let tsx;
     tsx = await contract.approve(address, tokenId);
     const receipt = await tsx.wait();
-    
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -125,7 +125,7 @@ const sendEth = async (
       value: ethers.utils.parseEther(amount),
     });
     const receipt = await tsx.wait();
-    
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -147,7 +147,7 @@ const sendERC20 = async (
     const formattedAmount = ethers.utils.parseUnits(amount, decimals);
     let tsx = await contract.sendErc20(tokenAddr, recipient, formattedAmount);
     const receipt = await tsx.wait();
-    
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -167,7 +167,7 @@ const sendERC721 = async (
   try {
     let tsx = await contract.sendErc721(tokenAddr, recipient, id);
     const receipt = await tsx.wait();
-    
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -194,7 +194,7 @@ const sendERC1155 = async (
       []
     );
     const receipt = await tsx.wait();
-    
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -788,7 +788,6 @@ const SendStream = ({
       parsedFlowrate.toString(),
       undefined
     );
-    
 
     // check if transaction is succesful
     if (receipt.status === 1) {

@@ -111,7 +111,6 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     walletAddress,
     client,
   } = useXmtp();
-  const { initializeUserContact, loadContacts } = useUserContact();
 
   const { disconnect } = useDisconnect({
     onSettled() {
@@ -136,22 +135,12 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     if (!signer || signer === prevSigner) return;
 
     const connect = async () => {
-      console.log('signer', signer, initializeUserContact);
-      if(signer) {
-        const prevAddress = await prevSigner?.getAddress();
-        const address = await signer.getAddress();
-        console.log(prevAddress, address)
-        if (address === prevAddress) return;
+      console.log('signer', signer);
+      if (signer) {
         connectXmtp(signer);
-        await initializeUserContact()
-  
-        // load from tableland
-        const xx = await loadContacts()
-        console.log(xx);
       }
     };
     connect();
-
   }, [signer, prevSigner, connectXmtp, disconnectXmtp]);
 
   // ---- epns

@@ -3,14 +3,17 @@ import * as service from '@services/user-contact.service';
 import { useCallback, useContext, useState } from 'react';
 
 export const useUserContact = () => {
-  const { connection, setUserContactTableId, userContactTableId } =
-    useContext(UserContactContext);
+  const {
+    connection,
+    setUserContactTableId,
+    userContactTableId,
+    currentContacts,
+    setCurrentContacts,
+  } = useContext(UserContactContext);
 
   // Initialize function, should only be called once.
   const initializeUserContact = useCallback(async () => {
     if (connection && setUserContactTableId) {
-      await connection.siwe();
-
       const allTables = await connection.list();
 
       if (allTables.length > 0) {
@@ -30,12 +33,18 @@ export const useUserContact = () => {
   }, [connection, setUserContactTableId]);
 
   // Other functions
-  const loadContacts = useCallback(() => {
-    if (connection && userContactTableId) {
-      return service.loadContacts(connection, userContactTableId);
+  const loadContacts = useCallback(async () => {
+    console.log(connection, userContactTableId, setCurrentContacts)
+    if (connection && userContactTableId && setCurrentContacts) {
+      const contacts = await service.loadContacts(
+        connection,
+        userContactTableId
+      );
+      setCurrentContacts(contacts);
+      console.log(contacts)
+      return contacts;
     }
-    return [];
-  }, [connection, userContactTableId]);
+  }, [connection, userContactTableId, setCurrentContacts]);
 
   const addContact = useCallback(
     (contact: Omit<service.UserContactModel, 'id'>) => {
@@ -72,11 +81,23 @@ export const useUserContact = () => {
     [connection, userContactTableId]
   );
 
+  const getContactNameByAddress = useCallback(
+    (address: string) => {
+      if (connection && currentContacts && currentContacts.length > 0) {
+        return currentContacts.find((c) => c.address === address)?.name;
+      }
+      return undefined;
+    },
+    [connection, currentContacts]
+  );
+
   return {
+    currentContacts,
     initializeUserContact,
     loadContacts,
     addContact,
     removeContact,
     updateContact,
+    getContactNameByAddress
   };
 };

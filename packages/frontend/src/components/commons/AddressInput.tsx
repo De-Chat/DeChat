@@ -9,7 +9,7 @@ type AddressInputProps = {
   name?: string;
   className?: string;
   placeholder?: string;
-  onInputChange?: (e: React.SyntheticEvent) => Promise<void>;
+  onInputChange?: (e: React.SyntheticEvent) => void;
 };
 
 const AddressInput = ({

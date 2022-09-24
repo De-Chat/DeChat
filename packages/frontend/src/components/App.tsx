@@ -18,7 +18,7 @@ import XmtpProvider from './provider/XmtpProvider';
 
 const App: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const { colorMode } = useColorMode();
-  
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
