@@ -1,5 +1,4 @@
-import { useEnsName } from 'wagmi';
-
+import { useDomainName } from '@hooks/useDomainName';
 import { classNames } from '../helpers';
 
 type AddressProps = {
@@ -13,10 +12,19 @@ const shortAddress = (addr: string): string =>
     : addr;
 
 const Address = ({ address, className }: AddressProps): JSX.Element => {
-  const { data: ensName } = useEnsName({ address });
+  const {isLoading, domain, resolveDomainName } = useDomainName();
+  resolveDomainName(address);
+
   return (
     <span className={classNames(className || '', 'font-mono')} title={address}>
-      {ensName || shortAddress(address)}
+
+      {domain?.ensName && 
+      <img className="h-4 mr-1 w-auto inline-block" src="/ens-icon.png" alt="ENS" /> || 
+      domain?.udName && 
+      <img className="h-4 mr-1 w-auto inline-block" src="/ud-icon.png" alt="UD" />}
+
+      {domain?.ensName || domain?.udName || shortAddress(address)}
+
     </span>
   );
 };
