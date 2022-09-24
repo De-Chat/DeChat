@@ -141,12 +141,12 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     }
     if (!signer || signer === prevSigner) return;
     const connect = async () => {
+      connectXmtp(signer);
       const prevAddress = await prevSigner?.getAddress();
       const address = await signer.getAddress();
       if (address === prevAddress) return;
       const tableId = await connecttoTableland(signer);
       contact?.setUserContactTableId(tableId);
-      connectXmtp(signer);
 
       // load from tableland
       const xx = await contact?.service.loadContacts(tableId!);
