@@ -10,13 +10,13 @@ const Unlock = (): JSX.Element => {
       (window as any).unlockProtocolConfig = {
         network: 5, // Network ID (1 is for mainnet, 4 for rinkeby, 100 for xDai, etc)
         locks: {
-          '0xCc197E09b3eDFFf375acEBaeb46285879CAE496c': {
-            name: 'Test Lock',
+          '0xd9C22C8568F5Ef7Fa0a05864A31B2CD83CC7eaBB': {
+            name: 'Dechat Premium',
           },
         },
         icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
         callToAction: {
-          default: 'Test Lock!',
+          default: 'Dechat Premium',
         },
       };
 
@@ -53,7 +53,7 @@ const Unlock = (): JSX.Element => {
       />
       {locked.locked === 'locked' && (
         <div onClick={checkOut} style={{ cursor: 'pointer' }}>
-          Unlock me!{' '}
+          Get Dechat Premium{' '}
           <span aria-label="locked" role="img">
             🔒
           </span>
@@ -61,7 +61,7 @@ const Unlock = (): JSX.Element => {
       )}
       {locked.locked === 'unlocked' && (
         <div>
-          Unlocked!{' '}
+          Dechat Premium{' '}
           <span aria-label="unlocked" role="img">
             🗝
           </span>
