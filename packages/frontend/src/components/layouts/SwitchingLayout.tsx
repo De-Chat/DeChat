@@ -19,9 +19,9 @@ export const SwitchingLayout: React.FC<PropsWithChildren<{}>> = ({
   }
 
   // If already logged in, directly render here
-  // if (isConnected && address !== undefined) {
-  //   return <ChatLayout>{children}</ChatLayout>;
-  // }
+  if (isConnected && address !== undefined) {
+    return <ChatLayout>{children}</ChatLayout>;
+  }
 
   // If not logged in navigate them to the login page.
   return <Login />;
