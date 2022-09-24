@@ -3,6 +3,8 @@ import BackArrow from '@components/commons/BackArrow';
 import { TitleText } from '@components/commons/TitleText';
 import UserMenu from '@components/commons/UserMenu';
 import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
+import { useDomainName } from '@hooks/useDomainName';
+import { getEnsMainnet } from '@hooks/useEns';
 import { useUserContact } from '@hooks/user-contact/useUserContact';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
@@ -123,6 +125,9 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   };
   const prevSigner = usePrevious(signer);
 
+  const { isLoading, domain, resolveDomainName } = useDomainName();
+  resolveDomainName('cheechyuan.eth')
+
   useEffect(() => {
     const connecttoTableland = async (signer: any) => {
       if (contact) {
@@ -144,11 +149,12 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       connectXmtp(signer);
 
       // load from tableland
-      debugger;
       const xx = await contact?.service.loadContacts(tableId!);
       console.log(xx);
     };
     connect();
+
+
   }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
 
   return (
