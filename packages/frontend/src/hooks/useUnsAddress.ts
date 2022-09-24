@@ -10,7 +10,7 @@ const useUnsAddress = (domain: string) => {
     .then((add) => {
       setAddress(add);
     })
-    .catch((err) => console.log(address, 'does not resolve to any domain'));
+    .catch((err) => console.error(address, 'does not resolve to any domain'));
 
   return address;
 };

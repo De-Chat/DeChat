@@ -1,3 +1,4 @@
+import { useUserContact } from '@hooks/user-contact/useUserContact';
 import { Message } from '@xmtp/xmtp-js';
 import { Conversation } from '@xmtp/xmtp-js/dist/types/src/conversations';
 import Link from 'next/link';
@@ -32,6 +33,7 @@ const ConversationTile = ({
   const { messages } = useConversation(conversation.peerAddress);
   const latestMessage = getLatestMessage(messages);
   const { ensName } = useEns(conversation.peerAddress);
+  
   const path = `/dm/${ensName || conversation.peerAddress}`;
   if (!latestMessage) {
     return null;
@@ -97,6 +99,7 @@ const ConversationsList = ({
   const { getMessages } = useContext(XmtpContext);
   const peerAddressOrName = router.query.peerAddressOrName as string;
   const { address, ensName } = useEns(peerAddressOrName);
+
   const orderByLatestMessage = (
     convoA: Conversation,
     convoB: Conversation

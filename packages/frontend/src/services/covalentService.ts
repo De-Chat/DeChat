@@ -73,7 +73,6 @@ export const getTokenBalancesForAddress = async (
         totalUSD,
         tokens,
       };
-      console.log(returnData);
       return returnData;
     })
     .catch((e) => console.warn('Covalent service encouters error: ', e));
@@ -137,7 +136,7 @@ export const getNFTForAddress = async (chain_id: number, address: string) => {
     .then((res) => {
       const data = res.data.data;
       let nfts = data.items.filter((token: any) => token.type == 'nft');
-      const returnData = nfts.map((nft: any) => ({
+      const returnData = nfts?.map((nft: any) => ({
         address: nft.contract_address,
         name: nft.contract_name,
         data: nft.nft_data.map((id: any) => ({
@@ -147,7 +146,6 @@ export const getNFTForAddress = async (chain_id: number, address: string) => {
         })),
       }));
 
-      console.log(returnData);
       return returnData;
     })
     .catch((e) => console.warn('Covalent NFT service encouters error: ', e));

@@ -4,7 +4,6 @@ import { TitleText } from '@components/commons/TitleText';
 import UserMenu from '@components/commons/UserMenu';
 import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
 import { useDomainName } from '@hooks/useDomainName';
-import { getEnsMainnet } from '@hooks/useEns';
 import { useUserContact } from '@hooks/user-contact/useUserContact';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
@@ -112,13 +111,10 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     walletAddress,
     client,
   } = useXmtp();
-  const router = useRouter();
-  let contact = useUserContact();
 
   const { disconnect } = useDisconnect({
     onSettled() {
       disconnectXmtp();
-      // router.push('/');
     },
   });
   const { data: signer } = useSigner();
@@ -132,41 +128,25 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   };
   const prevSigner = usePrevious(signer);
 
-  const { isLoading, domain, resolveDomainName } = useDomainName();
-  resolveDomainName('cheechyuan.eth');
-
   useEffect(() => {
-    const connecttoTableland = async (signer: any) => {
-      if (contact) {
-        const tableId = await contact.service.connectToTableland(signer);
-        console.log(`tableId: ${tableId}`);
-        return tableId;
-      }
-    };
     if ((!signer && prevSigner) || signer !== prevSigner) {
       disconnectXmtp();
     }
     if (!signer || signer === prevSigner) return;
-    const connect = async () => {
-      connectXmtp(signer);
-      const prevAddress = await prevSigner?.getAddress();
-      const address = await signer.getAddress();
-      if (address === prevAddress) return;
-      const tableId = await connecttoTableland(signer);
-      contact?.setUserContactTableId(tableId);
 
-      // load from tableland
-      const xx = await contact?.service.loadContacts(tableId!);
-      console.log(xx);
+    const connect = async () => {
+      console.log('signer', signer);
+      if (signer) {
+        connectXmtp(signer);
+      }
     };
     connect();
-  }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
+  }, [signer, prevSigner, connectXmtp, disconnectXmtp]);
 
-  /////// epns
+  // ---- epns
 
   // create state components to fetch all the notifications.
   const [isSubscribed, setIsSubscribed] = useState(false);
-  console.log('epns signer', signer);
   // create handler to subscribe to channel
   const handleOptInOptOut = async () => {
     if (!walletAddress) return;
@@ -174,13 +154,11 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       const res = await optInToChannel(signer, walletAddress);
       if (res?.status === 'success') {
         setIsSubscribed(true);
-        console.log(`isSubscribed optIn: ${JSON.stringify(res)}`);
       }
     } else {
       const res2 = await optOutToChannel(signer, walletAddress);
       if (res2?.status === 'success') {
         setIsSubscribed(false);
-        console.log(`isSubscribed optOut: ${JSON.stringify(res2)}`);
       }
     }
   };
