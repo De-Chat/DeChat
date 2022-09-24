@@ -56,7 +56,7 @@ export const getNextId = async (
     `select id from ${tableId} order by id desc limit 1`
   );
   return (
-    res.rows.length > 0 && res.rows[0].length > 0 ? res.rows[0][0] : 1
+    res.rows.length > 0 && res.rows[0].length > 0 ? parseInt(res.rows[0][0]) + 1 : 1
   ) as number;
 };
 
