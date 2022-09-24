@@ -1,16 +1,18 @@
-import XmtpProvider from './XmtpProvider';
-import Layout from './Layout';
 import '@rainbow-me/rainbowkit/styles.css';
-import { WagmiConfig } from 'wagmi';
-import { chains, wagmiClient } from '@shared/wagmiClient';
+
+import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import {
   darkTheme,
   lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { ChakraProvider, useColorMode } from '@chakra-ui/react';
-import theme from '@styles/theme';
 import { env } from '@shared/environment';
+import { chains, wagmiClient } from '@shared/wagmiClient';
+import theme from '@styles/theme';
+import { WagmiConfig } from 'wagmi';
+
+import Layout from './Layout';
+import XmtpProvider from './XmtpProvider';
 import { TablelandProvider } from './provider/TablelandProvider';
 
 type AppProps = {

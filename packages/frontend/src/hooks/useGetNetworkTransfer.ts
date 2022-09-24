@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+import { useEffect } from 'react';
 
 import { useCustomApolloClient } from './useCustomApolloClient';
 
@@ -61,17 +62,39 @@ const GET_TRANSFER = gql`
 
 export const useGetNetworkTransfer = (
   networkName: string,
-  startFrom: string,
   count: number,
   sender: string,
   recipient: string
 ) => {
   const client = useCustomApolloClient(networkName);
 
-  const { loading, error, data } = useQuery(GET_TRANSFER, {
-    variables: { count, from: sender, to: recipient },
-    client,
-  });
+  const { loading, error, data, startPolling, stopPolling } = useQuery(
+    GET_TRANSFER,
+    {
+      variables: { count, from: sender, to: recipient },
+      client,
+    }
+  );
+
+  return { loading, error, data, startPolling, stopPolling };
+};
+
+export const useGetNetworkTransferPoll = (
+  networkName: string,
+  pollInterval: number,
+  count: number,
+  sender: string,
+  recipient: string
+) => {
+  const { loading, error, data, startPolling, stopPolling } =
+    useGetNetworkTransfer(networkName, count, sender, recipient);
+
+  useEffect(() => {
+    startPolling(pollInterval);
+    return () => {
+      stopPolling();
+    };
+  }, [startPolling, stopPolling, pollInterval]);
 
   return { loading, error, data };
 };

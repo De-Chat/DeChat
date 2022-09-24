@@ -8,6 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
+import { encodeMessage } from '@components/Conversation/MessageParser';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FiImage, FiSend } from 'react-icons/fi';
 import ImageUploading from 'react-images-uploading'; // https://www.npmjs.com/package/react-images-uploading
@@ -51,7 +52,9 @@ const ImageUploader = ({ onSend }: MessageComposerProps) => {
     const uploadedUrl = getImgUrl(cid, name);
     console.log('uploaded to url: ', uploadedUrl);
 
-    await onSend(`::image(${uploadedUrl})`);
+    const payload = { url: uploadedUrl };
+    const encodedMsg = encodeMessage('image', payload);
+    await onSend(encodedMsg);
     setBusy(false);
     disclosure.onClose();
 

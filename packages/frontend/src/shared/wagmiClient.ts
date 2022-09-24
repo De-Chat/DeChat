@@ -45,9 +45,10 @@ export const getRpcUrl = (chainId: number): string => {
 //   ]
 // );
 
-export const { chains, provider } = configureChains([chain.mainnet, chain.polygonMumbai], [
-  publicProvider(),
-])
+export const { chains, provider } = configureChains(
+  [chain.mainnet, chain.polygonMumbai],
+  [publicProvider()]
+);
 
 const { connectors } = getDefaultWallets({
   appName: 'Dechat',

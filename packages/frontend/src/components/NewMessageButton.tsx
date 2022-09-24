@@ -5,7 +5,6 @@ const NewMessageButton = (): JSX.Element => {
   const router = useRouter();
 
   const onNewMessageButtonClick = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     router.push('/dm/');
   }, [router]);
 

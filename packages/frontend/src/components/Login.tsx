@@ -36,7 +36,9 @@ const RegisterNickName = () => {
   };
   return (
     <>
-      <Heading fontSize={'3xl'}>It doesn't seem that you have a name?</Heading>
+      <Heading fontSize={'3xl'}>
+        It doesn&apos;t seem that you have a name?
+      </Heading>
       <form onSubmit={submitNickname}>
         <FormControl id="name">
           <InputGroup>
@@ -44,18 +46,16 @@ const RegisterNickName = () => {
               placeholder="ENS / Unstoppable Domains"
               onChange={onInputChange}
             />
-            <InputRightElement
-              children={
-                <IconButton
-                  disabled={!nickname}
-                  size="xs"
-                  aria-label="Register nickname"
-                  variant="ghost"
-                  as={BsAward}
-                  onClick={submitNickname}
-                />
-              }
-            />
+            <InputRightElement>
+              <IconButton
+                disabled={!nickname}
+                size="xs"
+                aria-label="Register nickname"
+                variant="ghost"
+                as={BsAward}
+                onClick={submitNickname}
+              />
+            </InputRightElement>
           </InputGroup>
         </FormControl>
       </form>

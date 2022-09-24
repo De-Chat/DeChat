@@ -16,5 +16,5 @@ export const getSuperFluidFramework = async (
 };
 
 export const createFramework = async (provider: SupportedProvider) => {
-  return await getSuperFluidFramework(provider)
+  return await getSuperFluidFramework(provider);
 };

@@ -102,6 +102,7 @@ importers:
       '@types/react-dom': ^18.0.6
       '@typescript-eslint/eslint-plugin': ^5.37.0
       '@typescript-eslint/parser': ^5.37.0
+      '@unlock-protocol/unlock-js': ^0.26.6
       '@unstoppabledomains/resolution': ^8.3.3
       '@walletconnect/web3-provider': ^1.8.0
       '@xmtp/xmtp-js': ^4.4.1
@@ -150,6 +151,7 @@ importers:
       '@rainbow-me/rainbowkit': 0.5.3_77hisva6i3lzqozyotowjactue
       '@superfluid-finance/sdk-core': 0.5.6_sup44lqfolz3u7wyp5ytwzo2j4
       '@tableland/sdk': 3.1.2_keccak@3.0.2
+      '@unlock-protocol/unlock-js': 0.26.6_ethers@5.7.1
       '@unstoppabledomains/resolution': 8.3.3
       '@xmtp/xmtp-js': 4.4.1_node-fetch@2.6.7
       axios: 0.27.2
@@ -4601,6 +4603,12 @@ packages:
       antlr4ts: 0.5.0-alpha.4
     dev: true
 
+  /@spruceid/siwe-parser/1.1.3:
+    resolution: {integrity: sha512-oQ8PcwDqjGWJvLmvAF2yzd6iniiWxK0Qtz+Dw+gLD/W5zOQJiKIUXwslHOm8VB8OOOKW9vfR3dnPBhHaZDvRsw==}
+    dependencies:
+      apg-js: 4.1.2
+    dev: false
+
   /@spruceid/siwe-parser/2.0.0_keccak@3.0.2:
     resolution: {integrity: sha512-zXlPBRKaT9ecxhhLQqn/StAWlXvQBlFDFnIAlM7ceMVx/1NVZZ65GdW9A28tYGbhpesYxNYpsqegGsBcrWuASg==}
     peerDependencies:
@@ -5630,6 +5638,18 @@ packages:
   /@ungap/promise-all-settled/1.1.2:
     resolution: {integrity: sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==}
     dev: true
+
+  /@unlock-protocol/unlock-js/0.26.6_ethers@5.7.1:
+    resolution: {integrity: sha512-cCNeJlcE/5mHWnBbRNixd58tkjFk0lNdXyE8k6L6LeiWcFOq8+dNkkgVQeS01ieQo4NX1bTsH5v1kXLfgFLC4A==}
+    peerDependencies:
+      ethers: 5.6.9 || ^5.0.0
+    dependencies:
+      cross-fetch: 3.1.5
+      ethers: 5.7.1
+      siwe: 1.1.6_ethers@5.7.1
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /@unstoppabledomains/resolution/8.3.3:
     resolution: {integrity: sha512-jQ9757Lvx/xqU7Lg7JT4L9WQZuElHkMiJmtph0e6TSwfguIlkv1i5UgzURgVXDvVizVKpDejGS60kuvICkz9ZQ==}
@@ -6759,7 +6779,7 @@ packages:
   /axios/0.21.4_debug@4.3.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: true
@@ -6767,7 +6787,7 @@ packages:
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -10666,6 +10686,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.15.1_debug@4.3.4:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -17489,6 +17521,17 @@ packages:
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
+  /siwe/1.1.6_ethers@5.7.1:
+    resolution: {integrity: sha512-3WRdEil32Tc2vuNzqJ2/Z/MIvsvy0Nkzc2ov+QujmpHO7tM83dgcb47z0Pu236T4JQkOQCqQkq3AJ/rVIezniA==}
+    peerDependencies:
+      ethers: 5.5.1 || ^5.0.0
+    dependencies:
+      '@spruceid/siwe-parser': 1.1.3
+      '@stablelib/random': 1.0.2
+      apg-js: 4.1.2
+      ethers: 5.7.1
+    dev: false
+
   /siwe/2.0.5_ethers@5.7.1+keccak@3.0.2:
     resolution: {integrity: sha512-PZku0+V915YvzVuProsC+RD6unKBo3208X/+t9ARk1WHjYMbtGnxuyBuMASdmLFI3nqJiorko5qrT0ihCFwlHQ==}
     peerDependencies:
@@ -17587,7 +17630,7 @@ packages:
     dependencies:
       command-exists: 1.2.9
       commander: 3.0.2
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       fs-extra: 0.30.0
       js-sha3: 0.8.0
       memorystream: 0.3.1

@@ -8,7 +8,7 @@ const useUnsAvatar = (domain: string) => {
   resolution
     .tokenURIMetadata(domain)
     .then((data) => {
-      setAvatarUrl(data.image_url);
+      setAvatarUrl(data.image);
     })
     .catch((err) => console.log('No avatar found for', domain));
 
