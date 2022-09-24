@@ -1,5 +1,5 @@
+import { UserContactService } from '@services/user-contact.service';
 import { createContext, Dispatch, SetStateAction } from 'react';
-import { UserContactService } from 'src/services/user-contact.service';
 
 export interface UserContactContextData {
   service: UserContactService;

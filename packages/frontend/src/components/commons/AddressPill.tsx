@@ -1,6 +1,6 @@
+import { classNames } from '@helpers/classNames';
 import React from 'react';
 
-import { classNames } from '../helpers';
 import Address from './Address';
 
 type addressPillProps = {
