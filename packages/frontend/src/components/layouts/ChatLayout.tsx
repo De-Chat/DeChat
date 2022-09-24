@@ -1,4 +1,5 @@
 import { Flex, IconButton } from '@chakra-ui/react';
+import { getEnsMainnet } from '@hooks/useEns';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
 import Link from 'next/link';
@@ -142,6 +143,10 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       const tableId = await connecttoTableland(signer);
       contact?.setUserContactTableId(tableId);
       connectXmtp(signer);
+
+      // load ens data
+      const ens = await getEnsMainnet('0x7D7b6DFCF3287Feb5BC7E88dec12323f5b29e893');
+      console.log(`ens: ${JSON.stringify(ens)}`);
 
       // load from tableland
       debugger;
