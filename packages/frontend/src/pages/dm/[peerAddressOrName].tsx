@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
-import { Conversation } from '../../components/Conversation';
+import { Conversation } from '../../components/conversation';
 
 const ConversationPage: NextPage = () => {
   const router = useRouter();

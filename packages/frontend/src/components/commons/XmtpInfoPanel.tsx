@@ -1,3 +1,4 @@
+import { classNames } from '@helpers/classNames';
 import {
   ArrowSmRightIcon,
   BookOpenIcon,
@@ -5,11 +6,8 @@ import {
   LinkIcon,
   UserGroupIcon,
 } from '@heroicons/react/solid';
+import useXmtp from '@hooks/useXmtp';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
-
-import packageJson from '../../package.json';
-import { classNames } from '../helpers';
-import useXmtp from '../hooks/useXmtp';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -119,7 +117,6 @@ const XmtpInfoPanel = (): JSX.Element => {
         })}
       </div>
       <div className="flex justify-between items-center mt-4">
-        <div className="text-n-600 text-sm">v{packageJson.version}</div>
         <a
           href="https://blog.xmtp.com/contact/"
           target="_blank"

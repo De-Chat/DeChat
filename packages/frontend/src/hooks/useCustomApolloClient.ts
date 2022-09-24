@@ -1,5 +1,5 @@
+import { ApolloTheGraphClientContext } from '@contexts/apollo';
 import { useContext } from 'react';
-import { ApolloTheGraphClientContext } from 'src/contexts/apollo';
 
 export const useCustomApolloClient = (networkName: string) => {
   const context = useContext(ApolloTheGraphClientContext);

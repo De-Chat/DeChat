@@ -1,6 +1,6 @@
+import { SuperfluidToken } from '@services/superFluidService';
 import { BigNumber, ethers } from 'ethers';
 import { useState } from 'react';
-import { SuperfluidToken } from 'src/services/superFluidService';
 
 export const upgradeCreateFlow = async (
   wrapperSuperToken: SuperfluidToken,
