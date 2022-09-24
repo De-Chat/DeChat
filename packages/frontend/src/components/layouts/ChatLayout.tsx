@@ -16,15 +16,22 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 import { useDisconnect, useSigner } from 'wagmi';
-
+import {
+  getEpnsUserSubscriptions,
+  isUserSubscribed,
+  optInToChannel,
+  optOutToChannel,
+} from 'src/services/epnsService';
 import {
   ChatListView,
   ConversationView,
   RecipientControl,
 } from '../conversation';
 import NavigationPanel from '../conversation/NavigationPanel';
+
 
 const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
@@ -111,7 +118,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const { disconnect } = useDisconnect({
     onSettled() {
       disconnectXmtp();
-      router.push('/');
+      // router.push('/');
     },
   });
   const { data: signer } = useSigner();
@@ -157,6 +164,43 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
   }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
 
+
+  /////// epns
+
+  // create state components to fetch all the notifications.
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  console.log('epns signer', signer);
+  // create handler to subscribe to channel
+  const handleOptInOptOut = async () => {
+    if (!walletAddress) return;
+    if (!isSubscribed) {
+      const res = await optInToChannel(signer, walletAddress);
+      if (res?.status === 'success') {
+        setIsSubscribed(true);
+        console.log(`isSubscribed optIn: ${JSON.stringify(res)}`);
+      }
+    } else {
+      const res2 = await optOutToChannel(signer, walletAddress);
+      if (res2?.status === 'success') {
+        setIsSubscribed(false);
+        console.log(`isSubscribed optOut: ${JSON.stringify(res2)}`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(`walletAddress useEffect: ${walletAddress}`);
+    if (!walletAddress) return;
+    // get userSubscription status
+    getEpnsUserSubscriptions(walletAddress).then((subscriptions) => {
+      console.log('epns subscriptions', subscriptions);
+    });
+    isUserSubscribed(walletAddress).then((res) => {
+      console.log('isUserSubscribed useEffect', res);
+      setIsSubscribed(res);
+    });
+  }, [walletAddress]);
+
   return (
     <>
       <ChatListView>
@@ -170,6 +214,13 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 variant="unstyled"
               />
             )}
+            <button
+              className="inline-flex items-center h-7 md:h-6 px-4 py-1 my-4 bg-p-400 border border-p-300 hover:bg-p-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-n-100 focus-visible:ring-offset-p-600 focus-visible:border-n-100 focus-visible:outline-none active:bg-p-500 active:border-p-500 active:ring-0 text-sm md:text-xs md:font-semibold tracking-wide text-white rounded"
+              onClick={handleOptInOptOut}
+            >
+              <img src="/full_bell.png" width="24" height="24" />
+              {!isSubscribed ? 'Opt In' : 'Opt Out'}
+            </button>
           </NavigationHeaderLayout>
           <NavigationPanel />
           <UserMenu onDisconnect={disconnect} />

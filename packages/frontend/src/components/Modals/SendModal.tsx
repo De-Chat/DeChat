@@ -60,8 +60,13 @@ import {
 import { encodeMessage } from '../../helpers/message-parser';
 import useXmtp from '../../hooks/useXmtp';
 import BaseModal from './BaseModal';
-
+import { sendEpnsNotification, Notification } from 'src/services/epnsService';
 ///// helpers
+const shortenAddress = (addr: string): string =>
+  addr.length > 10 && addr.startsWith('0x')
+    ? `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`
+    : addr;
+
 const approveErc20 = async (
   contract: ethers.Contract,
   address: string,
@@ -358,6 +363,34 @@ const SendToken = ({
       amount,
       token.decimals
     );
+    // check if transaction is succesful
+    if (receipt.status === 1) {
+      try {
+        //// [EPNS Section]
+        // create EPNS notification
+        const txNotif: Notification = {
+          recipientAddrs: [address, to],
+          title: '[ERC20 Transaction]',
+          body: `Token: ${
+            token.symbol
+          }\nAmount: ${amount}\nFrom: ${shortenAddress(
+            receipt.from
+          )}\nTo: ${shortenAddress(to)}`,
+          cta: `${urlPrefix.blockchainExplorer}/tx/${receipt.transactionHash}`,
+          imgLink: '',
+        };
+        console.log(`txNotif`, txNotif);
+        // send notification
+        const epnsResp = await sendEpnsNotification(txNotif);
+        if (epnsResp.status === 204) {
+          console.log('EPNS SENT');
+        } else {
+          console.log(`EPNS failed`, epnsResp);
+        }
+      } catch (error) {
+        console.log('EPNS failed', error);
+      }
+    }
 
     // TODO: write to tableland if this is a lend
     disclosure.onClose();
@@ -526,6 +559,33 @@ const SendNFT = ({
     setBusy(true);
     let { to, contract, tokenId } = form;
     const receipt = await sendERC721(sendContract, contract, to, tokenId);
+
+    // check if transaction is succesful
+    if (receipt.status === 1) {
+      try {
+        //// [EPNS Section]
+        // create EPNS notification
+        const txNotif: Notification = {
+          recipientAddrs: [address, to],
+          title: '[ERC721 Transaction]',
+          body: `Token ID: ${tokenId}\nFrom: ${shortenAddress(
+            receipt.from
+          )}\nTo: ${shortenAddress(to)}`,
+          cta: `${urlPrefix.blockchainExplorer}/tx/${receipt.transactionHash}`,
+          imgLink: '',
+        };
+        console.log(`txNotif`, txNotif);
+        // send notification
+        const epnsResp = await sendEpnsNotification(txNotif);
+        if (epnsResp.status === 204) {
+          console.log('EPNS SENT');
+        } else {
+          console.log(`EPNS failed`, epnsResp);
+        }
+      } catch (error) {
+        console.log('EPNS failed', error);
+      }
+    }
 
     // TODO: write to tableland if this is a lend
 
@@ -731,6 +791,33 @@ const SendStream = ({
       undefined
     );
     console.log({ receipt });
+
+    // check if transaction is succesful
+    if (receipt.status === 1) {
+      try {
+        //// [EPNS Section]
+        // create EPNS notification
+        const txNotif: Notification = {
+          recipientAddrs: [address, form.to],
+          title: '[Superfluid Stream]',
+          body: `Token symbol: ${form.token?.symbol}\nFrom: ${shortenAddress(
+            receipt.from
+          )}\nTo: ${shortenAddress(form.to)}\nAmount: ${form.upgradeAmount}\nFlowrate: ${form.flowrate} / second`,
+          cta: `${urlPrefix.blockchainExplorer}/tx/${receipt.transactionHash}`,
+          imgLink: '',
+        };
+        console.log(`txNotif`, txNotif);
+        // send notification
+        const epnsResp = await sendEpnsNotification(txNotif);
+        if (epnsResp.status === 204) {
+          console.log('EPNS SENT');
+        } else {
+          console.log(`EPNS failed`, epnsResp);
+        }
+      } catch (error) {
+        console.log('EPNS failed', error);
+      }
+    }
 
     // send the link to streaming via Xmtp conversation API
     const payload = {
