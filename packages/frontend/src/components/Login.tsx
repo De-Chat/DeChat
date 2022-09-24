@@ -63,16 +63,8 @@ const RegisterNickName = () => {
   );
 };
 
-const Login = ({signer}: {signer: any}) => {
+const Login = () => {
   let { address } = useAccount();
-  let contact = useUserContact();
-
-  useAsyncEffect(async () => {
-    if (contact) {
-      const tableId = await contact.service.connectToTableland(signer);
-      contact.setUserContactTableId(tableId);
-    }
-  }, [signer, contact]);
 
   const resolvedName = '123';
   return (

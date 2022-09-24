@@ -5,19 +5,20 @@ import {
 } from 'src/contexts/user-contact';
 
 export const useUserContact = (): UserContactContextData | undefined => {
-  const [c, setC] = useState<UserContactContextData | undefined>();
+  // const [c, setC] = useState<UserContactContextData | undefined>();
   const context = useContext(UserContactContext);
   if (
-    context !== undefined &&
+    context !== undefined 
+    &&
     context.service &&
     context.userContactTableId &&
     context.setUserContactTableId
   ) {
-    // return context as UserContactContextData;
-    setC(context as UserContactContextData);
+    return context as UserContactContextData;
+    // setC(context as UserContactContextData);
   }
 
-  return c;
-  // return context as UserContactContextData;
+  // return c;
+  return context as UserContactContextData;
   // throw new Error("No user context provider")
 };
