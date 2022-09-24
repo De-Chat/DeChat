@@ -126,7 +126,7 @@ const AddToContactModal = ({
                   Add
                 </Button>
                 <Button onClick={onUpdate}>Update</Button>
-                <Button onClick={onDelete}>Delete</Button>
+                {/* <Button onClick={onDelete}>Delete</Button> */}
               </>
             )}
           </ModalFooter>

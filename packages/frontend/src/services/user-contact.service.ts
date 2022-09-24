@@ -69,13 +69,13 @@ export class UserContactService {
 
   async removeContact(tableId: string, address: string) {
     const tableland = await this.getConnection();
-    return tableland.write(`DELETE FROM ${tableId} where address = ${address}`);
+    return tableland.write(`DELETE FROM ${tableId} where address = '${address}'`);
   }
 
   async updateContract(tableId: string, address: string, name: string) {
     const tableland = await this.getConnection();
     return tableland.write(
-      ` UPDATE ${tableId} SET name = ${name} WHERE  address = ${address} `
+      ` UPDATE ${tableId} SET name = '${name}' WHERE  address = '${address}' `
     );
   }
 }
