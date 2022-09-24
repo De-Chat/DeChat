@@ -35,7 +35,7 @@ const Conversation = ({
   const transactions = useGetAllTransfer(
     100,
     walletAddress || '',
-    walletAddress || ''
+    peerAddress || ''
   );
 
   // process XMTP messages and Graph transactions
