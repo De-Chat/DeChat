@@ -31,7 +31,6 @@ export const useDomainName = () => {
   );
 
   useAsyncEffect(async () => {
-    // debugger;
     const ensRes = await getEnsMainnet(addressOrName);
     const udRes = await getUD(addressOrName);
     setDomainName({

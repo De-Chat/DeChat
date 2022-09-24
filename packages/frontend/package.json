@@ -28,6 +28,7 @@
     "@dechat/contracts": "workspace:0.0.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@epnsproject/sdk-restapi": "^0.1.13",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^1.0.6",
     "@rainbow-me/rainbowkit": "^0.5.3",
