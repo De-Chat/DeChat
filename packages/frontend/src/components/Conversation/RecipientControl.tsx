@@ -6,6 +6,8 @@ import useEns from '../../hooks/useEns';
 import useXmtp from '../../hooks/useXmtp';
 import AddressInput from '../AddressInput';
 
+import { useDomainName }  from '@hooks/useDomainName';
+
 type RecipientInputProps = {
   peerAddressOrName: string | undefined;
   onSubmit: (address: string) => Promise<void>;
@@ -30,9 +32,14 @@ const RecipientControl = ({
   );
   const [pendingPeerAddressOrName, setPendingPeerAddressOrName] =
     useState<string>('');
+
   const { address: pendingAddress, isLoading } = useEns(
     pendingPeerAddressOrName
   );
+
+  const { domain, resolveDomainName } = useDomainName();
+  // resolveDomainName(pendingPeerAddressOrName);
+
   const { ensName: resolvedEnsName, address: resolvedAddress } =
     useEns(peerAddressOrName);
 
@@ -44,13 +51,24 @@ const RecipientControl = ({
   );
 
   const completeSubmit = useCallback(async () => {
-    if (await checkIfOnNetwork(pendingAddress as string)) {
-      onSubmit(pendingPeerAddressOrName);
+    const checkAddress = domain?.ensAddress || domain?.udAddress || pendingAddress || pendingPeerAddressOrName;
+    console.log("htest4", checkAddress);
+    if (await checkIfOnNetwork(checkAddress as string)) {
+      onSubmit(checkAddress as string);
       setRecipientInputMode(RecipientInputMode.Submitted);
     } else {
       setRecipientInputMode(RecipientInputMode.NotOnNetwork);
     }
-  }, [checkIfOnNetwork, pendingAddress, pendingPeerAddressOrName, onSubmit]);
+  }, [checkIfOnNetwork, domain, pendingAddress, pendingPeerAddressOrName, onSubmit]);
+
+  // const completeSubmit = useCallback(async () => {
+  //   if (await checkIfOnNetwork(pendingAddress as string)) {
+  //     onSubmit(pendingPeerAddressOrName);
+  //     setRecipientInputMode(RecipientInputMode.Submitted);
+  //   } else {
+  //     setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+  //   }
+  // }, [checkIfOnNetwork, pendingAddress, pendingPeerAddressOrName, onSubmit]);
 
   useEffect(() => {
     const handleRecipientInput = () => {
@@ -81,7 +99,10 @@ const RecipientControl = ({
         input: { value: string };
       };
       const inputValue = value || data.input.value;
+      resolveDomainName(inputValue)
       setPendingPeerAddressOrName(inputValue);
+      console.log('htest2: ', inputValue)
+      console.log('htest3: ', domain)
     },
     []
   );
@@ -94,7 +115,7 @@ const RecipientControl = ({
       router.push('/dm');
     }
     if (
-      data.value.endsWith('.eth') ||
+      data.value.endsWith('.eth') || data.value.endsWith('.wallet') || //TODO: add more domains
       (data.value.startsWith('0x') && data.value.length === 42)
     ) {
       handleSubmit(e, data.value);
