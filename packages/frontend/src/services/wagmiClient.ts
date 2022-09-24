@@ -3,7 +3,7 @@ import { allChains, Chain, chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
 
-import { env } from './environment';
+import { env } from '../helpers/environment';
 
 /**
  * Wagmi.sh Configuration (https://wagmi.sh/docs)

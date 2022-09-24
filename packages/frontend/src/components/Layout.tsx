@@ -5,13 +5,13 @@ import { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useDisconnect, useSigner } from 'wagmi';
 
 import useXmtp from '../hooks/useXmtp';
+import { ConversationView, NavigationView } from '../views';
 import BackArrow from './BackArrow';
 import { RecipientControl } from './Conversation';
 import Login from './Login';
 import NavigationPanel from './NavigationPanel';
 import NewMessageButton from './NewMessageButton';
 import UserMenu from './UserMenu';
-import { ConversationView, NavigationView } from './Views';
 import XmtpInfoPanel from './XmtpInfoPanel';
 
 const NavigationColumnLayout: React.FC<{ children: ReactNode }> = ({

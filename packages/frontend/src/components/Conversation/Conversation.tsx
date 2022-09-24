@@ -36,18 +36,6 @@ const Conversation = ({
     walletAddress || '',
     walletAddress || ''
   );
-  // console.log('test getGraph: ', tx)
-  // const transactions: Transaction[] = useMemo(() => {
-  //   return [{
-  //     senderAddress: address || "0x000",
-  //     sent: new Date(),
-  //     content: {
-  //       txHash: "0x123",
-  //       amount: 1234,
-  //       token: "USDT"
-  //     }
-  //   }]
-  // }, [])
 
   // process XMTP messages and Graph transactions
   const { address } = useAccount();

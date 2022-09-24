@@ -1,4 +1,4 @@
-import { env } from '@shared/environment';
+import { env } from 'src/helpers/environment';
 import { HardhatExport } from 'src/types/hardhat';
 
 /**

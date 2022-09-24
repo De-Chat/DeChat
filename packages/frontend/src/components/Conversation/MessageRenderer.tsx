@@ -9,14 +9,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Card from '@components/Card';
-import { urlPrefix } from '@shared/environment';
 import { ethers } from 'ethers';
 import { PropsWithChildren, useMemo } from 'react';
 import Emoji from 'react-emoji-render';
 import { GrTransaction } from 'react-icons/gr';
+import { urlPrefix } from 'src/helpers/environment';
 import { erc20ABI, useContractRead } from 'wagmi';
 
-import { decodeMessage } from './MessageParser';
+import { decodeMessage } from '../../helpers/message-parser';
 import { MessageTileProps } from './MessagesList';
 
 export interface Transaction {

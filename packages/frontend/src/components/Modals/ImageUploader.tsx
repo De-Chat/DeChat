@@ -8,12 +8,12 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
-import { encodeMessage } from '@components/Conversation/MessageParser';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FiImage, FiSend } from 'react-icons/fi';
 import ImageUploading from 'react-images-uploading'; // https://www.npmjs.com/package/react-images-uploading
 import { Web3Storage } from 'web3.storage';
 
+import { encodeMessage } from '../../helpers/message-parser';
 import BaseModal from './BaseModal';
 
 // Construct with token and endpoint

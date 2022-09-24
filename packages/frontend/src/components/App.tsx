@@ -6,9 +6,9 @@ import {
   lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { env } from '@shared/environment';
-import { chains, wagmiClient } from '@shared/wagmiClient';
 import theme from '@styles/theme';
+import { env } from 'src/helpers/environment';
+import { chains, wagmiClient } from 'src/services/wagmiClient';
 import { WagmiConfig } from 'wagmi';
 
 import Layout from './Layout';
