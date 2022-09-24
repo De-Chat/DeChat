@@ -14,7 +14,8 @@ export const SwitchingLayout: React.FC<PropsWithChildren<{}>> = ({
   const router = useRouter();
   const { isConnected, address } = useAccount();
 
-  if (router.pathname !== '/') {
+  // Used to prevent unauthorized url access and confusing urls
+  if (router.pathname !== '/' && !router.pathname.startsWith('/dm')) {
     router.replace('/');
   }
 
