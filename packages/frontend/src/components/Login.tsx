@@ -63,15 +63,16 @@ const RegisterNickName = () => {
   );
 };
 
-const Login = () => {
+const Login = ({signer}: {signer: any}) => {
   let { address } = useAccount();
-  const { data: signer } = useSigner();
   let contact = useUserContact();
 
   useAsyncEffect(async () => {
-    const tableId = await contact.service.connectToTableland(signer);
-    contact.setUserContactTableId(tableId);
-  }, [signer]);
+    if (contact) {
+      const tableId = await contact.service.connectToTableland(signer);
+      contact.setUserContactTableId(tableId);
+    }
+  }, [signer, contact]);
 
   const resolvedName = '123';
   return (

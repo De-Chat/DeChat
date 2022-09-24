@@ -121,7 +121,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   console.log('test account: ', signer, client, walletAddress);
 
-  if (!client) return <Login />;
+  if (!client) return <Login signer={signer}/>;
 
   return (
     <>
