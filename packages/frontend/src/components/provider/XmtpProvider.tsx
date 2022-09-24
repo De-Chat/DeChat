@@ -3,8 +3,8 @@ import { Client } from '@xmtp/xmtp-js';
 import { Signer } from 'ethers';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 
-import { XmtpContext, XmtpContextType } from '../contexts/xmtp';
-import useMessageStore from '../hooks/useMessageStore';
+import { XmtpContext, XmtpContextType } from '../../contexts/xmtp';
+import useMessageStore from '../../hooks/useMessageStore';
 
 export type XmtpProviderProps = {
   children: React.ReactNode;

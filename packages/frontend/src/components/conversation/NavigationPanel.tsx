@@ -5,9 +5,9 @@ import { ArrowSmRightIcon } from '@heroicons/react/solid';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import { ReactNode } from 'react';
 
-import useXmtp from '../hooks/useXmtp';
+import useXmtp from '../../hooks/useXmtp';
+import Loader from '../commons/Loader';
 import ConversationsList from './ConversationsList';
-import Loader from './Loader';
 
 const NavigationPanel = (): JSX.Element => {
   const { walletAddress } = useXmtp();

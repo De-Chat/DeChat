@@ -1,5 +1,5 @@
+import { SuperfluidToken } from '@services/superFluidService';
 import { useEffect, useState } from 'react';
-import { SuperfluidToken } from 'src/services/superFluidService';
 
 export const useGetNetFlow = (
   superFluidToken: SuperfluidToken,
