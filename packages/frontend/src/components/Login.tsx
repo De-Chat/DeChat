@@ -17,7 +17,7 @@ import { BsAward } from 'react-icons/bs';
 import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 import useUnsAvatar from 'src/hooks/useUnsAvatar';
 import ThemeToggler from 'src/pages/ThemeToggler';
-import useAsyncEffect from 'use-async-effect/types';
+import useAsyncEffect from 'use-async-effect';
 import { useAccount, useSigner } from 'wagmi';
 
 import Card from './Card';
