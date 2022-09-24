@@ -10,7 +10,7 @@ const useUnsAvatar = (domain?: string) => {
       if (domain !== undefined) {
         try {
           const data = await resolution.tokenURIMetadata(domain);
-          console.log("stuff", resolution, data);
+          console.log('stuff', resolution, data);
           if (data !== undefined) {
             setAvatarUrl(data.image);
           }

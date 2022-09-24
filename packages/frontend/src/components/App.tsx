@@ -12,6 +12,7 @@ import { chains, wagmiClient } from 'src/services/wagmiClient';
 import { WagmiConfig } from 'wagmi';
 
 import Layout from './layouts/ChatLayout';
+import { TablelandProvider } from './provider/TablelandProvider';
 import XmtpProvider from './XmtpProvider';
 
 type AppProps = {
@@ -28,9 +29,11 @@ function App({ children }: AppProps) {
         theme={colorMode == 'light' ? lightTheme() : darkTheme()}
       >
         <XmtpProvider>
-          <ChakraProvider theme={theme}>
-            <Layout>{children}</Layout>
-          </ChakraProvider>
+          <TablelandProvider>
+            <ChakraProvider theme={theme}>
+              <Layout>{children}</Layout>
+            </ChakraProvider>
+          </TablelandProvider>
         </XmtpProvider>
       </RainbowKitProvider>
     </WagmiConfig>

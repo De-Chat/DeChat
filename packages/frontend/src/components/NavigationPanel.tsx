@@ -29,7 +29,7 @@ const NoWalletConnectedMessage: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   return (
-    <Flex grow={1} justify='center' direction="column">
+    <Flex grow={1} justify="center" direction="column">
       <div className="flex flex-col items-center px-4 text-center">
         <LinkIcon
           className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"

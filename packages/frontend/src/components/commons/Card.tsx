@@ -1,4 +1,4 @@
-import { Box, BoxProps,useColorModeValue } from '@chakra-ui/react';
+import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react';
 
 export const Card = (props: BoxProps) => {
   const bgColor = useColorModeValue('white', 'gray.700');

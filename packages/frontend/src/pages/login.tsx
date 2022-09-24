@@ -14,11 +14,11 @@ import {
 import { IconButton } from '@chakra-ui/react';
 import Card from '@components/commons/Card';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { SyntheticEvent, useCallback, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { BsAward } from 'react-icons/bs';
 import useUnsAvatar from 'src/hooks/useUnsAvatar';
 import ThemeToggler from 'src/pages/ThemeToggler';
-import { useAccount } from 'wagmi';
+import { useAccount, useSigner } from 'wagmi';
 
 const RegisterNickName = () => {
   const [nickname, setNickname] = useState<string>('');
@@ -63,7 +63,7 @@ const RegisterNickName = () => {
 
 const Login = () => {
   let { address } = useAccount();
-  const avatarImage = useUnsAvatar("weihan37.wallet")
+  const avatarImage = useUnsAvatar('weihan37.wallet');
 
   const resolvedName = '123';
   return (
@@ -72,7 +72,7 @@ const Login = () => {
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>Sign in to your account</Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
-            <Avatar src={avatarImage} size="lg"/>
+            <Avatar src={avatarImage} size="lg" />
           </Text>
         </Stack>
         <ThemeToggler />

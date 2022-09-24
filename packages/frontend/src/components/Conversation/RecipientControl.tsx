@@ -125,7 +125,7 @@ const RecipientControl = ({
             name="recipient"
             onInputChange={handleInputChange}
           />
-          <AddToContactModal />
+          <AddToContactModal peerAddress={peerAddressOrName || ''} />
           <button type="submit" className="hidden" />
         </div>
       </form>

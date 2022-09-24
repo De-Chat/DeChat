@@ -10,6 +10,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
+import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 import { useDisconnect, useSigner } from 'wagmi';
 
 import BackArrow from '../BackArrow';
@@ -103,6 +104,7 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     client,
   } = useXmtp();
   const router = useRouter();
+  let contact = useUserContact();
 
   const { disconnect } = useDisconnect({
     onSettled() {
@@ -122,6 +124,13 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const prevSigner = usePrevious(signer);
 
   useEffect(() => {
+    const connecttoTableland = async (signer: any) => {
+      if (contact) {
+        const tableId = await contact.service.connectToTableland(signer);
+        console.log(`tableId: ${tableId}`);
+        return tableId;
+      }
+    };
     if ((!signer && prevSigner) || signer !== prevSigner) {
       disconnectXmtp();
     }
@@ -130,10 +139,17 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       const prevAddress = await prevSigner?.getAddress();
       const address = await signer.getAddress();
       if (address === prevAddress) return;
+      const tableId = await connecttoTableland(signer);
+      contact?.setUserContactTableId(tableId);
       connectXmtp(signer);
+
+      // load from tableland
+      debugger;
+      const xx = await contact?.service.loadContacts(tableId!);
+      console.log(xx);
     };
     connect();
-  }, [signer, prevSigner, connectXmtp, disconnectXmtp]);
+  }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
 
   return (
     <>
@@ -143,7 +159,7 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             {walletAddress && client && (
               <IconButton
                 aria-label="Add new chat"
-                icon={<img src={AddContact}/>}
+                icon={<img src={AddContact} />}
                 size="xs"
                 variant="unstyled"
               />
