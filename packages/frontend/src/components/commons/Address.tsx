@@ -1,5 +1,6 @@
 import { useDomainName } from '@hooks/useDomainName';
-import { classNames } from '../helpers';
+
+import { classNames } from '../../helpers';
 
 type AddressProps = {
   address: string;

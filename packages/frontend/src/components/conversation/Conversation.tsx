@@ -1,12 +1,12 @@
 import { Flex } from '@chakra-ui/react';
+import { useGetAllTransfer } from '@hooks/useGetAllTransfer';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 import { useAccount } from 'wagmi';
 
 import useConversation from '../../hooks/useConversation';
 import useEns from '../../hooks/useEns';
 import useXmtp from '../../hooks/useXmtp';
-import Loader from '../Loader';
+import Loader from '../commons/Loader';
 import { MessageComposer, MessagesList } from '.';
 import { MessageTileProps } from './MessagesList';
 
@@ -35,7 +35,7 @@ const Conversation = ({
   const transactions = useGetAllTransfer(
     100,
     walletAddress || '',
-    walletAddress || ''
+    peerAddress || ''
   );
 
   // process XMTP messages and Graph transactions

@@ -86,6 +86,7 @@ importers:
       '@dechat/contracts': workspace:0.0.1
       '@emotion/react': ^11.10.4
       '@emotion/styled': ^11.10.4
+      '@epnsproject/sdk-restapi': ^0.1.13
       '@headlessui/react': ^1.7.2
       '@heroicons/react': ^1.0.6
       '@rainbow-me/rainbowkit': ^0.5.3
@@ -146,6 +147,7 @@ importers:
       '@dechat/contracts': link:../contracts
       '@emotion/react': 11.10.4_dyfrgrdbkbkiiub2mj647rnune
       '@emotion/styled': 11.10.4_5pqsynpwrtslvpef2kxpk6pe4e
+      '@epnsproject/sdk-restapi': 0.1.13_ethers@5.7.1
       '@headlessui/react': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 1.0.6_react@18.2.0
       '@rainbow-me/rainbowkit': 0.5.3_77hisva6i3lzqozyotowjactue
@@ -2765,6 +2767,19 @@ packages:
 
   /@emotion/weak-memoize/0.3.0:
     resolution: {integrity: sha512-AHPmaAx+RYfZz0eYu6Gviiagpmiyw98ySSlQvCUhVGDRtDFe4DBS0x1bSjdF3gqUDYOczB+yYvBTtEylYSdRhg==}
+    dev: false
+
+  /@epnsproject/sdk-restapi/0.1.13_ethers@5.7.1:
+    resolution: {integrity: sha512-S5fn5/xOM1f0/5PFeQJ4QGU7TYtzeOVAcgBruC73h060t8nVlz5Nv9z3HhFgnj5TB/KnhvXhJZTL59g7gvpeyw==}
+    peerDependencies:
+      ethers: ^5.6.8 || ^5.0.0
+    dependencies:
+      axios: 0.27.2
+      ethers: 5.7.1
+      tslib: 2.4.0
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@eslint/eslintrc/0.4.3:
@@ -6787,7 +6802,7 @@ packages:
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.4
+      follow-redirects: 1.15.1
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -10698,6 +10713,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4
+    dev: true
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}

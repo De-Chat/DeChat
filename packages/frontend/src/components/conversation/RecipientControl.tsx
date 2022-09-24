@@ -1,10 +1,10 @@
+import AddressInput from '@components/commons/AddressInput';
 import AddToContactModal from '@components/Modals/AddToContactModal';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import useEns from '../../hooks/useEns';
 import useXmtp from '../../hooks/useXmtp';
-import AddressInput from '../AddressInput';
 
 import { useDomainName }  from '@hooks/useDomainName';
 

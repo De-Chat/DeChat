@@ -1,8 +1,7 @@
+import { classNames } from '@helpers/classNames';
+import useEns from '@hooks/useEns';
+import useXmtp from '@hooks/useXmtp';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-import { classNames } from '../helpers';
-import useEns from '../hooks/useEns';
-import useXmtp from '../hooks/useXmtp';
 
 type AddressInputProps = {
   peerAddressOrName?: string;

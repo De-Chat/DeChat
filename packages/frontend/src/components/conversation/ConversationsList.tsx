@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
-import { XmtpContext } from '../contexts/xmtp';
-import { classNames, formatDate, truncate } from '../helpers';
-import useConversation from '../hooks/useConversation';
-import useEns from '../hooks/useEns';
-import Address from './Address';
-import Avatar from './Avatar';
+import { XmtpContext } from '../../contexts/xmtp';
+import { classNames, formatDate, truncate } from '../../helpers';
+import useConversation from '../../hooks/useConversation';
+import useEns from '../../hooks/useEns';
+import Address from '../commons/Address';
+import Avatar from '../commons/Avatar';
 
 type ConversationsListProps = {
   conversations: Conversation[];

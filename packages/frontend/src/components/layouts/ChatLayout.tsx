@@ -1,6 +1,11 @@
 import { Flex, IconButton } from '@chakra-ui/react';
+import BackArrow from '@components/commons/BackArrow';
+import { TitleText } from '@components/commons/TitleText';
+import UserMenu from '@components/commons/UserMenu';
+import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
 import { useDomainName } from '@hooks/useDomainName';
 import { getEnsMainnet } from '@hooks/useEns';
+import { useUserContact } from '@hooks/user-contact/useUserContact';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
 import Link from 'next/link';
@@ -11,20 +16,22 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from 'react';
-import { useUserContact } from 'src/hooks/user-contact/useUserContact';
+import {
+  getEpnsUserSubscriptions,
+  isUserSubscribed,
+  optInToChannel,
+  optOutToChannel,
+} from 'src/services/epnsService';
 import { useDisconnect, useSigner } from 'wagmi';
 
-import BackArrow from '../BackArrow';
-import { TitleText } from '../commons/TitleText';
 import {
   ChatListView,
   ConversationView,
   RecipientControl,
-} from '../Conversation';
-import NavigationPanel from '../NavigationPanel';
-import UserMenu from '../UserMenu';
-import XmtpInfoPanel from '../XmtpInfoPanel';
+} from '../conversation';
+import NavigationPanel from '../conversation/NavigationPanel';
 
 const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
@@ -98,7 +105,7 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
   );
 };
 
-const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
     connect: connectXmtp,
     disconnect: disconnectXmtp,
@@ -111,7 +118,7 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const { disconnect } = useDisconnect({
     onSettled() {
       disconnectXmtp();
-      router.push('/');
+      // router.push('/');
     },
   });
   const { data: signer } = useSigner();
@@ -126,7 +133,7 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const prevSigner = usePrevious(signer);
 
   const { isLoading, domain, resolveDomainName } = useDomainName();
-  resolveDomainName('cheechyuan.eth')
+  resolveDomainName('cheechyuan.eth');
 
   useEffect(() => {
     const connecttoTableland = async (signer: any) => {
@@ -141,21 +148,55 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     }
     if (!signer || signer === prevSigner) return;
     const connect = async () => {
+      connectXmtp(signer);
       const prevAddress = await prevSigner?.getAddress();
       const address = await signer.getAddress();
       if (address === prevAddress) return;
       const tableId = await connecttoTableland(signer);
       contact?.setUserContactTableId(tableId);
-      connectXmtp(signer);
 
       // load from tableland
       const xx = await contact?.service.loadContacts(tableId!);
       console.log(xx);
     };
     connect();
-
-
   }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
+
+  /////// epns
+
+  // create state components to fetch all the notifications.
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  console.log('epns signer', signer);
+  // create handler to subscribe to channel
+  const handleOptInOptOut = async () => {
+    if (!walletAddress) return;
+    if (!isSubscribed) {
+      const res = await optInToChannel(signer, walletAddress);
+      if (res?.status === 'success') {
+        setIsSubscribed(true);
+        console.log(`isSubscribed optIn: ${JSON.stringify(res)}`);
+      }
+    } else {
+      const res2 = await optOutToChannel(signer, walletAddress);
+      if (res2?.status === 'success') {
+        setIsSubscribed(false);
+        console.log(`isSubscribed optOut: ${JSON.stringify(res2)}`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(`walletAddress useEffect: ${walletAddress}`);
+    if (!walletAddress) return;
+    // get userSubscription status
+    getEpnsUserSubscriptions(walletAddress).then((subscriptions) => {
+      console.log('epns subscriptions', subscriptions);
+    });
+    isUserSubscribed(walletAddress).then((res) => {
+      console.log('isUserSubscribed useEffect', res);
+      setIsSubscribed(res);
+    });
+  }, [walletAddress]);
 
   return (
     <>
@@ -170,6 +211,13 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 variant="unstyled"
               />
             )}
+            <button
+              className="inline-flex items-center h-7 md:h-6 px-4 py-1 my-4 bg-p-400 border border-p-300 hover:bg-p-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-n-100 focus-visible:ring-offset-p-600 focus-visible:border-n-100 focus-visible:outline-none active:bg-p-500 active:border-p-500 active:ring-0 text-sm md:text-xs md:font-semibold tracking-wide text-white rounded"
+              onClick={handleOptInOptOut}
+            >
+              <img src="/full_bell.png" width="24" height="24" />
+              {!isSubscribed ? 'Opt In' : 'Opt Out'}
+            </button>
           </NavigationHeaderLayout>
           <NavigationPanel />
           <UserMenu onDisconnect={disconnect} />
@@ -185,5 +233,3 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     </>
   );
 };
-
-export default Layout;

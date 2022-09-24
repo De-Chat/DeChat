@@ -1,11 +1,11 @@
 import { Flex } from '@chakra-ui/react';
+import AddressPill from '@components/commons/AddressPill';
 import { Message } from '@xmtp/xmtp-js';
 import React, { MutableRefObject } from 'react';
 import { useAccount } from 'wagmi';
 
 import { formatTime } from '../../helpers';
-import AddressPill from '../AddressPill';
-import Avatar from '../Avatar';
+import Avatar from '../commons/Avatar';
 import MessageRenderer, { Transaction } from './MessageRenderer';
 
 export type MessageListProps = {

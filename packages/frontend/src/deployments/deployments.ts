@@ -1,5 +1,6 @@
-import { env } from 'src/helpers/environment';
-import { HardhatExport } from 'src/types/hardhat';
+import { env } from '@helpers/environment';
+
+import { HardhatExport } from '../types/hardhat';
 
 /**
  * Dynamically aggregating all deployments (addresses, abis)

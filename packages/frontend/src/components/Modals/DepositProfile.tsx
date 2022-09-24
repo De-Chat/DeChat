@@ -33,15 +33,15 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { BsSafe } from 'react-icons/bs';
-import { HiOutlineX } from 'react-icons/hi';
-import { RiUserSharedLine } from 'react-icons/ri';
 import {
   getTokenBalancesForAddress,
   IBalances,
   ITokenBalance,
-} from 'src/services/covalentService';
+} from '@services/covalentService';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { BsSafe } from 'react-icons/bs';
+import { HiOutlineX } from 'react-icons/hi';
+import { RiUserSharedLine } from 'react-icons/ri';
 import truncateEthAddress from 'truncate-eth-address';
 import useAsyncEffect from 'use-async-effect';
 import { useAccount, useEnsAvatar } from 'wagmi';
