@@ -18,20 +18,20 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useDisconnect, useSigner } from 'wagmi';
 import {
   getEpnsUserSubscriptions,
   isUserSubscribed,
   optInToChannel,
   optOutToChannel,
 } from 'src/services/epnsService';
+import { useDisconnect, useSigner } from 'wagmi';
+
 import {
   ChatListView,
   ConversationView,
   RecipientControl,
 } from '../conversation';
 import NavigationPanel from '../conversation/NavigationPanel';
-
 
 const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
@@ -133,7 +133,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const prevSigner = usePrevious(signer);
 
   const { isLoading, domain, resolveDomainName } = useDomainName();
-  resolveDomainName('cheechyuan.eth')
+  resolveDomainName('cheechyuan.eth');
 
   useEffect(() => {
     const connecttoTableland = async (signer: any) => {
@@ -160,10 +160,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       console.log(xx);
     };
     connect();
-
-
   }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
-
 
   /////// epns
 

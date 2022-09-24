@@ -83,7 +83,13 @@ const LoginCard: React.FC<LoginCardProps> = ({
   return (
     <Stack spacing={8} mx="auto" width="500px" p={6}>
       {/* <ThemeToggler /> */}
-      <Card rounded={'lg'} boxShadow={'lg'} p={8} background="secondaryDark" backgroundColor="secondaryDark">
+      <Card
+        rounded={'lg'}
+        boxShadow={'lg'}
+        p={8}
+        background="secondaryDark"
+        backgroundColor="secondaryDark"
+      >
         <Flex direction="column" height="full">
           <Flex
             justifyContent="space-between"
@@ -92,9 +98,9 @@ const LoginCard: React.FC<LoginCardProps> = ({
             direction="column"
           >
             <Heading fontSize={'4xl'}>Sign in</Heading>
-            <Avatar src={avatarImage} size="lg" mt={5}/>
+            <Avatar src={avatarImage} size="lg" mt={5} />
           </Flex>
-          <Box textAlign="center" mt={1} >
+          <Box textAlign="center" mt={1}>
             <CardContent />
           </Box>
         </Flex>
@@ -111,7 +117,7 @@ export const Login = () => {
       <Flex width="full" padding="4">
         <TitleText>DeChat</TitleText>
       </Flex>
-      <Flex width="full" grow={1} >
+      <Flex width="full" grow={1}>
         <LoginCard isConnected={isConnected} address={address} />
       </Flex>
     </Flex>

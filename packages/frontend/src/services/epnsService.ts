@@ -1,7 +1,7 @@
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
-import { chainId } from 'wagmi';
 import { env } from '@helpers/environment';
 import { ethers } from 'ethers';
+import { chainId } from 'wagmi';
 
 // create a type for notifications
 export interface Notification {
