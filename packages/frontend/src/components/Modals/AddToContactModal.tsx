@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react';
 import React, {
   type SyntheticEvent,
+  useContext,
   useEffect,
   useState,
-  useContext,
 } from 'react';
 import { BiEditAlt } from 'react-icons/bi';
 import { UserContactContext } from 'src/contexts/user-contact';

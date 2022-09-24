@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { LinkIcon } from '@heroicons/react/outline';
 import { ChatIcon } from '@heroicons/react/outline';
 import { ArrowSmRightIcon } from '@heroicons/react/solid';
@@ -12,7 +13,7 @@ const NavigationPanel = (): JSX.Element => {
   const { walletAddress } = useXmtp();
 
   return (
-    <div className="flex-grow flex flex-col">
+    <Flex grow={1} direction="column">
       {walletAddress ? (
         <ConversationsPanel />
       ) : (
@@ -20,7 +21,7 @@ const NavigationPanel = (): JSX.Element => {
           <ConnectButton />
         </NoWalletConnectedMessage>
       )}
-    </div>
+    </Flex>
   );
 };
 
@@ -28,7 +29,7 @@ const NoWalletConnectedMessage: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   return (
-    <div className="flex flex-col flex-grow justify-center">
+    <Flex grow={1} justify="center" direction="column">
       <div className="flex flex-col items-center px-4 text-center">
         <LinkIcon
           className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
@@ -42,7 +43,7 @@ const NoWalletConnectedMessage: React.FC<{ children: ReactNode }> = ({
         </p>
       </div>
       {children}
-    </div>
+    </Flex>
   );
 };
 
@@ -96,9 +97,9 @@ const ConversationsPanel = (): JSX.Element => {
   );
 };
 
-const NoConversationsMessage = (): JSX.Element => {
+const NoConversationsMessage = () => {
   return (
-    <div className="flex flex-col flex-grow justify-center">
+    <Flex grow={1} justify="center" direction="column">
       <div className="flex flex-col items-center px-4 text-center">
         <ChatIcon
           className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
@@ -111,7 +112,7 @@ const NoConversationsMessage = (): JSX.Element => {
           There are no messages in this wallet
         </p>
       </div>
-    </div>
+    </Flex>
   );
 };
 

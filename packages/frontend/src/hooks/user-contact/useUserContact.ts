@@ -8,8 +8,7 @@ export const useUserContact = (): UserContactContextData | undefined => {
   // const [c, setC] = useState<UserContactContextData | undefined>();
   const context = useContext(UserContactContext);
   if (
-    context !== undefined 
-    &&
+    context !== undefined &&
     context.service &&
     context.userContactTableId &&
     context.setUserContactTableId

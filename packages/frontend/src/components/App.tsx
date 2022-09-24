@@ -6,14 +6,14 @@ import {
   lightTheme,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { env } from '@shared/environment';
-import { chains, wagmiClient } from '@shared/wagmiClient';
 import theme from '@styles/theme';
+import { env } from 'src/helpers/environment';
+import { chains, wagmiClient } from 'src/services/wagmiClient';
 import { WagmiConfig } from 'wagmi';
 
-import Layout from './Layout';
-import XmtpProvider from './XmtpProvider';
+import Layout from './layouts/ChatLayout';
 import { TablelandProvider } from './provider/TablelandProvider';
+import XmtpProvider from './XmtpProvider';
 
 type AppProps = {
   children?: React.ReactNode;
@@ -23,19 +23,19 @@ function App({ children }: AppProps) {
   const { colorMode } = useColorMode();
   return (
     <WagmiConfig client={wagmiClient}>
-      <ChakraProvider theme={theme}>
-        <RainbowKitProvider
-          chains={chains}
-          initialChain={env.defaultChain}
-          theme={colorMode == 'light' ? lightTheme() : darkTheme()}
-        >
-          <XmtpProvider>
-            <TablelandProvider>
+      <RainbowKitProvider
+        chains={chains}
+        initialChain={env.defaultChain}
+        theme={colorMode == 'light' ? lightTheme() : darkTheme()}
+      >
+        <XmtpProvider>
+          <TablelandProvider>
+            <ChakraProvider theme={theme}>
               <Layout>{children}</Layout>
-            </TablelandProvider>
-          </XmtpProvider>
-        </RainbowKitProvider>
-      </ChakraProvider>
+            </ChakraProvider>
+          </TablelandProvider>
+        </XmtpProvider>
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 }

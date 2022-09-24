@@ -2,28 +2,28 @@ import { Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 
-type NavigationViewProps = {
+type ConversationViewProps = {
   children?: React.ReactNode;
 };
 
-const NavigationView = ({ children }: NavigationViewProps): JSX.Element => {
+const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
   const router = useRouter();
-  const show = router.pathname === '/';
+  const show = router.pathname !== '/';
 
   return (
     <>
       <Transition.Root show={show} as={Fragment}>
-        <div className="fixed inset-0 flex bg-white md:hidden">
+        <div className="md:hidden inset-0 flex flex-col h-screen ">
           <Transition.Child
             as={Fragment}
             enter="transition ease-in-out duration-300 transform"
-            enterFrom="-translate-x-full"
+            enterFrom="translate-x-full"
             enterTo="translate-x-0"
             leave="transition ease-in-out duration-300 transform"
             leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
+            leaveTo="translate-x-full"
           >
-            <div className="relative flex-1 flex flex-col w-full bg-white">
+            <div className="md:hidden relative flex-1 flex flex-col w-full">
               {children}
             </div>
           </Transition.Child>
@@ -31,9 +31,11 @@ const NavigationView = ({ children }: NavigationViewProps): JSX.Element => {
       </Transition.Root>
 
       {/* Always show in desktop layout */}
-      <div className="hidden md:flex">{children}</div>
+      <div className="hidden md:bg-white md:pl-84 md:flex md:flex-col md:flex-1 md:h-screen md:overflow-y-auto">
+        {children}
+      </div>
     </>
   );
 };
 
-export default NavigationView;
+export default ConversationView;

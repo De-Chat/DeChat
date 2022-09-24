@@ -9,9 +9,15 @@ export const TablelandProvider = ({
 }) => {
   const [tableId, setTableId] = useState<string>();
 
-  return <UserContactContext.Provider value={{
-    service: new UserContactService(),
-    setUserContactTableId: setTableId,
-    userContactTableId: tableId    
-  }}>{children}</UserContactContext.Provider>;
+  return (
+    <UserContactContext.Provider
+      value={{
+        service: new UserContactService(),
+        setUserContactTableId: setTableId,
+        userContactTableId: tableId,
+      }}
+    >
+      {children}
+    </UserContactContext.Provider>
+  );
 };

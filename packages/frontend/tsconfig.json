@@ -17,11 +17,13 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@shared/*": ["./src/shared/*"],
+      "@helpers/*": ["./src/helpers/*"],
       "@models/*": ["./src/models/*"],
       "@styles/*": ["./src/styles/*"],
       "@deployments/*": ["./src/deployments/*"],
-      "@types/*": ["./src/types/*"],
+      "@views/*": ["./src/views/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@services/*": ["./src/services/*"],
       "@public/*": ["./public/*"]
     }
   },

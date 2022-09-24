@@ -1,6 +1,6 @@
+import { Flex } from '@chakra-ui/react';
 import { Message } from '@xmtp/xmtp-js';
 import React, { MutableRefObject } from 'react';
-import Emoji from 'react-emoji-render';
 import { useAccount } from 'wagmi';
 
 import { formatTime } from '../../helpers';
@@ -90,7 +90,7 @@ const MessagesList = ({
   const { address } = useAccount();
   let lastMessageDate: Date | undefined;
   return (
-    <div className="flex-grow flex">
+    <Flex grow={1}>
       <div className="pb-6 md:pb-0 w-full flex flex-col self-end">
         <div className="relative w-full bg-white px-4 pt-6 overflow-y-auto flex">
           <div className="w-full">
@@ -118,7 +118,7 @@ const MessagesList = ({
           </div>
         </div>
       </div>
-    </div>
+    </Flex>
   );
 };
 export default React.memo(MessagesList);

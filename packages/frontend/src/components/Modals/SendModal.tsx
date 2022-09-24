@@ -21,10 +21,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { encodeMessage } from '@components/Conversation/MessageParser';
 import { Send__factory } from '@dechat/contracts/typechain-types';
-import { urlPrefix } from '@shared/environment';
-import { useDeployments } from '@shared/useDeployments';
 import { ethers } from 'ethers';
 import React, {
   useCallback,
@@ -34,6 +31,7 @@ import React, {
   useState,
 } from 'react';
 import { IoRocketOutline } from 'react-icons/io5';
+import { urlPrefix } from 'src/helpers/environment';
 import { createFramework } from 'src/hooks/superFluid/useCreateFramework';
 import { createWrappedSuperToken } from 'src/hooks/superFluid/useCreateWrappedSuperToken';
 import { upgradeCreateFlow } from 'src/hooks/superFluid/useUpgradeCreateFlow';
@@ -41,6 +39,7 @@ import {
   getSuperfluidBaseTokens,
   getSuperfluidSupertoken,
 } from 'src/hooks/superFluid/wrappingMap';
+import { useDeployments } from 'src/hooks/useDeployments';
 import {
   getNFTForAddress,
   getTokenBalancesForAddress,
@@ -58,6 +57,7 @@ import {
   useProvider,
 } from 'wagmi';
 
+import { encodeMessage } from '../../helpers/message-parser';
 import useXmtp from '../../hooks/useXmtp';
 import BaseModal from './BaseModal';
 

@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Flex,
   FormControl,
@@ -11,16 +12,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
+import Card from '@components/commons/Card';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { BsAward } from 'react-icons/bs';
-import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 import useUnsAvatar from 'src/hooks/useUnsAvatar';
 import ThemeToggler from 'src/pages/ThemeToggler';
-import useAsyncEffect from 'use-async-effect';
 import { useAccount, useSigner } from 'wagmi';
-
-import Card from './Card';
 
 const RegisterNickName = () => {
   const [nickname, setNickname] = useState<string>('');
@@ -65,6 +63,7 @@ const RegisterNickName = () => {
 
 const Login = () => {
   let { address } = useAccount();
+  const avatarImage = useUnsAvatar('weihan37.wallet');
 
   const resolvedName = '123';
   return (
@@ -73,8 +72,7 @@ const Login = () => {
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>Sign in to your account</Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
-            {/* to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️ */}
-            {useUnsAvatar('weihan37.wallet')}
+            <Avatar src={avatarImage} size="lg" />
           </Text>
         </Stack>
         <ThemeToggler />

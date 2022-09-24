@@ -1,16 +1,26 @@
 import { Resolution } from '@unstoppabledomains/resolution';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useUnsAvatar = (domain: string) => {
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const resolution = new Resolution();
+const useUnsAvatar = (domain?: string) => {
+  const [avatarUrl, setAvatarUrl] = useState<string>();
 
-  resolution
-    .tokenURIMetadata(domain)
-    .then((data) => {
-      setAvatarUrl(data.image);
-    })
-    .catch((err) => console.log('No avatar found for', domain));
+  useEffect(() => {
+    const fn = async () => {
+      const resolution = new Resolution();
+      if (domain !== undefined) {
+        try {
+          const data = await resolution.tokenURIMetadata(domain);
+          console.log('stuff', resolution, data);
+          if (data !== undefined) {
+            setAvatarUrl(data.image);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+    fn();
+  }, [domain]);
 
   return avatarUrl;
 };

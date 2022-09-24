@@ -7,4 +7,6 @@ export interface UserContactContextData {
   setUserContactTableId: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export const UserContactContext = createContext<Partial<UserContactContextData>>({});
+export const UserContactContext = createContext<
+  Partial<UserContactContextData>
+>({});
