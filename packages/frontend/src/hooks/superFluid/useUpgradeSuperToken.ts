@@ -1,10 +1,10 @@
-import { BigNumber, ethers } from 'ethers';
-import { useEffect, useState } from 'react';
 import {
   getSuperFluidFramework,
   getWrappedSuperToken,
   SuperfluidToken,
-} from 'src/services/superFluidService';
+} from '@services/superFluidService';
+import { BigNumber, ethers } from 'ethers';
+import { useEffect, useState } from 'react';
 
 // export const useUpgradeSuperToken = (
 //   superTokenAddr: string,

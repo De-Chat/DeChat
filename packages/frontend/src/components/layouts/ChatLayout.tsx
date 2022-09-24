@@ -1,4 +1,9 @@
 import { Flex, IconButton } from '@chakra-ui/react';
+import BackArrow from '@components/commons/BackArrow';
+import { TitleText } from '@components/commons/TitleText';
+import UserMenu from '@components/commons/UserMenu';
+import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
+import { useUserContact } from '@hooks/user-contact/useUserContact';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
 import Link from 'next/link';
@@ -10,19 +15,14 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { useUserContact } from 'src/hooks/user-contact/useUserContact';
 import { useDisconnect, useSigner } from 'wagmi';
 
-import BackArrow from '../BackArrow';
-import { TitleText } from '../commons/TitleText';
 import {
   ChatListView,
   ConversationView,
   RecipientControl,
-} from '../Conversation';
-import NavigationPanel from '../NavigationPanel';
-import UserMenu from '../UserMenu';
-import XmtpInfoPanel from '../XmtpInfoPanel';
+} from '../conversation';
+import NavigationPanel from '../conversation/NavigationPanel';
 
 const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
@@ -96,7 +96,7 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
   );
 };
 
-const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
     connect: connectXmtp,
     disconnect: disconnectXmtp,
@@ -179,5 +179,3 @@ const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     </>
   );
 };
-
-export default Layout;

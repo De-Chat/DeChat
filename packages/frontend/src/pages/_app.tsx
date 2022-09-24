@@ -18,6 +18,7 @@ function AppWrapper({ Component, pageProps }: AppProps) {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
       </Head>
+
       <AppWithoutSSR>
         <Component {...pageProps} />
       </AppWithoutSSR>

@@ -1,6 +1,6 @@
 import { useEnsName } from 'wagmi';
 
-import { classNames } from '../helpers';
+import { classNames } from '../../helpers';
 
 type AddressProps = {
   address: string;

@@ -1,12 +1,12 @@
 import { Menu, Transition } from '@headlessui/react';
+import { classNames } from '@helpers/classNames';
 import { CogIcon } from '@heroicons/react/solid';
+import useXmtp from '@hooks/useXmtp';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import { Fragment, useCallback } from 'react';
 import Blockies from 'react-blockies';
 import { useEnsAvatar } from 'wagmi';
 
-import { classNames } from '../helpers';
-import useXmtp from '../hooks/useXmtp';
 import Address from './Address';
 
 type UserMenuProps = {

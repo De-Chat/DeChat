@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
 import {
   UserContactContext,
   UserContactContextData,
-} from 'src/contexts/user-contact';
+} from '@contexts/user-contact';
+import { useContext, useState } from 'react';
 
 export const useUserContact = (): UserContactContextData | undefined => {
   // const [c, setC] = useState<UserContactContextData | undefined>();

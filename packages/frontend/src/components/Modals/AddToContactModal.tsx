@@ -11,6 +11,7 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
+import { UserContactContext } from '@contexts/user-contact';
 import React, {
   type SyntheticEvent,
   useContext,
@@ -18,7 +19,6 @@ import React, {
   useState,
 } from 'react';
 import { BiEditAlt } from 'react-icons/bi';
-import { UserContactContext } from 'src/contexts/user-contact';
 
 import BaseModal from './BaseModal';
 

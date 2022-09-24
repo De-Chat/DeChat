@@ -1,4 +1,4 @@
-import loaderStyles from '../styles/Loader.module.css';
+import loaderStyles from '@styles/Loader.module.css';
 
 type LoaderProps = {
   isLoading: boolean;

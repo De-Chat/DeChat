@@ -1,6 +1,6 @@
+import { SuperfluidToken } from '@services/superFluidService';
 import { ethers } from 'ethers';
 import { useState } from 'react';
-import { SuperfluidToken } from 'src/services/superFluidService';
 
 export const useDeleteFlow = (
   wrapperSuperToken: SuperfluidToken,

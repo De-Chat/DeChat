@@ -22,6 +22,21 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Send__factory } from '@dechat/contracts/typechain-types';
+import { urlPrefix } from '@helpers/environment';
+import { createFramework } from '@hooks/superFluid/useCreateFramework';
+import { createWrappedSuperToken } from '@hooks/superFluid/useCreateWrappedSuperToken';
+import { upgradeCreateFlow } from '@hooks/superFluid/useUpgradeCreateFlow';
+import {
+  getSuperfluidBaseTokens,
+  getSuperfluidSupertoken,
+} from '@hooks/superFluid/wrappingMap';
+import { useDeployments } from '@hooks/useDeployments';
+import {
+  getNFTForAddress,
+  getTokenBalancesForAddress,
+  ITokenBalance,
+} from '@services/covalentService';
+import { SuperfluidToken } from '@services/superFluidService';
 import { ethers } from 'ethers';
 import React, {
   useCallback,
@@ -31,21 +46,6 @@ import React, {
   useState,
 } from 'react';
 import { IoRocketOutline } from 'react-icons/io5';
-import { urlPrefix } from 'src/helpers/environment';
-import { createFramework } from 'src/hooks/superFluid/useCreateFramework';
-import { createWrappedSuperToken } from 'src/hooks/superFluid/useCreateWrappedSuperToken';
-import { upgradeCreateFlow } from 'src/hooks/superFluid/useUpgradeCreateFlow';
-import {
-  getSuperfluidBaseTokens,
-  getSuperfluidSupertoken,
-} from 'src/hooks/superFluid/wrappingMap';
-import { useDeployments } from 'src/hooks/useDeployments';
-import {
-  getNFTForAddress,
-  getTokenBalancesForAddress,
-  ITokenBalance,
-} from 'src/services/covalentService';
-import { SuperfluidToken } from 'src/services/superFluidService';
 import useAsyncEffect from 'use-async-effect';
 import {
   erc20ABI,

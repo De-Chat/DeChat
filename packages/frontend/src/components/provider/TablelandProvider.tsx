@@ -1,6 +1,6 @@
+import { UserContactContext } from '@contexts/user-contact';
+import { UserContactService } from '@services/user-contact.service';
 import React, { useState } from 'react';
-import { UserContactContext } from 'src/contexts/user-contact';
-import { UserContactService } from 'src/services/user-contact.service';
 
 export const TablelandProvider = ({
   children,
