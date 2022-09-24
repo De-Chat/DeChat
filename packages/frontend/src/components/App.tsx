@@ -11,7 +11,7 @@ import { env } from 'src/helpers/environment';
 import { chains, wagmiClient } from 'src/services/wagmiClient';
 import { WagmiConfig } from 'wagmi';
 
-import Layout from './Layout';
+import Layout from './layouts/ChatLayout';
 import XmtpProvider from './XmtpProvider';
 
 type AppProps = {
@@ -22,17 +22,17 @@ function App({ children }: AppProps) {
   const { colorMode } = useColorMode();
   return (
     <WagmiConfig client={wagmiClient}>
-      <ChakraProvider theme={theme}>
-        <RainbowKitProvider
-          chains={chains}
-          initialChain={env.defaultChain}
-          theme={colorMode == 'light' ? lightTheme() : darkTheme()}
-        >
-          <XmtpProvider>
+      <RainbowKitProvider
+        chains={chains}
+        initialChain={env.defaultChain}
+        theme={colorMode == 'light' ? lightTheme() : darkTheme()}
+      >
+        <XmtpProvider>
+          <ChakraProvider theme={theme}>
             <Layout>{children}</Layout>
-          </XmtpProvider>
-        </RainbowKitProvider>
-      </ChakraProvider>
+          </ChakraProvider>
+        </XmtpProvider>
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 }

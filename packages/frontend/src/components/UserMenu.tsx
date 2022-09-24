@@ -34,21 +34,19 @@ const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
 const NotConnected = (): JSX.Element => {
   return (
     <>
-      <div>
-        <div className="flex items-center">
-          <div className="bg-y-100 rounded-full h-2 w-2 mr-1"></div>
-          <p className="text-sm font-bold text-y-100">You are not connected.</p>
-        </div>
-        <RKConnectButton.Custom>
-          {({ openConnectModal }) => (
-            <a onClick={openConnectModal}>
-              <p className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer">
-                Sign in with your wallet
-              </p>
-            </a>
-          )}
-        </RKConnectButton.Custom>
+      <div className="flex items-center">
+        <div className="bg-y-100 rounded-full h-2 w-2 mr-1"></div>
+        <p className="text-sm font-bold text-y-100">You are not connected.</p>
       </div>
+      <RKConnectButton.Custom>
+        {({ openConnectModal }) => (
+          <a onClick={openConnectModal}>
+            <p className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer">
+              Sign in with your wallet
+            </p>
+          </a>
+        )}
+      </RKConnectButton.Custom>
       <RKConnectButton.Custom>
         {({ openConnectModal }) => (
           <button

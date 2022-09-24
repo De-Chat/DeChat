@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useGetAllTransfer } from 'src/hooks/useGetAllTransfer';
 import { useAccount } from 'wagmi';
@@ -84,12 +85,12 @@ const Conversation = ({
   }
 
   return (
-    <main className="flex flex-col flex-1 bg-white h-screen">
+    <Flex direction="column" height="full" bgColor="secondary">
       <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
       {walletAddress && (
         <MessageComposer peerAddress={peerAddress || ''} onSend={sendMessage} />
       )}
-    </main>
+    </Flex>
   );
 };
 

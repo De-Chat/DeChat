@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Flex,
   FormControl,
@@ -62,6 +63,7 @@ const RegisterNickName = () => {
 
 const Login = () => {
   let { address } = useAccount();
+  const avatarImage = useUnsAvatar("weihan37.wallet")
 
   const resolvedName = '123';
   return (
@@ -70,8 +72,7 @@ const Login = () => {
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>Sign in to your account</Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
-            {/* to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️ */}
-            {useUnsAvatar('weihan37.wallet')}
+            <Avatar src={avatarImage} size="lg"/>
           </Text>
         </Stack>
         <ThemeToggler />

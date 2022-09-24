@@ -10,7 +10,7 @@ const colorScheme = 'green';
 const defaultColor = `${colorScheme}.400`;
 
 const config: ThemeConfig = {
-  initialColorMode: 'light',
+  initialColorMode: 'dark',
   useSystemColorMode: false,
 };
 

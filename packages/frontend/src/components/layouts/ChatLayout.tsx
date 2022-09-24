@@ -1,42 +1,60 @@
-import Head from 'next/head';
+import { Flex } from '@chakra-ui/react';
+import useXmtp from '@hooks/useXmtp';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode, useCallback, useEffect, useRef } from 'react';
+import {
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { useDisconnect, useSigner } from 'wagmi';
 
-import useXmtp from '../hooks/useXmtp';
-import { ConversationView, NavigationView } from '../views';
-import BackArrow from './BackArrow';
-import { RecipientControl } from './Conversation';
-import Login from './Login';
-import NavigationPanel from './NavigationPanel';
-import NewMessageButton from './NewMessageButton';
-import UserMenu from './UserMenu';
-import XmtpInfoPanel from './XmtpInfoPanel';
+import BackArrow from '../BackArrow';
+import { TitleText } from '../commons/TitleText';
+import {
+  ChatListView,
+  ConversationView,
+  RecipientControl,
+} from '../Conversation';
+import NavigationPanel from '../NavigationPanel';
+import NewMessageButton from '../NewMessageButton';
+import UserMenu from '../UserMenu';
+import XmtpInfoPanel from '../XmtpInfoPanel';
 
-const NavigationColumnLayout: React.FC<{ children: ReactNode }> = ({
+const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
 }) => (
   <aside className="flex w-full md:w-84 flex-col flex-grow fixed inset-y-0">
-    <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto">
+    <div
+      className="flex flex-col flex-grow md:border-r md:border-gray-200 overflow-y-auto"
+      style={{ backgroundColor: 'var(--chakra-colors-secondaryDark)' }}
+    >
       {children}
     </div>
   </aside>
 );
 
-const NavigationHeaderLayout: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => (
-  <div className="h-[72px] bg-p-600 flex items-center justify-between flex-shrink-0 px-4">
+const NavigationHeaderLayout: React.FC = () => (
+  <Flex
+    height="72px"
+    alignItems="center"
+    justify="space-between"
+    shrink="0"
+    paddingX="4"
+    borderBottomWidth="1px"
+    borderStyle="solid"
+    borderBottomColor="secondary"
+  >
     <Link href="/" passHref={true}>
-      <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" />
+      <TitleText>DeChat</TitleText>
     </Link>
-    {children}
-  </div>
+  </Flex>
 );
 
 const TopBarLayout: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="sticky top-0 z-10 flex-shrink-0 flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0">
+  <div className="sticky top-0 z-10 flex-shrink-0 flex bg-zinc-50 border-b border-gray-200 md:border-0">
     {children}
   </div>
 );
@@ -74,11 +92,7 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
   );
 };
 
-type LayoutProps = {
-  children: React.ReactNode;
-};
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
     connect: connectXmtp,
     disconnect: disconnectXmtp,
@@ -89,7 +103,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const { disconnect } = useDisconnect({
     onSettled() {
-      console.log('disconnect');
       disconnectXmtp();
       router.push('/');
     },
@@ -119,21 +132,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     connect();
   }, [signer, prevSigner, connectXmtp, disconnectXmtp]);
 
-  console.log('test account: ', signer, client, walletAddress);
-
-  if (!client) return <Login />;
-
   return (
     <>
-      <NavigationView>
-        <NavigationColumnLayout>
-          <NavigationHeaderLayout>
-            {walletAddress && client && <NewMessageButton />}
-          </NavigationHeaderLayout>
+      <ChatListView>
+        <NavigationSidebarContainer>
+          <NavigationHeaderLayout />
+          {walletAddress && client && <NewMessageButton />}
           <NavigationPanel />
           <UserMenu onDisconnect={disconnect} />
-        </NavigationColumnLayout>
-      </NavigationView>
+        </NavigationSidebarContainer>
+      </ChatListView>
       <ConversationView>
         {walletAddress && client ? (
           <ConversationLayout>{children}</ConversationLayout>
