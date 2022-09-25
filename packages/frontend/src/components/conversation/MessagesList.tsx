@@ -35,7 +35,7 @@ const MessageTile: React.FC<{ messageTileData: MessageTileProps }> = ({
 }) => {
   const { message, isSender } = messageTileData;
   return (
-    <div className="flex items-start mx-auto mb-4">
+    <Flex mx="auto" mb={4} alignItems="start">
       <Avatar addressOrName={message.senderAddress as string} />
       <div className="ml-2">
         <div>
@@ -47,11 +47,11 @@ const MessageTile: React.FC<{ messageTileData: MessageTileProps }> = ({
             {formatTime(message.sent)}
           </span>
         </div>
-        <span className="block text-md px-2 mt-2 text-black font-normal">
+        <span className="block text-md px-2 mt-2 font-normal">
           <MessageRenderer messageTileData={messageTileData} />
         </span>
       </div>
-    </div>
+    </Flex>
   );
 };
 
@@ -92,7 +92,7 @@ const MessagesList = ({
   return (
     <Flex grow={1}>
       <div className="pb-6 md:pb-0 w-full flex flex-col self-end">
-        <div className="relative w-full bg-white px-4 pt-6 overflow-y-auto flex">
+        <div className="relative w-full px-4 pt-6 overflow-y-auto flex">
           <div className="w-full">
             {messages && messages.length ? (
               <ConversationBeginningNotice />

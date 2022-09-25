@@ -33,7 +33,8 @@ const AddToContactModal = ({
   const [input, setInput] = useState<string>();
   const [busy, setBusy] = useState(false);
 
-  const { addContact, updateContact, removeContact, loadContacts } = useUserContact();
+  const { addContact, updateContact, removeContact, loadContacts } =
+    useUserContact();
 
   const handleInputChange = (e: any) => setInput(e.target.value);
 
@@ -47,7 +48,7 @@ const AddToContactModal = ({
       address: peerAddress,
       name: input,
     });
-    await loadContacts()
+    await loadContacts();
     setBusy(false);
     disclosure.onClose();
   };

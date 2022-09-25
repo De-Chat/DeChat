@@ -31,7 +31,6 @@ const Conversation = ({
     scrollToMessagesEndRef
   );
 
-  // TODO: change here to peerAddress, walletAddress
   const transactions = useGetAllTransfer(
     100,
     walletAddress || '',
@@ -85,7 +84,7 @@ const Conversation = ({
   }
 
   return (
-    <Flex direction="column" height="full" bgColor="secondary">
+    <Flex direction="column" height="full">
       <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
       {walletAddress && (
         <MessageComposer peerAddress={peerAddress || ''} onSend={sendMessage} />

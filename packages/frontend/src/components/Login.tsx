@@ -59,8 +59,8 @@ const LoginCard: React.FC<LoginProps & { avatarImage?: string }> = ({
               </Text> */}
             </Flex>
           </Heading>
-          <Flex justifyContent="center" alignItems="center"  mt="3">
-            <Text fontSize={'2xl'} mr='5'>
+          <Flex justifyContent="center" alignItems="center" mt="3">
+            <Text fontSize={'2xl'} mr="5">
               Waiting for signature&nbsp;
             </Text>
             <Spinner />

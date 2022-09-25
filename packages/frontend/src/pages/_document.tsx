@@ -16,7 +16,7 @@ class AppDocument extends Document {
 
   render() {
     return (
-      <Html className="h-full bg-gray-100">
+      <Html className="h-full">
         <Head>
           <meta name="description" content="DeChat" />
           <link rel="icon" href="/favicon.ico" />
