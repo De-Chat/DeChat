@@ -14,7 +14,7 @@ const shortAddress = (addr: string): string =>
     : addr;
 
 const Address = ({ address, className }: AddressProps): JSX.Element => {
-  const { isLoading, domain, resolveDomainName } = useDomainName();
+  const { domain, resolveDomainName } = useDomainName();
   const { getContactNameByAddress } = useUserContact();
 
   resolveDomainName(address);
@@ -24,20 +24,24 @@ const Address = ({ address, className }: AddressProps): JSX.Element => {
   return (
     <span className={classNames(className || '', 'font-mono')} title={address}>
       <>
-        {(domain?.ensName && (
-          <img
-            className="h-4 mr-1 w-auto inline-block"
-            src="/ens-icon.png"
-            alt="ENS"
-          />
-        )) ||
+        {nickname === undefined ? (
+          (domain?.ensName && (
+            <img
+              className="h-4 mr-1 w-auto inline-block"
+              src="/ens-icon.png"
+              alt="ENS"
+            />
+          )) ||
           (domain?.udName && (
             <img
               className="h-4 mr-1 w-auto inline-block"
               src="/ud-icon.png"
               alt="UD"
             />
-          ))}
+          ))
+        ) : (
+          <></>
+        )}
 
         {nickname || domain?.ensName || domain?.udName || shortAddress(address)}
       </>
