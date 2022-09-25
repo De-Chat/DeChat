@@ -11,7 +11,7 @@ export const useGetNetFlow = (
     const asyncFn = async () => {
       const netFlow = await superFluidToken.getNetFlow(account);
       setNetFlow(netFlow);
-    }
+    };
 
     asyncFn();
   }, [superFluidToken, account]);

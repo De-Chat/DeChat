@@ -10,10 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Card from '@components/commons/Card';
-import ThemeToggler from '@components/commons/ThemeToggler';
-import useUnsAvatar from '@hooks/useUnsAvatar';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
 
 import { BaseButton } from './commons/BaseButton';
 import { TitleText } from './commons/TitleText';

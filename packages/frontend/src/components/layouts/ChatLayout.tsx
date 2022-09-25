@@ -105,6 +105,7 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
 };
 
 export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  const router = useRouter();
   const { address: walletAddress } = useAccount();
   const { disconnect: disconnectXmtp, client } = useXmtp();
 
@@ -147,6 +148,11 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     });
   }, [walletAddress]);
 
+  // new message
+  const onNewMessageButtonClick = () => {
+    router.push('/dm/');
+  };
+
   return (
     <>
       <ChatListView>
@@ -159,6 +165,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 icon={<img src={AddContact} />}
                 size="xs"
                 variant="unstyled"
+                onClick={onNewMessageButtonClick}
               />
             )}
             <button

@@ -32,7 +32,8 @@ const Unlock = (): JSX.Element => {
 
   const checkOut = () => {
     console.log('UnlockProtocol', (window as any).unlockProtocol);
-    (window as any).unlockProtocol && (window as any).unlockProtocol.loadCheckoutModal();
+    (window as any).unlockProtocol &&
+      (window as any).unlockProtocol.loadCheckoutModal();
   };
 
   useEffect(() => {

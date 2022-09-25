@@ -99,7 +99,6 @@ const MessagesList = ({
             ) : null}
             {messages?.map((msg: MessageTileProps, idx: number) => {
               msg.isSender = msg.message.senderAddress === address;
-              const tile = <MessageTile messageTileData={msg} />;
               const dateHasChanged = !isOnSameDay(
                 lastMessageDate,
                 msg.message.sent
@@ -108,10 +107,10 @@ const MessagesList = ({
               return dateHasChanged ? (
                 <div key={idx}>
                   <DateDivider date={msg.message.sent} />
-                  {tile}
+                  <MessageTile key={idx} messageTileData={msg} />
                 </div>
               ) : (
-                tile
+                <MessageTile key={idx} messageTileData={msg} />
               );
             })}
             <div ref={messagesEndRef} />
