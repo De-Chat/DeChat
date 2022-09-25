@@ -1,6 +1,7 @@
 import { Flex, IconButton } from '@chakra-ui/react';
 import BackArrow from '@components/commons/BackArrow';
 import { TitleText } from '@components/commons/TitleText';
+import Unlock from '@components/commons/Unlock';
 import UserMenu from '@components/commons/UserMenu';
 import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
 import { useDomainName } from '@hooks/useDomainName';
@@ -31,8 +32,6 @@ import {
   RecipientControl,
 } from '../conversation';
 import NavigationPanel from '../conversation/NavigationPanel';
-
-import Unlock from '@components/commons/Unlock';
 
 const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,

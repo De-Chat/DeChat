@@ -23,7 +23,7 @@ const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
   const { data: ensAvatar } = useEnsAvatar({ addressOrName });
 
   // Make the address lowercase so that the blockies is consistent
-  const lowerCasedAddressOrName = addressOrName.toLowerCase()
+  const lowerCasedAddressOrName = addressOrName.toLowerCase();
 
   return ensAvatar ? (
     <img
@@ -32,7 +32,11 @@ const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
       alt={lowerCasedAddressOrName}
     />
   ) : (
-    <Blockies seed={lowerCasedAddressOrName} size={8} className="rounded-full mr-2" />
+    <Blockies
+      seed={lowerCasedAddressOrName}
+      size={8}
+      className="rounded-full mr-2"
+    />
   );
 };
 const NotConnected = (): JSX.Element => {
