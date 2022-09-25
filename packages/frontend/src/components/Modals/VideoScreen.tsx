@@ -11,8 +11,8 @@ import { Button, Icon, IconButton } from '@chakra-ui/react';
 import { useVideoCall } from '@hooks/useVideoCall';
 import { CastSession, Client } from '@livepeer/webrtmp-sdk';
 import { useEffect, useRef, useState } from 'react';
+import { BsCameraVideo } from 'react-icons/bs';
 import useAsyncEffect from 'use-async-effect';
-import { BsCameraVideo } from 'react-icons/bs'
 
 export const VideoScreen = () => {
   const [videoEl, setVideoEl] = useState<any>();
@@ -82,12 +82,14 @@ export const VideoScreen = () => {
   }, [url]);
   return (
     <>
-      <IconButton aria-label="Toggle theme"
+      <IconButton
+        aria-label="Start video call"
         variant="outline"
         border="none"
         icon={<Icon as={BsCameraVideo} />}
-        onClick={handleOnClick} />
-      <Modal isOpen={!!videoCall.videoCalling} onClose={() => { }}>
+        onClick={handleOnClick}
+      />
+      <Modal isOpen={!!videoCall.videoCalling} onClose={() => {}}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Video Call</ModalHeader>
