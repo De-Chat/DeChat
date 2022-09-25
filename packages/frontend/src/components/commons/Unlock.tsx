@@ -1,6 +1,6 @@
+import { Text } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { Text } from '@chakra-ui/react';
 
 const Unlock = (): JSX.Element => {
   const [locked, setLocked] = useState({ locked: 'locked' }); // 3 states: pending, locked, unlocked
@@ -31,8 +31,8 @@ const Unlock = (): JSX.Element => {
   };
 
   const checkOut = () => {
-    console.log("UnlockProtocol", window.unlockProtocol)
-    window.unlockProtocol && window.unlockProtocol.loadCheckoutModal();
+    console.log('UnlockProtocol', (window as any).unlockProtocol);
+    (window as any).unlockProtocol && (window as any).unlockProtocol.loadCheckoutModal();
   };
 
   useEffect(() => {
@@ -46,17 +46,23 @@ const Unlock = (): JSX.Element => {
   return (
     <div>
       <Script
-          src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js"
-          type="text/javascript"
+        src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js"
+        type="text/javascript"
       />
       {locked.locked === 'locked' && (
-        <div className='ml-4 mt-4' onClick={checkOut} style={{ cursor: 'pointer' }}>
+        <div
+          className="ml-4 mt-4"
+          onClick={checkOut}
+          style={{ cursor: 'pointer' }}
+        >
           <Text
             bgGradient="linear(to-l, #7928CA, #FF0080)"
             bgClip="text"
             fontSize="lg"
             fontWeight="extrabold"
-          > Get DeChat Premium 🔒
+          >
+            {' '}
+            Get DeChat Premium 🔒
           </Text>
           {/* Get Dechat Premium{' '}
           <span aria-label="locked" role="img">
@@ -65,13 +71,15 @@ const Unlock = (): JSX.Element => {
         </div>
       )}
       {locked.locked === 'unlocked' && (
-        <div className='ml-4 mt-4'>
+        <div className="ml-4 mt-4">
           <Text
             bgGradient="linear(to-l, #7928CA, #FF0080)"
             bgClip="text"
             fontSize="lg"
             fontWeight="extrabold"
-          > DeChat Premium 💎
+          >
+            {' '}
+            DeChat Premium 💎
           </Text>
           {/* Premium Member{' '}
           <span aria-label="unlocked" role="img">
