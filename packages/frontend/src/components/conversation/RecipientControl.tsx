@@ -93,7 +93,7 @@ const RecipientControl = ({
       data.value.endsWith('.wallet') || //TODO: add more domains
       (data.value.startsWith('0x') && data.value.length === 42)
     ) {
-      setPendingPeerAddressOrName(data.value)
+      setPendingPeerAddressOrName(data.value);
       resolveDomainName(data.value);
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry);
