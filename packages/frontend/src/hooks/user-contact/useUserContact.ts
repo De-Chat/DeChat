@@ -34,14 +34,12 @@ export const useUserContact = () => {
 
   // Other functions
   const loadContacts = useCallback(async () => {
-    console.log(connection, userContactTableId, setCurrentContacts);
     if (connection && userContactTableId && setCurrentContacts) {
       const contacts = await service.loadContacts(
         connection,
         userContactTableId
       );
       setCurrentContacts(contacts);
-      console.log(contacts);
       return contacts;
     }
   }, [connection, userContactTableId, setCurrentContacts]);

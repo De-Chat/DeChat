@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/solid';
 import useXmtp from '@hooks/useXmtp';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -65,7 +66,9 @@ const InfoRow = ({
 };
 
 const XmtpInfoPanel = (): JSX.Element => {
-  const { walletAddress, client } = useXmtp();
+  const { address: walletAddress } = useAccount();
+  const { client } = useXmtp();
+
   const InfoRows = [
     {
       icon: <LinkIcon />,

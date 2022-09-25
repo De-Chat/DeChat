@@ -9,20 +9,16 @@ export type MessageStoreEvent = {
 };
 
 export type XmtpContextType = {
-  wallet: Signer | undefined;
-  walletAddress: string | undefined;
   client: Client | undefined;
   conversations: Conversation[];
   loadingConversations: boolean;
   getMessages: (peerAddress: string) => Message[];
   dispatchMessages?: Dispatch<MessageStoreEvent>;
-  connect: (wallet: Signer) => void;
+  connect: () => void;
   disconnect: () => void;
 };
 
 export const XmtpContext = createContext<XmtpContextType>({
-  wallet: undefined,
-  walletAddress: undefined,
   client: undefined,
   conversations: [],
   loadingConversations: false,

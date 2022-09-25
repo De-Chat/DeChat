@@ -1,9 +1,9 @@
 import { Conversation } from '@xmtp/xmtp-js';
 import { Client } from '@xmtp/xmtp-js';
-import { Signer } from 'ethers';
 import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useSigner } from 'wagmi';
 
-import { XmtpContext, XmtpContextType } from '../../contexts/xmtp';
+import { XmtpContext } from '../../contexts/xmtp';
 import useMessageStore from '../../hooks/useMessageStore';
 
 export type XmtpProviderProps = {
@@ -11,9 +11,9 @@ export type XmtpProviderProps = {
 };
 
 export const XmtpProvider: React.FC<XmtpProviderProps> = ({ children }) => {
-  const [wallet, setWallet] = useState<Signer>();
-  const [walletAddress, setWalletAddress] = useState<string>();
   const [client, setClient] = useState<Client>();
+  const { data: signer } = useSigner();
+
   const { getMessages, dispatchMessages } = useMessageStore();
   const [loadingConversations, setLoadingConversations] =
     useState<boolean>(false);
@@ -34,29 +34,20 @@ export const XmtpProvider: React.FC<XmtpProviderProps> = ({ children }) => {
     []
   );
 
-  const connect = useCallback(
-    async (wallet: Signer) => {
-      setWallet(wallet);
-      const walletAddr = await wallet.getAddress();
-      setWalletAddress(walletAddr);
-    },
-    [setWallet, setWalletAddress]
-  );
+  const connect = useCallback(async () => {
+    if (signer !== undefined && signer !== null) {
+      const client = await Client.create(signer);
+
+      setClient(client);
+    }
+  }, [signer]);
 
   const disconnect = useCallback(async () => {
-    setWallet(undefined);
-    setWalletAddress(undefined);
-    setClient(undefined);
-    dispatchConversations(undefined);
-  }, [setWallet, setWalletAddress, setClient, dispatchConversations]);
-
-  useEffect(() => {
-    const initClient = async () => {
-      if (!wallet) return;
-      setClient(await Client.create(wallet));
-    };
-    initClient();
-  }, [wallet]);
+    if (client) {
+      setClient(undefined);
+      dispatchConversations(undefined);
+    }
+  }, [setClient, dispatchConversations, client]);
 
   useEffect(() => {
     const listConversations = async () => {
@@ -69,7 +60,7 @@ export const XmtpProvider: React.FC<XmtpProviderProps> = ({ children }) => {
       setLoadingConversations(false);
     };
     listConversations();
-  }, [client, walletAddress]);
+  }, [client]);
 
   useEffect(() => {
     const streamConversations = async () => {
@@ -80,46 +71,20 @@ export const XmtpProvider: React.FC<XmtpProviderProps> = ({ children }) => {
       }
     };
     streamConversations();
-  }, [client, walletAddress]);
-
-  const [providerState, setProviderState] = useState<XmtpContextType>({
-    wallet,
-    walletAddress,
-    client,
-    conversations,
-    loadingConversations,
-    getMessages,
-    dispatchMessages,
-    connect,
-    disconnect,
-  });
-
-  useEffect(() => {
-    setProviderState({
-      wallet,
-      walletAddress,
-      client,
-      conversations,
-      loadingConversations,
-      getMessages,
-      dispatchMessages,
-      connect,
-      disconnect,
-    });
-  }, [
-    wallet,
-    walletAddress,
-    client,
-    conversations,
-    loadingConversations,
-    getMessages,
-    dispatchMessages,
-    connect,
-    disconnect,
-  ]);
+  }, [client]);
 
   return (
-    <XmtpContext.Provider value={providerState}>
+    <XmtpContext.Provider
+      value={{
+        client,
+        conversations,
+        loadingConversations,
+        getMessages,
+        dispatchMessages,
+        connect,
+        disconnect,
+      }}
+    >
       {children}
     </XmtpContext.Provider>
   );

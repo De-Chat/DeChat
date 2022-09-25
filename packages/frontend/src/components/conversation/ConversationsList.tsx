@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import { useUserContact } from '@hooks/user-contact/useUserContact';
+import useXmtp from '@hooks/useXmtp';
 import { Message } from '@xmtp/xmtp-js';
 import { Conversation } from '@xmtp/xmtp-js/dist/types/src/conversations';
 import Link from 'next/link';
@@ -93,7 +94,7 @@ const ConversationsList = ({
   conversations,
 }: ConversationsListProps): JSX.Element => {
   const router = useRouter();
-  const { getMessages } = useContext(XmtpContext);
+  const { getMessages } = useXmtp();
   const peerAddressOrName = router.query.peerAddressOrName as string;
   const { address, ensName } = useEns(peerAddressOrName);
 

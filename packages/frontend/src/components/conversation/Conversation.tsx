@@ -17,7 +17,9 @@ type ConversationProps = {
 const Conversation = ({
   peerAddressOrName,
 }: ConversationProps): JSX.Element => {
-  const { walletAddress, client } = useXmtp();
+  const { address: walletAddress } = useAccount();
+  const { client } = useXmtp();
+
   const messagesEndRef = useRef(null);
   const scrollToMessagesEndRef = useCallback(() => {
     (messagesEndRef.current as any)?.scrollIntoView({ behavior: 'smooth' });
