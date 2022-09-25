@@ -1,11 +1,9 @@
 import { Flex, IconButton } from '@chakra-ui/react';
 import BackArrow from '@components/commons/BackArrow';
 import { TitleText } from '@components/commons/TitleText';
+import Unlock from '@components/commons/Unlock';
 import UserMenu from '@components/commons/UserMenu';
 import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
-import { useDomainName } from '@hooks/useDomainName';
-import { getEnsMainnet } from '@hooks/useEns';
-import { useUserContact } from '@hooks/user-contact/useUserContact';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
 import Link from 'next/link';
@@ -15,7 +13,6 @@ import {
   ReactNode,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import {
@@ -24,7 +21,7 @@ import {
   optInToChannel,
   optOutToChannel,
 } from 'src/services/epnsService';
-import { useDisconnect, useSigner } from 'wagmi';
+import { useAccount, useDisconnect, useSigner } from 'wagmi';
 
 import {
   ChatListView,
@@ -37,10 +34,7 @@ const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
 }) => (
   <aside className="flex w-full md:w-84 flex-col flex-grow fixed inset-y-0">
-    <div
-      className="flex flex-col flex-grow md:border-r md:border-gray-200 overflow-y-auto"
-      style={{ backgroundColor: 'var(--chakra-colors-secondaryDark)' }}
-    >
+    <div className="flex flex-col flex-grow md:border-r md:border-gray-800 overflow-y-auto">
       {children}
     </div>
   </aside>
@@ -76,14 +70,19 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const peerAddressOrName = router.query.peerAddressOrName as string;
+  const [peerAddressOrName, setPeerAddressOrName] = useState<string>();
 
-  const handleSubmit = useCallback(
-    async (peerAddressOrName: string) => {
-      router.push(peerAddressOrName ? `/dm/${peerAddressOrName}` : '/dm/');
-    },
-    [router]
-  );
+  useEffect(() => {
+    const curAddress = router.query.peerAddressOrName;
+    if (curAddress && typeof curAddress === 'string') {
+      setPeerAddressOrName(curAddress);
+    }
+  }, [router]);
+
+  const handleSubmit = async (newPeerAddressOrName: string) => {
+    setPeerAddressOrName(newPeerAddressOrName);
+    router.push(newPeerAddressOrName ? `/dm/${newPeerAddressOrName}` : '/dm/');
+  };
 
   const handleBackArrowClick = useCallback(() => {
     router.push('/');
@@ -106,67 +105,21 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
 };
 
 export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  const {
-    connect: connectXmtp,
-    disconnect: disconnectXmtp,
-    walletAddress,
-    client,
-  } = useXmtp();
   const router = useRouter();
-  let contact = useUserContact();
+  const { address: walletAddress } = useAccount();
+  const { disconnect: disconnectXmtp, client } = useXmtp();
 
   const { disconnect } = useDisconnect({
     onSettled() {
       disconnectXmtp();
-      // router.push('/');
     },
   });
   const { data: signer } = useSigner();
 
-  const usePrevious = <T,>(value: T): T | undefined => {
-    const ref = useRef<T>();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  };
-  const prevSigner = usePrevious(signer);
-
-  const { isLoading, domain, resolveDomainName } = useDomainName();
-  resolveDomainName('cheechyuan.eth');
-
-  useEffect(() => {
-    const connecttoTableland = async (signer: any) => {
-      if (contact) {
-        const tableId = await contact.service.connectToTableland(signer);
-        console.log(`tableId: ${tableId}`);
-        return tableId;
-      }
-    };
-    if ((!signer && prevSigner) || signer !== prevSigner) {
-      disconnectXmtp();
-    }
-    if (!signer || signer === prevSigner) return;
-    const connect = async () => {
-      connectXmtp(signer);
-      const prevAddress = await prevSigner?.getAddress();
-      const address = await signer.getAddress();
-      if (address === prevAddress) return;
-      const tableId = await connecttoTableland(signer);
-      contact?.setUserContactTableId(tableId);
-
-      // load from tableland
-      const xx = await contact?.service.loadContacts(tableId!);
-      console.log(xx);
-    };
-    connect();
-  }, [signer, prevSigner, connectXmtp, disconnectXmtp, contact]);
-
-  /////// epns
+  // ---- epns
 
   // create state components to fetch all the notifications.
   const [isSubscribed, setIsSubscribed] = useState(false);
-  console.log('epns signer', signer);
   // create handler to subscribe to channel
   const handleOptInOptOut = async () => {
     if (!walletAddress) return;
@@ -174,19 +127,16 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       const res = await optInToChannel(signer, walletAddress);
       if (res?.status === 'success') {
         setIsSubscribed(true);
-        console.log(`isSubscribed optIn: ${JSON.stringify(res)}`);
       }
     } else {
       const res2 = await optOutToChannel(signer, walletAddress);
       if (res2?.status === 'success') {
         setIsSubscribed(false);
-        console.log(`isSubscribed optOut: ${JSON.stringify(res2)}`);
       }
     }
   };
 
   useEffect(() => {
-    console.log(`walletAddress useEffect: ${walletAddress}`);
     if (!walletAddress) return;
     // get userSubscription status
     getEpnsUserSubscriptions(walletAddress).then((subscriptions) => {
@@ -207,6 +157,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     <>
       <ChatListView>
         <NavigationSidebarContainer>
+          {walletAddress && client && <Unlock />}
           <NavigationHeaderLayout>
             {walletAddress && client && (
               <IconButton

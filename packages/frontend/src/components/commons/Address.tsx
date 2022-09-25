@@ -1,4 +1,5 @@
 import { useDomainName } from '@hooks/useDomainName';
+import { useUserContact } from '@hooks/user-contact/useUserContact';
 
 import { classNames } from '../../helpers';
 
@@ -13,27 +14,37 @@ const shortAddress = (addr: string): string =>
     : addr;
 
 const Address = ({ address, className }: AddressProps): JSX.Element => {
-  const { isLoading, domain, resolveDomainName } = useDomainName();
+  const { domain, resolveDomainName } = useDomainName();
+  const { getContactNameByAddress } = useUserContact();
+
   resolveDomainName(address);
+
+  const nickname = getContactNameByAddress(address);
 
   return (
     <span className={classNames(className || '', 'font-mono')} title={address}>
-      {(domain?.ensName && (
-        <img
-          className="h-4 mr-1 w-auto inline-block"
-          src="/ens-icon.png"
-          alt="ENS"
-        />
-      )) ||
-        (domain?.udName && (
-          <img
-            className="h-4 mr-1 w-auto inline-block"
-            src="/ud-icon.png"
-            alt="UD"
-          />
-        ))}
+      <>
+        {nickname === undefined ? (
+          (domain?.ensName && (
+            <img
+              className="h-4 mr-1 w-auto inline-block"
+              src="/ens-icon.png"
+              alt="ENS"
+            />
+          )) ||
+          (domain?.udName && (
+            <img
+              className="h-4 mr-1 w-auto inline-block"
+              src="/ud-icon.png"
+              alt="UD"
+            />
+          ))
+        ) : (
+          <></>
+        )}
 
-      {domain?.ensName || domain?.udName || shortAddress(address)}
+        {nickname || domain?.ensName || domain?.udName || shortAddress(address)}
+      </>
     </span>
   );
 };

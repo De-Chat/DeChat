@@ -11,7 +11,7 @@ const useUnsName = (walletAddress: string) => {
       setDomain(domain);
     })
     .catch((err) =>
-      console.log(walletAddress, 'does not resolve to any domain')
+      console.error(walletAddress, 'does not resolve to any domain')
     );
 
   return domain;

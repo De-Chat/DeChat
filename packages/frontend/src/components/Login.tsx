@@ -10,25 +10,23 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Card from '@components/commons/Card';
-import ThemeToggler from '@components/commons/ThemeToggler';
-import useUnsAvatar from '@hooks/useUnsAvatar';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
 
 import { BaseButton } from './commons/BaseButton';
 import { TitleText } from './commons/TitleText';
 
-export type LoginCardProps = {
-  isConnected?: boolean;
+export type LoginProps = {
+  isConnected: boolean;
+  isReady: boolean;
   address?: string;
-  avatarImage?: string;
 };
 
-const LoginCard: React.FC<LoginCardProps> = ({
+const LoginCard: React.FC<LoginProps & { avatarImage?: string }> = ({
   isConnected,
+  isReady,
   address,
   avatarImage,
-}: LoginCardProps) => {
+}) => {
   let CardContent = () => <></>;
   if (address === undefined) {
     CardContent = function CardContent() {
@@ -42,47 +40,47 @@ const LoginCard: React.FC<LoginCardProps> = ({
         </ConnectButton.Custom>
       );
     };
-  } else if (address !== undefined && isConnected) {
+  } else if (isConnected && !isReady) {
     CardContent = function CardContent() {
       return (
-        <>
+        <Flex direction="column">
           <Heading fontSize={'3xl'}>
-            <Flex>
-              Welcome,
-              <Text
+            <Flex justifyContent={'center'} textAlign="center">
+              Welcome !
+              {/* <Text
                 bgGradient="linear(to-l, #7928CA, #FF0080)"
                 bgClip="text"
                 fontSize="3xl"
                 fontWeight="extrabold"
-              >
-                {/* {resolvedName} */}
-              </Text>
-              &nbsp;!
+              > {resolvedName}
+              </Text> */}
             </Flex>
           </Heading>
-          <Text fontSize={'2xl'}>
-            Waiting for signature&nbsp;
+          <Flex justifyContent="center" alignItems="center" mt="3">
+            <Text fontSize={'2xl'} mr="5">
+              Waiting for signature&nbsp;
+            </Text>
             <Spinner />
-          </Text>
+          </Flex>
           <ConnectButton.Custom>
             {({ openAccountModal }) => (
               <Text
                 onClick={openAccountModal}
                 fontSize={'md'}
                 color={'blue.400'}
+                mt="2"
               >
                 Disconnect
               </Text>
             )}
           </ConnectButton.Custom>
-        </>
+        </Flex>
       );
     };
   }
 
   return (
     <Stack spacing={8} mx="auto" width="500px" p={6}>
-      {/* <ThemeToggler /> */}
       <Card
         rounded={'lg'}
         boxShadow={'lg'}
@@ -109,16 +107,22 @@ const LoginCard: React.FC<LoginCardProps> = ({
   );
 };
 
-export const Login = () => {
-  const { address, isConnected } = useAccount();
-
+export const Login: React.FC<LoginProps> = ({
+  address,
+  isConnected,
+  isReady,
+}) => {
   return (
     <Flex width="full" minH={'100vh'} justify="start" direction="column">
       <Flex width="full" padding="4">
         <TitleText>DeChat</TitleText>
       </Flex>
       <Flex width="full" grow={1}>
-        <LoginCard isConnected={isConnected} address={address} />
+        <LoginCard
+          isConnected={isConnected}
+          isReady={isReady}
+          address={address}
+        />
       </Flex>
     </Flex>
   );

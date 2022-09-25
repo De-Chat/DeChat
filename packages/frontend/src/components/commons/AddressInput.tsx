@@ -1,7 +1,7 @@
 import { classNames } from '@helpers/classNames';
 import useEns from '@hooks/useEns';
-import useXmtp from '@hooks/useXmtp';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useAccount } from 'wagmi';
 
 type AddressInputProps = {
   peerAddressOrName?: string;
@@ -20,7 +20,7 @@ const AddressInput = ({
   placeholder,
   onInputChange,
 }: AddressInputProps): JSX.Element => {
-  const { walletAddress } = useXmtp();
+  const { address: walletAddress } = useAccount();
   const inputElement = useRef(null);
 
   const { ensName, address } = useEns(peerAddressOrName);

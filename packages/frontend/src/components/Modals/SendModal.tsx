@@ -37,7 +37,7 @@ import {
   ITokenBalance,
 } from '@services/covalentService';
 import { SuperfluidToken } from '@services/superFluidService';
-import { ethers } from 'ethers';
+import { ethers, Signer } from 'ethers';
 import React, {
   useCallback,
   useEffect,
@@ -51,16 +51,16 @@ import useAsyncEffect from 'use-async-effect';
 import {
   erc20ABI,
   erc721ABI,
-  useBlockNumber,
-  useContract,
+  useAccount,
   useContractRead,
   useNetwork,
   useProvider,
+  useSigner,
 } from 'wagmi';
 
 import { encodeMessage } from '../../helpers/message-parser';
-import useXmtp from '../../hooks/useXmtp';
 import BaseModal from './BaseModal';
+
 ///// helpers
 const shortenAddress = (addr: string): string =>
   addr.length > 10 && addr.startsWith('0x')
@@ -84,7 +84,6 @@ const approveErc20 = async (
       ethers.utils.parseUnits(amount, decimals)
     );
     const receipt = await tsx.wait();
-    console.log({ receipt });
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -104,7 +103,7 @@ const approveErc721 = async (
     let tsx;
     tsx = await contract.approve(address, tokenId);
     const receipt = await tsx.wait();
-    console.log({ receipt });
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -126,7 +125,7 @@ const sendEth = async (
       value: ethers.utils.parseEther(amount),
     });
     const receipt = await tsx.wait();
-    console.log({ receipt });
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -148,7 +147,7 @@ const sendERC20 = async (
     const formattedAmount = ethers.utils.parseUnits(amount, decimals);
     let tsx = await contract.sendErc20(tokenAddr, recipient, formattedAmount);
     const receipt = await tsx.wait();
-    console.log({ receipt });
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -168,7 +167,7 @@ const sendERC721 = async (
   try {
     let tsx = await contract.sendErc721(tokenAddr, recipient, id);
     const receipt = await tsx.wait();
-    console.log({ receipt });
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -195,7 +194,7 @@ const sendERC1155 = async (
       []
     );
     const receipt = await tsx.wait();
-    console.log({ receipt });
+
     return receipt;
   } catch (e: any) {
     console.error(e);
@@ -280,6 +279,7 @@ const SendToken = ({
   };
   const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.currentTarget.name]: e.currentTarget.checked });
+
   // TODO: validation
   const validateForm = () => {
     if (!form['to'] || !form['token'] || !form['amount']) {
@@ -289,11 +289,12 @@ const SendToken = ({
     setError(undefined);
     return true;
   };
-  console.log('test form: ', form);
 
   // contract and stuff
-  const { wallet: signer, walletAddress: address } = useXmtp();
+  const { address } = useAccount();
+  const { data: signer } = useSigner();
   const { contracts } = useDeployments();
+
   // Approve contract and read / write function
   const {
     data: allowance,
@@ -332,7 +333,7 @@ const SendToken = ({
     const tokenContract = new ethers.Contract(
       form.token?.address,
       erc20ABI,
-      signer
+      signer as Signer
     );
     console.log('test erc20: ', token.address, to, amount);
     const receipt = await approveErc20(
@@ -450,7 +451,6 @@ const SendToken = ({
             type="number"
             onChange={handleFormChange}
           />
-          {/* <Checkbox name='lend' onChange={handleCheckboxChange}>Lend to receiver</Checkbox> */}
           {error && <FormErrorMessage>{error}</FormErrorMessage>}
         </VStack>
       </FormControl>
@@ -504,10 +504,10 @@ const SendNFT = ({
     setError(undefined);
     return true;
   };
-  console.log('test form: ', form);
 
   // contract and stuff
-  const { wallet: signer, walletAddress: address } = useXmtp();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   const { contracts } = useDeployments();
   // Approve contract and read / write function
   const {
@@ -537,7 +537,11 @@ const SendNFT = ({
     if (!validateForm() || !contracts) return;
 
     setBusy(true);
-    const nftContract = new ethers.Contract(form.contract, erc721ABI, signer);
+    const nftContract = new ethers.Contract(
+      form.contract,
+      erc721ABI,
+      signer as Signer
+    );
     const receipt = await approveErc721(
       nftContract,
       contracts.Send.address,
@@ -605,7 +609,7 @@ const SendNFT = ({
   }, [chain?.id, address]);
   const tokenIds = useMemo(() => {
     if (form.contract && nfts.length)
-      return nfts.find((n) => n.address == form.contract).data;
+      return nfts?.find((n) => n.address == form.contract).data;
     return [];
   }, [nfts, form.contract]);
 
@@ -685,12 +689,7 @@ const SendStream = ({
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const tokenAddr = e.target.value;
     const chainId = chain?.id;
-    console.log(
-      'test select: ',
-      chainId,
-      tokenAddr,
-      getTokenByAddress(tokenAddr)
-    );
+
     setForm({ ...form, token: getTokenByAddress(tokenAddr) });
     console.log('test select token: ', e.target.value);
   };
@@ -714,8 +713,8 @@ const SendStream = ({
   console.log('test form: ', form);
 
   // contract and stuff
-  const { wallet: signer, walletAddress: address } = useXmtp();
-  const { contracts } = useDeployments();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   // Approve contract and read / write function
   const {
     data: allowance,
@@ -749,7 +748,7 @@ const SendStream = ({
     const tokenContract = new ethers.Contract(
       form.token?.address,
       erc20ABI,
-      signer
+      signer as Signer
     );
     const receipt = await approveErc20(
       tokenContract,
@@ -790,7 +789,6 @@ const SendStream = ({
       parsedFlowrate.toString(),
       undefined
     );
-    console.log({ receipt });
 
     // check if transaction is succesful
     if (receipt.status === 1) {
@@ -846,7 +844,7 @@ const SendStream = ({
       let userTokenlist = await getTokenBalancesForAddress(chain?.id, address);
       // filter only Superfluid base token listed in src/hooks/superfluid/wrappingMap
       const superfluidBasetokens = getSuperfluidBaseTokens();
-      console.log('test superfluid: ', userTokenlist, superfluidBasetokens);
+
       let userSuperfluidBaseTokens = userTokenlist?.tokens.filter((t) =>
         superfluidBasetokens.includes(t.address)
       );
@@ -869,8 +867,6 @@ const SendStream = ({
         : 'Upgrade Amount',
     [form.token]
   );
-
-  console.log('test superfluid tokenlist: ', tokenlist);
 
   return (
     <Container centerContent>

@@ -4,13 +4,14 @@ import { ChatIcon } from '@heroicons/react/outline';
 import { ArrowSmRightIcon } from '@heroicons/react/solid';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import { ReactNode } from 'react';
+import { useAccount } from 'wagmi';
 
 import useXmtp from '../../hooks/useXmtp';
 import Loader from '../commons/Loader';
 import ConversationsList from './ConversationsList';
 
 const NavigationPanel = (): JSX.Element => {
-  const { walletAddress } = useXmtp();
+  const { address: walletAddress } = useAccount();
 
   return (
     <Flex grow={1} direction="column">

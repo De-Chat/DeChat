@@ -19,7 +19,7 @@ export const useDeployments = () => {
 
   useAsyncEffect(async () => {
     const contractsChain = !chain || chain.unsupported ? defaultChain : chain;
-    console.log('test contractsChain: ', contractsChain);
+
     if (contractsChain) {
       const contracts = (await deployments[contractsChain.id]).contracts;
       setUseDefaultChain(useDefaultChain);

@@ -1,8 +1,8 @@
+import { Text } from '@chakra-ui/react';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
 const Unlock = (): JSX.Element => {
-  const [unlockProtocol, setUnlockProtocol] = useState<any>(undefined);
   const [locked, setLocked] = useState({ locked: 'locked' }); // 3 states: pending, locked, unlocked
 
   useEffect(() => {
@@ -10,17 +10,14 @@ const Unlock = (): JSX.Element => {
       (window as any).unlockProtocolConfig = {
         network: 5, // Network ID (1 is for mainnet, 4 for rinkeby, 100 for xDai, etc)
         locks: {
-          '0xd9C22C8568F5Ef7Fa0a05864A31B2CD83CC7eaBB': {
-            name: 'Dechat Premium',
+          '0xC47Cc50617C51B2490fCF59CB26d87BC564B087b': {
+            name: 'DeChat Premium',
           },
         },
-        icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
         callToAction: {
-          default: 'Dechat Premium',
+          default: 'DeChat Premium',
         },
       };
-
-      setUnlockProtocol((window as any).unlockProtocol);
     }
   }, []);
 
@@ -34,7 +31,9 @@ const Unlock = (): JSX.Element => {
   };
 
   const checkOut = () => {
-    unlockProtocol && unlockProtocol.loadCheckoutModal();
+    console.log('UnlockProtocol', (window as any).unlockProtocol);
+    (window as any).unlockProtocol &&
+      (window as any).unlockProtocol.loadCheckoutModal();
   };
 
   useEffect(() => {
@@ -52,19 +51,41 @@ const Unlock = (): JSX.Element => {
         type="text/javascript"
       />
       {locked.locked === 'locked' && (
-        <div onClick={checkOut} style={{ cursor: 'pointer' }}>
-          Get Dechat Premium{' '}
+        <div
+          className="ml-4 mt-4"
+          onClick={checkOut}
+          style={{ cursor: 'pointer' }}
+        >
+          <Text
+            bgGradient="linear(to-l, #7928CA, #FF0080)"
+            bgClip="text"
+            fontSize="lg"
+            fontWeight="extrabold"
+          >
+            {' '}
+            Get DeChat Premium 🔒
+          </Text>
+          {/* Get Dechat Premium{' '}
           <span aria-label="locked" role="img">
             🔒
-          </span>
+          </span> */}
         </div>
       )}
       {locked.locked === 'unlocked' && (
-        <div>
-          Dechat Premium{' '}
+        <div className="ml-4 mt-4">
+          <Text
+            bgGradient="linear(to-l, #7928CA, #FF0080)"
+            bgClip="text"
+            fontSize="lg"
+            fontWeight="extrabold"
+          >
+            {' '}
+            DeChat Premium 💎
+          </Text>
+          {/* Premium Member{' '}
           <span aria-label="unlocked" role="img">
             🗝
-          </span>
+          </span> */}
         </div>
       )}
     </div>

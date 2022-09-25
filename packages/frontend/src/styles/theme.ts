@@ -70,7 +70,7 @@ const theme = extendTheme({
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
-        bg: mode('white', 'blackAlpha.900')(props),
+        bg: mode('white', 'secondaryDark')(props),
         lineHeight: 'base',
       },
     }),

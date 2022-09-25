@@ -5,7 +5,7 @@ import useXmtp from '@hooks/useXmtp';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import { Fragment, useCallback } from 'react';
 import Blockies from 'react-blockies';
-import { useEnsAvatar } from 'wagmi';
+import { useAccount, useEnsAvatar } from 'wagmi';
 
 import Address from './Address';
 
@@ -20,17 +20,24 @@ type AvatarBlockProps = {
 
 const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
   const { data: ensAvatar } = useEnsAvatar({ addressOrName });
+
+  // Make the address lowercase so that the blockies is consistent
+  const lowerCasedAddressOrName = addressOrName.toLowerCase();
+
   return ensAvatar ? (
     <img
       className={'rounded-full h-8 w-8 mr-2'}
       src={ensAvatar}
-      alt={addressOrName}
+      alt={lowerCasedAddressOrName}
     />
   ) : (
-    <Blockies seed={addressOrName} size={8} className="rounded-full mr-2" />
+    <Blockies
+      seed={lowerCasedAddressOrName}
+      size={8}
+      className="rounded-full mr-2"
+    />
   );
 };
-
 const NotConnected = (): JSX.Element => {
   return (
     <>
@@ -66,7 +73,8 @@ const NotConnected = (): JSX.Element => {
 };
 
 const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
-  const { walletAddress, client } = useXmtp();
+  const { address: walletAddress } = useAccount();
+  const { client } = useXmtp();
 
   const onClickCopy = useCallback(() => {
     if (walletAddress) {
@@ -137,7 +145,7 @@ const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-bottom-right absolute right-0 bottom-12 mb-4 w-40 rounded-md shadow-lg bg-white divide-y-2 divide-zinc-50 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="origin-bottom-right absolute right-0 bottom-12 mb-4 w-40 rounded-md shadow-lg divide-y-2 divide-zinc-50 ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="px-1 py-1 ">
                     <Menu.Item>
                       {({ active }) => (
@@ -145,7 +153,7 @@ const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
                           onClick={onClickCopy}
                           className={classNames(
                             active ? 'bg-zinc-50' : '',
-                            'block rounded-md px-2 py-2 text-sm text-n-600 text-right font-normal cursor-pointer'
+                            'block rounded-md px-2 py-2 text-sm text-n-100 text-right font-normal cursor-pointer'
                           )}
                         >
                           Copy wallet address
