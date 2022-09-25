@@ -179,7 +179,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     <>
       <ChatListView>
         <NavigationSidebarContainer>
-          <Unlock />
+          {walletAddress && client && <Unlock />}
           <NavigationHeaderLayout>
             {walletAddress && client && (
               <IconButton
