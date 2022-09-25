@@ -6,7 +6,7 @@ type AvatarProps = {
   addressOrName: string;
 };
 
-const Avatar = ({ addressOrName }: AvatarProps) => {
+const Avatar: React.FC<AvatarProps> = ({ addressOrName }) => {
   const { ensAvatar, isLoadingAvatar } = useEns(addressOrName);
   return ensAvatar && !isLoadingAvatar ? (
     <img
@@ -15,7 +15,15 @@ const Avatar = ({ addressOrName }: AvatarProps) => {
       alt={addressOrName}
     />
   ) : (
-    <Blockies seed={addressOrName} size={10} className="rounded-full" />
+    /**
+     * The toLowerCase here is needed to generate a consistent avatar regardless of
+     * the casing.
+     */
+    <Blockies
+      seed={addressOrName.toLowerCase()}
+      size={10}
+      className="rounded-full"
+    />
   );
 };
 

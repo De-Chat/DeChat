@@ -1,3 +1,4 @@
+import { Avatar } from '@chakra-ui/react';
 import { Menu, Transition } from '@headlessui/react';
 import { classNames } from '@helpers/classNames';
 import { CogIcon } from '@heroicons/react/solid';
@@ -20,17 +21,20 @@ type AvatarBlockProps = {
 
 const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
   const { data: ensAvatar } = useEnsAvatar({ addressOrName });
+
+  // Make the address lowercase so that the blockies is consistent
+  const lowerCasedAddressOrName = addressOrName.toLowerCase()
+
   return ensAvatar ? (
     <img
       className={'rounded-full h-8 w-8 mr-2'}
       src={ensAvatar}
-      alt={addressOrName}
+      alt={lowerCasedAddressOrName}
     />
   ) : (
-    <Blockies seed={addressOrName} size={8} className="rounded-full mr-2" />
+    <Blockies seed={lowerCasedAddressOrName} size={8} className="rounded-full mr-2" />
   );
 };
-
 const NotConnected = (): JSX.Element => {
   return (
     <>
