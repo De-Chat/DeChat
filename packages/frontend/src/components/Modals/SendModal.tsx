@@ -46,6 +46,7 @@ import React, {
   useState,
 } from 'react';
 import { IoRocketOutline } from 'react-icons/io5';
+import { Notification, sendEpnsNotification } from 'src/services/epnsService';
 import useAsyncEffect from 'use-async-effect';
 import {
   erc20ABI,
@@ -60,7 +61,6 @@ import {
 import { encodeMessage } from '../../helpers/message-parser';
 import useXmtp from '../../hooks/useXmtp';
 import BaseModal from './BaseModal';
-import { sendEpnsNotification, Notification } from 'src/services/epnsService';
 ///// helpers
 const shortenAddress = (addr: string): string =>
   addr.length > 10 && addr.startsWith('0x')
@@ -623,7 +623,7 @@ const SendNFT = ({
             name="contract"
             onChange={handleSelectChange}
           >
-            {nfts.map((nft: any) => (
+            {nfts?.map((nft: any) => (
               <option key={nft.name} value={nft.address}>
                 {nft.name}
               </option>
@@ -802,7 +802,9 @@ const SendStream = ({
           title: '[Superfluid Stream]',
           body: `Token symbol: ${form.token?.symbol}\nFrom: ${shortenAddress(
             receipt.from
-          )}\nTo: ${shortenAddress(form.to)}\nAmount: ${form.upgradeAmount}\nFlowrate: ${form.flowrate} / second`,
+          )}\nTo: ${shortenAddress(form.to)}\nAmount: ${
+            form.upgradeAmount
+          }\nFlowrate: ${form.flowrate} / second`,
           cta: `${urlPrefix.blockchainExplorer}/tx/${receipt.transactionHash}`,
           imgLink: '',
         };

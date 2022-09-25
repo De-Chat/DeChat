@@ -42,8 +42,9 @@ export const useGetAllDirectedTransfer = (
 
   Object.keys(networkSubgraph).forEach((key: string) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { loading, error, data } = useGetNetworkTransfer(
+    const { loading, error, data } = useGetNetworkTransferPoll(
       key,
+      500,
       count,
       sender,
       recipient

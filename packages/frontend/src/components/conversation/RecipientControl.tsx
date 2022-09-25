@@ -1,7 +1,8 @@
 import AddressInput from '@components/commons/AddressInput';
 import AddToContactModal from '@components/Modals/AddToContactModal';
+import { useDomainName } from '@hooks/useDomainName';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import useEns from '../../hooks/useEns';
 import useXmtp from '../../hooks/useXmtp';
@@ -30,11 +31,9 @@ const RecipientControl = ({
   );
   const [pendingPeerAddressOrName, setPendingPeerAddressOrName] =
     useState<string>('');
-  const { address: pendingAddress, isLoading } = useEns(
-    pendingPeerAddressOrName
-  );
-  const { ensName: resolvedEnsName, address: resolvedAddress } =
-    useEns(peerAddressOrName);
+
+  const { isLoading, domain, resolveDomainName } = useDomainName();
+  resolveDomainName(pendingPeerAddressOrName);
 
   const checkIfOnNetwork = useCallback(
     async (pendingAddress: string): Promise<boolean> => {
@@ -44,13 +43,23 @@ const RecipientControl = ({
   );
 
   const completeSubmit = useCallback(async () => {
-    if (await checkIfOnNetwork(pendingAddress as string)) {
-      onSubmit(pendingPeerAddressOrName);
+    const checkAddress = domain?.ensAddress || domain?.udAddress;
+    if (await checkIfOnNetwork(checkAddress as string)) {
+      onSubmit(checkAddress as string);
       setRecipientInputMode(RecipientInputMode.Submitted);
     } else {
       setRecipientInputMode(RecipientInputMode.NotOnNetwork);
     }
-  }, [checkIfOnNetwork, pendingAddress, pendingPeerAddressOrName, onSubmit]);
+  }, [checkIfOnNetwork, domain, onSubmit]);
+
+  // const completeSubmit = useCallback(async () => {
+  //   if (await checkIfOnNetwork(pendingAddress as string)) {
+  //     onSubmit(pendingPeerAddressOrName);
+  //     setRecipientInputMode(RecipientInputMode.Submitted);
+  //   } else {
+  //     setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+  //   }
+  // }, [checkIfOnNetwork, pendingAddress, pendingPeerAddressOrName, onSubmit]);
 
   useEffect(() => {
     const handleRecipientInput = () => {
@@ -74,19 +83,56 @@ const RecipientControl = ({
     completeSubmit,
   ]);
 
-  const handleSubmit = useCallback(
-    async (e: React.SyntheticEvent, value?: string) => {
-      e.preventDefault();
-      const data = e.target as typeof e.target & {
-        input: { value: string };
-      };
-      const inputValue = value || data.input.value;
-      setPendingPeerAddressOrName(inputValue);
-    },
-    []
-  );
+  // const handleSubmit = useCallback(
+  //   async (e: React.SyntheticEvent, value?: string) => {
+  //     e.preventDefault();
+  //     const data = e.target as typeof e.target & {
+  //       input: { value: string };
+  //     };
+  //     const inputValue = value || data.input.value;
+  //     resolveDomainName(inputValue);
+  //     setPendingPeerAddressOrName(inputValue);
+  //     console.log("htest2a handleSubmit inputValue", inputValue)
+  //     console.log("htest2b handleSubmit domain", domain)
+  //     console.log("htest2c handleSubmit pendingPeerAddressOrName", pendingPeerAddressOrName)
+  //   },
+  //   []
+  // );
 
-  const handleInputChange = async (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent, value?: string) => {
+    e.preventDefault();
+    const data = e.target as typeof e.target & {
+      input: { value: string };
+    };
+    const inputValue = value || data.input.value;
+    // resolveDomainName(inputValue);
+    setPendingPeerAddressOrName(inputValue);
+    console.log('htest2a handleSubmit inputValue', inputValue);
+    console.log('htest2b handleSubmit domain', domain);
+    console.log(
+      'htest2c handleSubmit pendingPeerAddressOrName',
+      pendingPeerAddressOrName
+    );
+  };
+
+  // const handleInputChange = async (e: React.SyntheticEvent) => {
+  //   const data = e.target as typeof e.target & {
+  //     value: string;
+  //   };
+  //   if (router.pathname !== '/dm/') {
+  //     router.push('/dm');
+  //   }
+  //   if (
+  //     data.value.endsWith('.eth') || data.value.endsWith('.wallet') || //TODO: add more domains
+  //     (data.value.startsWith('0x') && data.value.length === 42)
+  //   ) {
+  //     console.log("htest1 handleInputChange", data.value);
+  //     handleSubmit(e, data.value);
+  //   } else {
+  //     setRecipientInputMode(RecipientInputMode.InvalidEntry);
+  //   }
+  // };
+  const handleInputChange = (e: React.SyntheticEvent) => {
     const data = e.target as typeof e.target & {
       value: string;
     };
@@ -95,8 +141,12 @@ const RecipientControl = ({
     }
     if (
       data.value.endsWith('.eth') ||
+      data.value.endsWith('.wallet') || //TODO: add more domains
       (data.value.startsWith('0x') && data.value.length === 42)
     ) {
+      console.log('htest1a handleInputChange', data.value);
+      setPendingPeerAddressOrName(data.value);
+      console.log('htest1b pendingPeerAddressOrName', pendingPeerAddressOrName);
       handleSubmit(e, data.value);
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry);
@@ -132,7 +182,11 @@ const RecipientControl = ({
 
       {recipientInputMode === RecipientInputMode.Submitted ? (
         <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
-          {resolvedEnsName ? resolvedAddress : <br />}
+          {domain?.ensName || domain?.udName ? (
+            domain?.ensAddress || domain?.udAddress
+          ) : (
+            <br />
+          )}
         </div>
       ) : (
         <div className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]">

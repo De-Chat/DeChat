@@ -1,6 +1,6 @@
-import { classNames } from '@helpers/classNames';
 import { useDomainName } from '@hooks/useDomainName';
-import { useEnsName } from 'wagmi';
+
+import { classNames } from '../../helpers';
 
 type AddressProps = {
   address: string;

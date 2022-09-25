@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import VideoCallProvider from '@components/VideoCallProvider';
 import { useGetAllTransfer } from '@hooks/useGetAllTransfer';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useAccount } from 'wagmi';
@@ -35,7 +36,7 @@ const Conversation = ({
   const transactions = useGetAllTransfer(
     100,
     walletAddress || '',
-    walletAddress || ''
+    peerAddress || ''
   );
 
   // process XMTP messages and Graph transactions
@@ -85,12 +86,17 @@ const Conversation = ({
   }
 
   return (
-    <Flex direction="column" height="full" bgColor="secondary">
-      <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
-      {walletAddress && (
-        <MessageComposer peerAddress={peerAddress || ''} onSend={sendMessage} />
-      )}
-    </Flex>
+    <VideoCallProvider sendMessage={sendMessage}>
+      <Flex direction="column" height="full" bgColor="secondary">
+        <MessagesList messagesEndRef={messagesEndRef} messages={allMessages} />
+        {walletAddress && (
+          <MessageComposer
+            peerAddress={peerAddress || ''}
+            onSend={sendMessage}
+          />
+        )}
+      </Flex>
+    </VideoCallProvider>
   );
 };
 

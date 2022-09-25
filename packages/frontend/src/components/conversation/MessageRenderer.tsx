@@ -10,9 +10,11 @@ import {
 } from '@chakra-ui/react';
 import Card from '@components/commons/Card';
 import { urlPrefix } from '@helpers/environment';
+import { useVideoCall } from '@hooks/useVideoCall';
 import { ethers } from 'ethers';
 import { PropsWithChildren, useMemo } from 'react';
 import Emoji from 'react-emoji-render';
+import { BsCameraVideo } from 'react-icons/bs';
 import { GrTransaction } from 'react-icons/gr';
 import { erc20ABI, useContractRead } from 'wagmi';
 
@@ -63,6 +65,33 @@ const StreamFundTile = ({ streamData }: { streamData: any }) => {
   );
 };
 
+const VideoCallTile = ({
+  playbackId,
+  onClick,
+}: {
+  playbackId: string;
+  onClick: (arg0: string) => void;
+}) => {
+  return (
+    <Card
+      padding={5}
+      borderRadius={15}
+      onClick={() => onClick(playbackId)}
+      _hover={{ opacity: 0.8 }}
+    >
+      <Flex alignItems={'center'}>
+        <Avatar icon={<Icon as={BsCameraVideo} />} />
+        <Box ml="3">
+          <Text fontSize="sm">Join Video Call</Text>
+          <Text fontWeight="bold">{playbackId}</Text>
+        </Box>
+      </Flex>
+    </Card>
+  );
+};
+
+const videocallLogicHandler = (payload: object) => {};
+
 // exmaple data
 // {
 //     "transferType": "transferERC20S",
@@ -109,32 +138,62 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
 }) => {
   const { message, type } = messageTileData;
 
+  // videoCall handler
+  const videocall = useVideoCall();
+
   if (type == 'message' && 'content' in message) {
-    // text and images are "message"
     const decodedMsg = decodeMessage(message.content);
-    return message.error ? (
-      <span>{`Error: ${message.error?.message}`}</span>
-    ) : decodedMsg?.command == 'image' ? (
-      <Image
-        src={decodedMsg.payload.url}
-        width="100px"
-        fallbackSrc="https://icon-library.com/images/loading-icon-animated-gif/loading-icon-animated-gif-20.jpg"
-      />
-    ) : decodedMsg?.command == 'streamFund' ? (
-      <StreamFundTile streamData={decodedMsg.payload} />
-    ) : decodedMsg?.command == 'videoCall' ? (
-      // video call logic handler
-      <></>
-    ) : (
-      <Emoji text={message.content || ''} />
-    );
+
+    // text and images are "message"
+    if (message.error) return <span>{`Error: ${message.error?.message}`}</span>;
+    else if (decodedMsg?.command == 'image')
+      return (
+        <Image
+          src={decodedMsg.payload.url}
+          width="100px"
+          fallbackSrc="https://icon-library.com/images/loading-icon-animated-gif/loading-icon-animated-gif-20.jpg"
+        />
+      );
+    else if (decodedMsg?.command == 'streamFund')
+      return <StreamFundTile streamData={decodedMsg.payload} />;
+    else if (decodedMsg?.command == 'videoCall') {
+      try {
+        console.log('test videoCall msg: ', decodedMsg);
+        const payload = decodedMsg?.payload;
+
+        if (payload.type == 'init') {
+          return (
+            <VideoCallTile
+              playbackId={payload.playbackIdA}
+              onClick={() => {
+                videocall.setPeer(payload.playbackIdA);
+                videocall.setVideoCalling('B');
+              }}
+            />
+          );
+        } else if (payload.type == 'joinB' && videocall.videoCalling == 'A') {
+          if (message && message.sent) {
+            const now = parseInt(new Date().toUTCString());
+            const messageSentDate = parseInt(message.sent.toUTCString());
+
+            if (now - messageSentDate <= 10000) {
+              videocall.joinVideocallA(payload.playbackIdB);
+            }
+          }
+
+          // click to joinVideocallA(payload.playbackIdB);
+          return <></>;
+        }
+      } catch (e) {
+        console.warn('Error parsing videoCall message: ', e);
+      }
+    } else return <Emoji text={message.content || ''} />;
   } else if (type == 'transaction') {
     // transaction json are "transaction"
     // this only works for ERC20 now
     return <TransactionBlock txData={message.content} />;
-  } else {
-    return <div></div>;
   }
+  return <></>;
 };
 
 export default MessageRenderer;
