@@ -143,7 +143,6 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
 
   if (type == 'message' && 'content' in message) {
     const decodedMsg = decodeMessage(message.content);
-
     // text and images are "message"
     if (message.error) return <span>{`Error: ${message.error?.message}`}</span>;
     else if (decodedMsg?.command == 'image')
@@ -160,8 +159,9 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
       try {
         console.log('test videoCall msg: ', decodedMsg);
         const payload = decodedMsg?.payload;
-
+        // video call logic handler
         if (payload.type == 'init') {
+          // videocall.initVideocall();
           return (
             <VideoCallTile
               playbackId={payload.playbackIdA}
@@ -172,15 +172,10 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
             />
           );
         } else if (payload.type == 'joinB' && videocall.videoCalling == 'A') {
-          if (message && message.sent) {
-            const now = parseInt(new Date().toUTCString());
-            const messageSentDate = parseInt(message.sent.toUTCString());
-
-            if (now - messageSentDate <= 10000) {
-              videocall.joinVideocallA(payload.playbackIdB);
-            }
+          const now = new Date();
+          if (now - message.sent <= 10000) {
+            videocall.joinVideocallA(payload.playbackIdB);
           }
-
           // click to joinVideocallA(payload.playbackIdB);
           return <></>;
         }

@@ -14,12 +14,10 @@ import { useEffect, useRef, useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
 
 export const VideoScreen = () => {
-  // const videoEl = useRef(null);
+  const [videoEl, setVideoEl] = useState<any>();
   const [url, setUrl] = useState('');
-
   const stream = useRef<MediaStream>();
   const session = useRef<CastSession>();
-  const videoEl = useRef<HTMLVideoElement>();
   const client = new Client();
   const videoCall = useVideoCall();
 
@@ -28,16 +26,13 @@ export const VideoScreen = () => {
   };
 
   const initRenderVideo = async () => {
-    if (videoEl.current) {
-      videoEl.current.volume = 0;
-      videoEl.current.srcObject = stream.current || null;
-      videoEl.current.play();
-    }
-
+    videoEl.volume = 0;
     stream.current = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
+    videoEl.srcObject = stream.current;
+    videoEl.play();
 
     if (videoCall.videoCalling == 'A') {
       await videoCall.initVideocall();
@@ -50,6 +45,7 @@ export const VideoScreen = () => {
   useEffect(() => {
     if (videoCall.streamKey) {
       console.log('videocall streamkey', videoCall.streamKey);
+
       if (stream.current) {
         session.current = client.cast(stream.current, videoCall.streamKey);
 
@@ -67,6 +63,7 @@ export const VideoScreen = () => {
   useAsyncEffect(async () => {
     console.log('trying to setup videoEl', videoEl, videoCall.videoCalling);
     if (videoEl) {
+      console.log(videoEl);
       await initRenderVideo();
     }
   }, [videoEl]);
@@ -91,7 +88,7 @@ export const VideoScreen = () => {
           <ModalHeader>Video Call</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <video ref={videoEl as any} />
+            <video ref={setVideoEl} />
             {url ? (
               <iframe
                 src={url}
@@ -114,12 +111,13 @@ export const VideoScreen = () => {
                   session.current.close();
                 }
                 videoCall.terminateVideocall();
-                videoEl.current = undefined;
+                setVideoEl(undefined);
                 stream.current = undefined;
               }}
             >
               Close
             </Button>
+            {/* <Button variant="ghost">Secondary Action</Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>

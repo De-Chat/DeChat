@@ -1,18 +1,9 @@
 import { encodeMessage } from '@helpers/message-parser';
 import axios from 'axios';
-import {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import VideoCallContext from 'src/contexts/videoCall';
 
-const VideoCallProvider: React.FC<
-  PropsWithChildren<{ sendMessage: Function }>
-> = ({ children, sendMessage }) => {
+const VideoCallProvider = ({ children, sendMessage }) => {
   const [videoCalling, setVideoCalling] = useState('');
   const [peer, setPeer] = useState('');
   const [streamKey, setStreamKey] = useState(''); //generated for alice to get the playbackID
