@@ -7,7 +7,7 @@ const client = axios.create({
 const handler = async (req: any, res: any) => {
   const { subgraph } = req.query;
   const graphRes = await client.post(subgraph, req.body);
-  console.log(graphRes.data);
+
   return res.status(graphRes.status).json(graphRes.data);
 };
 

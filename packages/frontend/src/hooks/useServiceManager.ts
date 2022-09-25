@@ -21,5 +21,9 @@ export const useServiceManager = () => {
     asyncFn();
   }, [isConnected, currentContacts, initializeUserContact, loadContacts]);
 
-  return { address,  isConnected, isReady: isConnected && currentContacts !== undefined };
+  return {
+    address,
+    isConnected,
+    isReady: isConnected && currentContacts !== undefined,
+  };
 };

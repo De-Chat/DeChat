@@ -37,7 +37,7 @@ export const UserContactProvider: React.FC<PropsWithChildren<{}>> = ({
         setUserContactTableId: setTableId,
         userContactTableId: tableId,
         currentContacts: contactList,
-        setCurrentContacts: setContactList
+        setCurrentContacts: setContactList,
       }}
     >
       {children}

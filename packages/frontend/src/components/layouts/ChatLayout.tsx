@@ -36,10 +36,7 @@ const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
 }) => (
   <aside className="flex w-full md:w-84 flex-col flex-grow fixed inset-y-0">
-    <div
-      className="flex flex-col flex-grow md:border-r md:border-gray-200 overflow-y-auto"
-      style={{ backgroundColor: 'var(--chakra-colors-secondaryDark)' }}
-    >
+    <div className="flex flex-col flex-grow md:border-r md:border-gray-800 overflow-y-auto">
       {children}
     </div>
   </aside>
