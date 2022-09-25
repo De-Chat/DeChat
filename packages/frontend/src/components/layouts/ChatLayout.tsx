@@ -3,8 +3,6 @@ import BackArrow from '@components/commons/BackArrow';
 import { TitleText } from '@components/commons/TitleText';
 import UserMenu from '@components/commons/UserMenu';
 import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
-import { useDomainName } from '@hooks/useDomainName';
-import { useUserContact } from '@hooks/user-contact/useUserContact';
 import useXmtp from '@hooks/useXmtp';
 import AddContact from '@public/chat-icons/add-contact.svg';
 import Link from 'next/link';
@@ -14,7 +12,6 @@ import {
   ReactNode,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import {
@@ -108,11 +105,7 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
 
 export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const { address: walletAddress } = useAccount();
-  const {
-    connect: connectXmtp,
-    disconnect: disconnectXmtp,
-    client,
-  } = useXmtp();
+  const { disconnect: disconnectXmtp, client } = useXmtp();
 
   const { disconnect } = useDisconnect({
     onSettled() {
@@ -120,30 +113,6 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     },
   });
   const { data: signer } = useSigner();
-
-  const usePrevious = <T,>(value: T): T | undefined => {
-    const ref = useRef<T>();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  };
-  const prevSigner = usePrevious(signer);
-
-  useEffect(() => {
-    if ((!signer && prevSigner) || signer !== prevSigner) {
-      disconnectXmtp();
-    }
-    if (!signer || signer === prevSigner) return;
-
-    const connect = async () => {
-      console.log('signer', signer);
-      if (signer) {
-        connectXmtp(signer);
-      }
-    };
-    connect();
-  }, [signer, prevSigner, connectXmtp, disconnectXmtp]);
 
   // ---- epns
 
@@ -166,7 +135,6 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log(`walletAddress useEffect: ${walletAddress}`);
     if (!walletAddress) return;
     // get userSubscription status
     getEpnsUserSubscriptions(walletAddress).then((subscriptions) => {

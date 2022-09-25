@@ -689,12 +689,7 @@ const SendStream = ({
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const tokenAddr = e.target.value;
     const chainId = chain?.id;
-    console.log(
-      'test select: ',
-      chainId,
-      tokenAddr,
-      getTokenByAddress(tokenAddr)
-    );
+
     setForm({ ...form, token: getTokenByAddress(tokenAddr) });
     console.log('test select token: ', e.target.value);
   };

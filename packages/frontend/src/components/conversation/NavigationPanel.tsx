@@ -69,7 +69,7 @@ const ConnectButton = (): JSX.Element => {
 };
 
 const ConversationsPanel = (): JSX.Element => {
-  const { conversations, loadingConversations, client } = useXmtp();
+  const { conversations, isLoadingConversation, client } = useXmtp();
   if (!client) {
     return (
       <Loader
@@ -79,7 +79,7 @@ const ConversationsPanel = (): JSX.Element => {
       />
     );
   }
-  if (loadingConversations) {
+  if (isLoadingConversation) {
     return (
       <Loader
         headingText="Loading conversations..."

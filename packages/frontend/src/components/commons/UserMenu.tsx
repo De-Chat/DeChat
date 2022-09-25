@@ -1,4 +1,3 @@
-import { Avatar } from '@chakra-ui/react';
 import { Menu, Transition } from '@headlessui/react';
 import { classNames } from '@helpers/classNames';
 import { CogIcon } from '@heroicons/react/solid';
