@@ -19,7 +19,7 @@ export const VideoScreen = () => {
 
   const stream = useRef<MediaStream>();
   const session = useRef<CastSession>();
-  const videoEl = useRef<HTMLVideoElement>();
+  const [videoEl, setVideoEl] = useState<HTMLVideoElement>();
   const client = new Client();
   const videoCall = useVideoCall();
 
@@ -28,16 +28,17 @@ export const VideoScreen = () => {
   };
 
   const initRenderVideo = async () => {
-    if (videoEl.current) {
-      videoEl.current.volume = 0;
-      videoEl.current.srcObject = stream.current || null;
-      videoEl.current.play();
+    console.log('test video cam')
+    
+    if (videoEl) {
+      videoEl.volume = 0;
+      stream.current = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      videoEl.srcObject = stream.current || null;
+      videoEl.play();
     }
-
-    stream.current = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
 
     if (videoCall.videoCalling == 'A') {
       await videoCall.initVideocall();
@@ -91,7 +92,7 @@ export const VideoScreen = () => {
           <ModalHeader>Video Call</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <video ref={videoEl as any} />
+            <video ref={setVideoEl as (arg0: HTMLVideoElement) => void} />
             {url ? (
               <iframe
                 src={url}
