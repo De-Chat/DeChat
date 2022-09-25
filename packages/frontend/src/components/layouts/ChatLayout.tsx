@@ -23,7 +23,7 @@ import {
   optInToChannel,
   optOutToChannel,
 } from 'src/services/epnsService';
-import { useDisconnect, useSigner } from 'wagmi';
+import { useAccount, useDisconnect, useSigner } from 'wagmi';
 
 import {
   ChatListView,
@@ -107,10 +107,10 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
 };
 
 export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  const { address: walletAddress } = useAccount();
   const {
     connect: connectXmtp,
     disconnect: disconnectXmtp,
-    walletAddress,
     client,
   } = useXmtp();
 

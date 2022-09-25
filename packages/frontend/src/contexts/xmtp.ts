@@ -9,8 +9,6 @@ export type MessageStoreEvent = {
 };
 
 export type XmtpContextType = {
-  wallet: Signer | undefined;
-  walletAddress: string | undefined;
   client: Client | undefined;
   conversations: Conversation[];
   loadingConversations: boolean;
@@ -21,8 +19,6 @@ export type XmtpContextType = {
 };
 
 export const XmtpContext = createContext<XmtpContextType>({
-  wallet: undefined,
-  walletAddress: undefined,
   client: undefined,
   conversations: [],
   loadingConversations: false,

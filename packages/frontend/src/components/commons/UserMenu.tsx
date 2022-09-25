@@ -6,7 +6,7 @@ import useXmtp from '@hooks/useXmtp';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import { Fragment, useCallback } from 'react';
 import Blockies from 'react-blockies';
-import { useEnsAvatar } from 'wagmi';
+import { useAccount, useEnsAvatar } from 'wagmi';
 
 import Address from './Address';
 
@@ -23,7 +23,7 @@ const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
   const { data: ensAvatar } = useEnsAvatar({ addressOrName });
 
   // Make the address lowercase so that the blockies is consistent
-  const lowerCasedAddressOrName = addressOrName.toLowerCase()
+  const lowerCasedAddressOrName = addressOrName.toLowerCase();
 
   return ensAvatar ? (
     <img
@@ -32,7 +32,11 @@ const AvatarBlock = ({ addressOrName }: AvatarBlockProps) => {
       alt={lowerCasedAddressOrName}
     />
   ) : (
-    <Blockies seed={lowerCasedAddressOrName} size={8} className="rounded-full mr-2" />
+    <Blockies
+      seed={lowerCasedAddressOrName}
+      size={8}
+      className="rounded-full mr-2"
+    />
   );
 };
 const NotConnected = (): JSX.Element => {
@@ -70,7 +74,8 @@ const NotConnected = (): JSX.Element => {
 };
 
 const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
-  const { walletAddress, client } = useXmtp();
+  const { address: walletAddress } = useAccount();
+  const { client } = useXmtp();
 
   const onClickCopy = useCallback(() => {
     if (walletAddress) {
