@@ -1,6 +1,7 @@
 import { Flex, IconButton } from '@chakra-ui/react';
 import BackArrow from '@components/commons/BackArrow';
 import { TitleText } from '@components/commons/TitleText';
+import Unlock from '@components/commons/Unlock';
 import UserMenu from '@components/commons/UserMenu';
 import XmtpInfoPanel from '@components/commons/XmtpInfoPanel';
 import useXmtp from '@hooks/useXmtp';
@@ -150,6 +151,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     <>
       <ChatListView>
         <NavigationSidebarContainer>
+          {walletAddress && client && <Unlock />}
           <NavigationHeaderLayout>
             {walletAddress && client && (
               <IconButton

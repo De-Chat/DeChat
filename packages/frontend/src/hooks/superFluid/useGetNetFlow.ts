@@ -8,9 +8,12 @@ export const useGetNetFlow = (
   const [netFlow, setNetFlow] = useState<string>();
 
   useEffect(() => {
-    superFluidToken.getNetFlow(account).then((netflow) => {
+    const asyncFn = async () => {
+      const netFlow = await superFluidToken.getNetFlow(account);
       setNetFlow(netFlow);
-    });
+    }
+
+    asyncFn();
   }, [superFluidToken, account]);
 
   if (netFlow) {
