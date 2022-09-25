@@ -1,5 +1,6 @@
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
+import { Text } from '@chakra-ui/react';
 
 const Unlock = (): JSX.Element => {
   const [unlockProtocol, setUnlockProtocol] = useState<any>(undefined);
@@ -52,19 +53,33 @@ const Unlock = (): JSX.Element => {
         type="text/javascript"
       />
       {locked.locked === 'locked' && (
-        <div onClick={checkOut} style={{ cursor: 'pointer' }}>
-          Get Dechat Premium{' '}
+        <div className='ml-4 mt-4' onClick={checkOut} style={{ cursor: 'pointer' }}>
+          <Text
+            bgGradient="linear(to-l, #7928CA, #FF0080)"
+            bgClip="text"
+            fontSize="lg"
+            fontWeight="extrabold"
+          > Get DeChat Premium 🔒
+          </Text>
+          {/* Get Dechat Premium{' '}
           <span aria-label="locked" role="img">
             🔒
-          </span>
+          </span> */}
         </div>
       )}
       {locked.locked === 'unlocked' && (
-        <div>
-          Dechat Premium{' '}
+        <div className='ml-4 mt-4'>
+          <Text
+            bgGradient="linear(to-l, #7928CA, #FF0080)"
+            bgClip="text"
+            fontSize="lg"
+            fontWeight="extrabold"
+          > DeChat Premium 💎
+          </Text>
+          {/* Premium Member{' '}
           <span aria-label="unlocked" role="img">
             🗝
-          </span>
+          </span> */}
         </div>
       )}
     </div>
