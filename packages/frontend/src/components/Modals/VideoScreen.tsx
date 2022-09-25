@@ -7,10 +7,11 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
+import { Button, Icon, IconButton } from '@chakra-ui/react';
 import { useVideoCall } from '@hooks/useVideoCall';
 import { CastSession, Client } from '@livepeer/webrtmp-sdk';
 import { useEffect, useRef, useState } from 'react';
+import { BsCameraVideo } from 'react-icons/bs';
 import useAsyncEffect from 'use-async-effect';
 
 export const VideoScreen = () => {
@@ -81,7 +82,13 @@ export const VideoScreen = () => {
   }, [url]);
   return (
     <>
-      <Button onClick={handleOnClick}>Open Modal</Button>
+      <IconButton
+        aria-label="Start video call"
+        variant="outline"
+        border="none"
+        icon={<Icon as={BsCameraVideo} />}
+        onClick={handleOnClick}
+      />
       <Modal isOpen={!!videoCall.videoCalling} onClose={() => {}}>
         <ModalOverlay />
         <ModalContent>
