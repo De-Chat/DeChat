@@ -149,7 +149,7 @@ const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
                           onClick={onClickCopy}
                           className={classNames(
                             active ? 'bg-zinc-50' : '',
-                            'block rounded-md px-2 py-2 text-sm text-n-600 text-right font-normal cursor-pointer'
+                            'block rounded-md px-2 py-2 text-sm text-n-100 text-right font-normal cursor-pointer'
                           )}
                         >
                           Copy wallet address
