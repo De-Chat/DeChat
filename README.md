@@ -41,6 +41,9 @@ pnpm frontend:dev
 
 
 # Technical Specifications
+## Deployment
+- Our contracts and on Polygon
+
 ## Login 
 - All logins are done using sign in with Sign in with Ethereum by Spruce
 - User will need to sign a message that proves that the user is the owner of the address
