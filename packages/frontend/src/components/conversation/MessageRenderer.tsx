@@ -172,12 +172,10 @@ const MessageRenderer: React.FC<{ messageTileData: MessageTileProps }> = ({
             />
           );
         } else if (payload.type == 'joinB' && videocall.videoCalling == 'A') {
-          if (message.sent) {
-            const now = new Date();
-            const messageSentTime = message.sent.getTime();
-            if (now.getTime() - messageSentTime <= 10000) {
-              videocall.joinVideocallA(payload.playbackIdB);
-            }
+          const now = new Date();
+          const messageSentTime = message.sent!.getTime();
+          if (now.getTime() - messageSentTime <= 10000) {
+            videocall.joinVideocallA(payload.playbackIdB);
           }
 
           // click to joinVideocallA(payload.playbackIdB);
