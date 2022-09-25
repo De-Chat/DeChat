@@ -13,39 +13,39 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers';
+} from "ethers";
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from '@ethersproject/abi';
-import type { Listener, Provider } from '@ethersproject/providers';
+} from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from './common';
+} from "./common";
 
 export interface SendInterface extends utils.Interface {
   functions: {
-    'sendErc1155(address,address,uint256,uint256,bytes)': FunctionFragment;
-    'sendErc20(address,address,uint256)': FunctionFragment;
-    'sendErc721(address,address,uint256)': FunctionFragment;
-    'sendEth(address)': FunctionFragment;
+    "sendErc1155(address,address,uint256,uint256,bytes)": FunctionFragment;
+    "sendErc20(address,address,uint256)": FunctionFragment;
+    "sendErc721(address,address,uint256)": FunctionFragment;
+    "sendEth(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'sendErc1155'
-      | 'sendErc20'
-      | 'sendErc721'
-      | 'sendEth'
+      | "sendErc1155"
+      | "sendErc20"
+      | "sendErc721"
+      | "sendEth"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: 'sendErc1155',
+    functionFragment: "sendErc1155",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
@@ -55,7 +55,7 @@ export interface SendInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: 'sendErc20',
+    functionFragment: "sendErc20",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
@@ -63,7 +63,7 @@ export interface SendInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: 'sendErc721',
+    functionFragment: "sendErc721",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
@@ -71,29 +71,29 @@ export interface SendInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: 'sendEth',
+    functionFragment: "sendEth",
     values: [PromiseOrValue<string>]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: 'sendErc1155',
+    functionFragment: "sendErc1155",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'sendErc20', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'sendErc721', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'sendEth', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sendErc20", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sendErc721", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sendEth", data: BytesLike): Result;
 
   events: {
-    'SendErc1155(address,address,uint256,uint256,address)': EventFragment;
-    'SendErc20(address,address,uint256,address)': EventFragment;
-    'SendErc721(address,address,uint256,address)': EventFragment;
-    'SendEth(address,address,uint256)': EventFragment;
+    "SendErc1155(address,address,uint256,uint256,address)": EventFragment;
+    "SendErc20(address,address,uint256,address)": EventFragment;
+    "SendErc721(address,address,uint256,address)": EventFragment;
+    "SendEth(address,address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: 'SendErc1155'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'SendErc20'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'SendErc721'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'SendEth'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SendErc1155"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SendErc20"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SendErc721"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SendEth"): EventFragment;
 }
 
 export interface SendErc1155EventObject {
@@ -263,7 +263,7 @@ export interface Send extends BaseContract {
   };
 
   filters: {
-    'SendErc1155(address,address,uint256,uint256,address)'(
+    "SendErc1155(address,address,uint256,uint256,address)"(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       tokenId?: null,
@@ -278,7 +278,7 @@ export interface Send extends BaseContract {
       erc1155ContractAddress?: null
     ): SendErc1155EventFilter;
 
-    'SendErc20(address,address,uint256,address)'(
+    "SendErc20(address,address,uint256,address)"(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       amount?: null,
@@ -291,7 +291,7 @@ export interface Send extends BaseContract {
       erc20ContractAddress?: null
     ): SendErc20EventFilter;
 
-    'SendErc721(address,address,uint256,address)'(
+    "SendErc721(address,address,uint256,address)"(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       tokenId?: null,
@@ -304,7 +304,7 @@ export interface Send extends BaseContract {
       erc721ContractAddress?: null
     ): SendErc721EventFilter;
 
-    'SendEth(address,address,uint256)'(
+    "SendEth(address,address,uint256)"(
       sender?: PromiseOrValue<string> | null,
       recipient?: PromiseOrValue<string> | null,
       amount?: null
