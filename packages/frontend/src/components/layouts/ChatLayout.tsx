@@ -32,6 +32,8 @@ import {
 } from '../conversation';
 import NavigationPanel from '../conversation/NavigationPanel';
 
+import Unlock from '@components/commons/Unlock';
+
 const NavigationSidebarContainer: React.FC<{ children: ReactNode }> = ({
   children,
 }) => (
@@ -177,6 +179,7 @@ export const ChatLayout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     <>
       <ChatListView>
         <NavigationSidebarContainer>
+          <Unlock />
           <NavigationHeaderLayout>
             {walletAddress && client && (
               <IconButton
