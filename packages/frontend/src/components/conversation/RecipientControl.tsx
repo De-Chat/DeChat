@@ -42,7 +42,7 @@ const RecipientControl = ({
 
   const completeSubmit = async () => {
     const checkAddress = domain?.ensAddress || domain?.udAddress;
-    console.log('check', checkAddress, domain);
+
     if (await checkIfOnNetwork(checkAddress as string)) {
       onSubmit(checkAddress as string);
       setRecipientInputMode(RecipientInputMode.Submitted);

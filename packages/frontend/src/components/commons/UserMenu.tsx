@@ -1,4 +1,3 @@
-import { Avatar } from '@chakra-ui/react';
 import { Menu, Transition } from '@headlessui/react';
 import { classNames } from '@helpers/classNames';
 import { CogIcon } from '@heroicons/react/solid';
@@ -6,7 +5,7 @@ import useXmtp from '@hooks/useXmtp';
 import { ConnectButton as RKConnectButton } from '@rainbow-me/rainbowkit';
 import { Fragment, useCallback } from 'react';
 import Blockies from 'react-blockies';
-import { useEnsAvatar } from 'wagmi';
+import { useAccount, useEnsAvatar } from 'wagmi';
 
 import Address from './Address';
 
@@ -74,7 +73,8 @@ const NotConnected = (): JSX.Element => {
 };
 
 const UserMenu = ({ onDisconnect }: UserMenuProps): JSX.Element => {
-  const { walletAddress, client } = useXmtp();
+  const { address: walletAddress } = useAccount();
+  const { client } = useXmtp();
 
   const onClickCopy = useCallback(() => {
     if (walletAddress) {

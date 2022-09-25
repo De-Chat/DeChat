@@ -3,7 +3,6 @@ import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
 const Unlock = (): JSX.Element => {
-  const [unlockProtocol, setUnlockProtocol] = useState<any>(undefined);
   const [locked, setLocked] = useState({ locked: 'locked' }); // 3 states: pending, locked, unlocked
 
   useEffect(() => {
@@ -11,17 +10,14 @@ const Unlock = (): JSX.Element => {
       (window as any).unlockProtocolConfig = {
         network: 5, // Network ID (1 is for mainnet, 4 for rinkeby, 100 for xDai, etc)
         locks: {
-          '0xd9C22C8568F5Ef7Fa0a05864A31B2CD83CC7eaBB': {
-            name: 'Dechat Premium',
+          '0xC47Cc50617C51B2490fCF59CB26d87BC564B087b': {
+            name: 'DeChat Premium',
           },
         },
-        icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
         callToAction: {
-          default: 'Dechat Premium',
+          default: 'DeChat Premium',
         },
       };
-
-      setUnlockProtocol((window as any).unlockProtocol);
     }
   }, []);
 
@@ -35,7 +31,8 @@ const Unlock = (): JSX.Element => {
   };
 
   const checkOut = () => {
-    unlockProtocol && unlockProtocol.loadCheckoutModal();
+    console.log('UnlockProtocol', (window as any).unlockProtocol);
+    (window as any).unlockProtocol && (window as any).unlockProtocol.loadCheckoutModal();
   };
 
   useEffect(() => {

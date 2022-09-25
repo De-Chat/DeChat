@@ -37,7 +37,7 @@ import {
   ITokenBalance,
 } from '@services/covalentService';
 import { SuperfluidToken } from '@services/superFluidService';
-import { ethers } from 'ethers';
+import { ethers, Signer } from 'ethers';
 import React, {
   useCallback,
   useEffect,
@@ -51,16 +51,16 @@ import useAsyncEffect from 'use-async-effect';
 import {
   erc20ABI,
   erc721ABI,
-  useBlockNumber,
-  useContract,
+  useAccount,
   useContractRead,
   useNetwork,
   useProvider,
+  useSigner,
 } from 'wagmi';
 
 import { encodeMessage } from '../../helpers/message-parser';
-import useXmtp from '../../hooks/useXmtp';
 import BaseModal from './BaseModal';
+
 ///// helpers
 const shortenAddress = (addr: string): string =>
   addr.length > 10 && addr.startsWith('0x')
@@ -279,6 +279,7 @@ const SendToken = ({
   };
   const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.currentTarget.name]: e.currentTarget.checked });
+
   // TODO: validation
   const validateForm = () => {
     if (!form['to'] || !form['token'] || !form['amount']) {
@@ -288,11 +289,12 @@ const SendToken = ({
     setError(undefined);
     return true;
   };
-  console.log('test form: ', form);
 
   // contract and stuff
-  const { wallet: signer, walletAddress: address } = useXmtp();
+  const { address } = useAccount();
+  const { data: signer } = useSigner();
   const { contracts } = useDeployments();
+
   // Approve contract and read / write function
   const {
     data: allowance,
@@ -331,7 +333,7 @@ const SendToken = ({
     const tokenContract = new ethers.Contract(
       form.token?.address,
       erc20ABI,
-      signer
+      signer as Signer
     );
     console.log('test erc20: ', token.address, to, amount);
     const receipt = await approveErc20(
@@ -449,7 +451,6 @@ const SendToken = ({
             type="number"
             onChange={handleFormChange}
           />
-          {/* <Checkbox name='lend' onChange={handleCheckboxChange}>Lend to receiver</Checkbox> */}
           {error && <FormErrorMessage>{error}</FormErrorMessage>}
         </VStack>
       </FormControl>
@@ -505,7 +506,8 @@ const SendNFT = ({
   };
 
   // contract and stuff
-  const { wallet: signer, walletAddress: address } = useXmtp();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   const { contracts } = useDeployments();
   // Approve contract and read / write function
   const {
@@ -535,7 +537,11 @@ const SendNFT = ({
     if (!validateForm() || !contracts) return;
 
     setBusy(true);
-    const nftContract = new ethers.Contract(form.contract, erc721ABI, signer);
+    const nftContract = new ethers.Contract(
+      form.contract,
+      erc721ABI,
+      signer as Signer
+    );
     const receipt = await approveErc721(
       nftContract,
       contracts.Send.address,
@@ -683,12 +689,7 @@ const SendStream = ({
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const tokenAddr = e.target.value;
     const chainId = chain?.id;
-    console.log(
-      'test select: ',
-      chainId,
-      tokenAddr,
-      getTokenByAddress(tokenAddr)
-    );
+
     setForm({ ...form, token: getTokenByAddress(tokenAddr) });
     console.log('test select token: ', e.target.value);
   };
@@ -712,8 +713,8 @@ const SendStream = ({
   console.log('test form: ', form);
 
   // contract and stuff
-  const { wallet: signer, walletAddress: address } = useXmtp();
-  const { contracts } = useDeployments();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   // Approve contract and read / write function
   const {
     data: allowance,
@@ -747,7 +748,7 @@ const SendStream = ({
     const tokenContract = new ethers.Contract(
       form.token?.address,
       erc20ABI,
-      signer
+      signer as Signer
     );
     const receipt = await approveErc20(
       tokenContract,
