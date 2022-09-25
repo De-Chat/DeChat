@@ -72,14 +72,19 @@ const ConversationLayout: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const peerAddressOrName = router.query.peerAddressOrName as string;
+  const [peerAddressOrName, setPeerAddressOrName] = useState<string>();
 
-  const handleSubmit = useCallback(
-    async (peerAddressOrName: string) => {
-      router.push(peerAddressOrName ? `/dm/${peerAddressOrName}` : '/dm/');
-    },
-    [router]
-  );
+  useEffect(() => {
+    const curAddress = router.query.peerAddressOrName;
+    if (curAddress && typeof curAddress === 'string') {
+      setPeerAddressOrName(curAddress);
+    }
+  }, [router]);
+
+  const handleSubmit = async (newPeerAddressOrName: string) => {
+    setPeerAddressOrName(newPeerAddressOrName);
+    router.push(newPeerAddressOrName ? `/dm/${newPeerAddressOrName}` : '/dm/');
+  };
 
   const handleBackArrowClick = useCallback(() => {
     router.push('/');
